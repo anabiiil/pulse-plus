@@ -52,7 +52,7 @@ export default {
         async login() {
             this.error = null;
             try {
-                const response = await axios.post('/login', {
+                const response = await axios.post('admin/login', {
                     email: this.email,
                     password: this.password
                 });
@@ -64,9 +64,9 @@ export default {
             } catch (res) {
                 if (res?.response?.data?.errors) {
                     this.error = res?.response?.data?.errors;
-                    showErrorToast('Validation Error');
+                    // showErrorToast('Validation Error');
                 } else {
-                    showErrorToast('An error occurred.');
+                    // showErrorToast('An error occurred.');
                 }
 
                 // if (error.response && error.response.data) {

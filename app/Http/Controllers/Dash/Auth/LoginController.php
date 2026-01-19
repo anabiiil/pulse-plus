@@ -22,7 +22,7 @@ class LoginController extends Controller
     }
 
 
-    public function loginForm(LoginRequest $request)
+    public function loginForm(LoginRequest $request): ?\Illuminate\Http\JsonResponse
     {
         $data = $request->validated();
         $admin = Admin::where('email', $data['email'])->first();
@@ -32,10 +32,10 @@ class LoginController extends Controller
                 'user' => auth('admin')->user()
             ]);
 
-        } else {
-            return $this->responseError([
-                'email' => 'invalid data',
-            ], code: 422, key: 'errors');
         }
+
+        return $this->responseError([
+            'email' => 'invalid data',
+        ], code: 422, key: 'errors');
     }
 }

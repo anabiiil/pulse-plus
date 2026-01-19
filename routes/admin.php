@@ -37,7 +37,7 @@ Route::group(
         'middleware' => ['auth:admin']
     ],
     function () {
-
+        Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
         Route::get('/', function () {
 
             return redirect()->to('dash');

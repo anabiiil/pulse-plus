@@ -52,21 +52,24 @@ export default {
         async login() {
             this.error = null;
             try {
-                const response = await axios.post('admin/login', {
+                const response = await axios.post('/admin/login', {
                     email: this.email,
                     password: this.password
                 });
 
                 if (response.status === 200) {
+                    showSuccessToast('Validation Error');
+
                     localStorage.setItem('user', JSON.stringify(response.data.data.user));
                     window.location.href = '/dash/index'; // Redirect to dashboard after successful login
                 }
+                console.log('fefe')
             } catch (res) {
                 if (res?.response?.data?.errors) {
                     this.error = res?.response?.data?.errors;
-                    // showErrorToast('Validation Error');
+                    showErrorToast('Validation Error');
                 } else {
-                    // showErrorToast('An error occurred.');
+                    showErrorToast('An error occurred.');
                 }
 
                 // if (error.response && error.response.data) {

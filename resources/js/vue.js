@@ -4,6 +4,9 @@ import {createVuetify} from 'vuetify';
 import {formatDate} from "./main/date.ts";
 import {createHead} from '@vueuse/head';
 import {VDateInput} from "vuetify/labs/components";
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
+import './main/alerts.ts'; // Import alerts to make window.showToast functions available
 
 
 // Vuetify components and directives (optional)
@@ -44,6 +47,20 @@ if (appMain) {
     app.use(vuetify);
     app.use(router);
     app.use(head);
+    app.use(Toast, {
+        position: "top-right",
+        timeout: 3000,
+        closeOnClick: true,
+        pauseOnFocusLoss: true,
+        pauseOnHover: true,
+        draggable: true,
+        draggablePercent: 0.6,
+        showCloseButtonOnHover: false,
+        hideProgressBar: false,
+        closeButton: "button",
+        icon: true,
+        rtl: false
+    });
     app.config.globalProperties.$formatDate = formatDate;
     app.mount('#app');
 }

@@ -174,7 +174,7 @@ export default {
                         for (let key in error?.response?.data?.errors) {
                             this.errorList += error?.response?.data?.errors[key] + '<br>';
                         }
-                        showErrorToast(this.errorList)
+                        showErrorToast(error?.response?.data?.message)
                     } else {
                         showErrorToast('Accurate error,please try again later')
                     }

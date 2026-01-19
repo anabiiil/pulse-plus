@@ -1,42 +1,66 @@
-import Swal, { SweetAlertIcon } from "sweetalert2";
+import { useToast } from "vue-toastification";
+
+// Define toast types
+export type ToastType = 'success' | 'error' | 'warning' | 'info';
 
 // Extend the Window interface to include our custom properties
 declare global {
     interface Window {
-        Toast: typeof Toast;
-        showToast: (message: string, icon?: SweetAlertIcon) => void;
+        showToast: (message: string, type?: ToastType) => void;
         showErrorToast: (message: string) => void;
         showSuccessToast: (message: string) => void;
+        showWarningToast: (message: string) => void;
+        showInfoToast: (message: string) => void;
     }
 }
 
-const Toast = Swal.mixin({
-    toast: true,
-    position: 'top-end', // Options: 'top', 'top-start', 'top-end', 'center', etc.
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-    didOpen: (toast) => {
-        toast.addEventListener('mouseenter', Swal.stopTimer)
-        toast.addEventListener('mouseleave', Swal.resumeTimer)
-    }
-});
+// Lazy-load toast instance
+let toastInstance: ReturnType<typeof useToast> | null = null;
 
-window.Toast = Toast; // Make it available globally
-window.showToast = function (message: string, icon: SweetAlertIcon = 'success') {
-    Toast.fire({
-        icon: icon,
-        title: message
-    });
+function getToast() {
+    if (!toastInstance) {
+        toastInstance = useToast();
+    }
+    return toastInstance;
+}
+
+// Make toast functions available globally
+window.showToast = function (message: string, type: ToastType = 'success') {
+    console.log(type)
+    const toast = getToast();
+    switch (type) {
+        case 'success':
+            toast.success(message);
+            break;
+        case 'error':
+            toast.error(message);
+            break;
+        case 'warning':
+            toast.warning(message);
+            break;
+        case 'info':
+            toast.info(message);
+            break;
+        default:
+            toast(message);
+    }
 }
 
 window.showErrorToast = function (message: string) {
-    window.showToast(message, 'error');
+    getToast().error(message);
 }
 
 window.showSuccessToast = function (message: string) {
-    window.showToast(message, 'success');
+    getToast().success(message);
 }
 
-export { Toast };
+window.showWarningToast = function (message: string) {
+    getToast().warning(message);
+}
+
+window.showInfoToast = function (message: string) {
+    getToast().info(message);
+}
+
+export { getToast };
 

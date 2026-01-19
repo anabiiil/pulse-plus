@@ -83,7 +83,6 @@ class CountryController extends Controller
     public function create(CreateCountryRequest $request)
     {
         $country = Country::create($request->validated());
-        Cache::tags(['countries'])->flush();
         return $this->responseData([new CountryResource($country)], 201);
     }
 
@@ -93,16 +92,7 @@ class CountryController extends Controller
         $country = Country::find($id);
 
         $country->update($data);
-        Cache::tags(['countries'])->flush();
         return $this->responseData([new CountryResource($country)], 200);
-    }
-
-    public function import(ImportRequest $request)
-    {
-        $data = $request->validated();
-        Excel::import(new CountryImport(), $data['file']);
-        Cache::tags(['countries'])->flush();
-        return $this->responseData([], 200);
     }
 
 }

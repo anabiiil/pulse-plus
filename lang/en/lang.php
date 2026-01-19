@@ -1,26 +1,57 @@
 <?php
-
 return [
+    'alerts' => [
+        'created' => ':name  Created Successfully',
+        'updated' => ':name Updated Successfully',
+        'deleted' => ':name Deleted Successfully',
+        'send_otp' => 'we sent otp to your email :email, please check it',
+        'account_activated' => 'Your Account is activated Successfully',
+        'has_social_error' => 'Your Account has social login, please login with social',
+        'validation_error' => 'validation errors',
+        'failure' => ':name Failure',
+        'success' => ':name Successfully',
+        'not_found' => ':name Not Found',
+        'credential_err' => 'Your Credential is invalid',
+        'email_not_exists' => 'Email not match with our data',
 
-    /*
-    |--------------------------------------------------------------------------
-    | Validation Language Lines
-    |--------------------------------------------------------------------------
-    |
-    | The following language lines contain the default error messages used by
-    | the validator class. Some of these rules have multiple versions such
-    | as the size rules. Feel free to tweak each of these messages here.
-    |
-    */
-    'actions' => [
-        'registration' => 'Registration',
-        'email' => 'Email',
-        'phone' => 'Phone',
-        'password' => 'Password',
-        'type' => 'Type',
-        'method' => 'Method',
+        'otp_expired' => 'otp expired',
+        'invalid_otp' => 'invalid otp',
+        'password_reset_success' => 'your password reset successfully',
+        'already_have_team' => 'You already have a team',
+        'register_created' => 'your account has been created ,  we sent otp to verify your email ',
     ],
-    'successful' => ':attribute successfully',
+    'otp_verified' => 'Otp Verified',
+    'send_verify_otp' => ':data we sent otp to your email :email',
+    'account_already_activated' => 'Your Account already activated',
+    'register_created' => 'Yor account created successfully, we sent otp to your email :email',
+    'goal_conceded' => 'Goals Conceded',
+    'goals' => 'Goals',
+    'not_member' => 'you are not member in this league',
+    'left_league_success' => 'left from league successfully',
+    'member_off' => 'member left successfully',
+    'please_try_again' => 'something went wrong , please try again later',
+    'joined_success' => 'join to league successfully',
+    'already_joined' => 'your are already joined to league',
+    'league_not_found' => 'League not found',
+    'minutes_played' => 'Minutes Played',
+    'assists' => 'Assists',
+    'red_cards' => 'Red Cards',
+    'yellow_cards' => 'Yellow Cards',
+    'clean_sheets' => 'Clean Sheet',
+    'bonus' => 'Bonus',
 
+    'match' => [
+        'home' => 'home',
+        'away' => 'away',
+    ],
+    'active' => 'Active',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
 
 ];

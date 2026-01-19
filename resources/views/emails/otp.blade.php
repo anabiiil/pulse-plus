@@ -1,144 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verification Code</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 600px;
-            margin: 50px auto;
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .header h1 {
-            color: #333333;
-            margin: 0;
-        }
-        .content {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .otp-code {
-            font-size: 32px;
-            font-weight: bold;
-            color: #4CAF50;
-            background-color: #f0f0f0;
-            padding: 20px;
-            border-radius: 8px;
-            letter-spacing: 8px;
-            margin: 20px 0;
-        }
-        .footer {
-            text-align: center;
-            color: #888888;
-            font-size: 14px;
-            margin-top: 30px;
-        }
-        .warning {
-            background-color: #fff3cd;
-            border: 1px solid #ffc107;
-            color: #856404;
-            padding: 12px;
-            border-radius: 4px;
-            margin-top: 20px;
-            font-size: 14px;
-        }
-    </style>
+    <title>Verify your login</title>
+    <!--[if mso]><style type="text/css">body, table, td, a { font-family: Arial, Helvetica, sans-serif !important; }</style><![endif]-->
 </head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>{{ $appName }}</h1>
-        </div>
 
-        <div class="content">
-            <p>Your verification code is:</p>
-            <div class="otp-code">{{ $code }}</div>
-            <p>This code will expire in <strong>{{ $expiresIn }} minutes</strong>.</p>
-        </div>
-
-        <div class="warning">
-            ⚠️ Never share this code with anyone. {{ $appName }} will never ask for your verification code.
-        </div>
-
-        <div class="footer">
-            <p>If you didn't request this code, please ignore this email.</p>
-            <p>&copy; {{ date('Y') }} {{ $appName }}. All rights reserved.</p>
-        </div>
-    </div>
+<body style="font-family: Helvetica, Arial, sans-serif; margin: 0px; padding: 0px; background-color: #ffffff;">
+<table role="presentation"
+       style="width: 100%; border-collapse: collapse; border: 0px; border-spacing: 0px; font-family: Arial, Helvetica, sans-serif; background-color: rgb(18, 28, 36);">
+    <tbody>
+    <tr>
+        <td align="center" style="padding: 1rem 2rem; vertical-align: top; width: 100%;">
+            <table role="presentation" style="max-width: 600px; border-collapse: collapse; border: 0px; border-spacing: 0px; text-align: left;">
+                <tbody>
+                <tr>
+                    <td style="padding: 40px 0px 0px;">
+                        <div style="text-align: left;">
+                            <div style="padding-bottom: 20px;"><img src="https://www.haddaf.net/assets/images/brand-logos/desktop-logo.png" alt="Company"
+                                                                    style="width: 56px;"></div>
+                        </div>
+                        <div style="padding: 20px; background-color: rgb(255, 255, 255);">
+                            <div style="color: rgb(0, 0, 0); text-align: left;">
+                                <h1 style="margin: 1rem 0">OTP Code</h1>
+                                <p style="padding-bottom: 16px">Please use the verification code below to sign in.</p>
+                                <p style="padding-bottom: 16px"><strong style="font-size: 130%">{{ $otp }}</strong></p>
+                                <p style="padding-bottom: 16px">If you didn’t request this, you can ignore this email.</p>
+                                <p style="padding-bottom: 16px">Thanks,<br>Haddaf Team</p>
+                            </div>
+                        </div>
+                        <div style="padding-top: 20px; color: rgb(117, 21, 21); text-align: center;"></div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
 </body>
+
 </html>
-<?php
-
-namespace App\Mail;
-
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
-use Illuminate\Queue\SerializesModels;
-
-class OtpMail extends Mailable
-{
-    use Queueable, SerializesModels;
-
-    /**
-     * Create a new message instance.
-     */
-    public function __construct(
-        public string $code,
-        public array $data = []
-    ) {
-        //
-    }
-
-    /**
-     * Get the message envelope.
-     */
-    public function envelope(): Envelope
-    {
-        return new Envelope(
-            subject: $this->data['subject'] ?? 'Your Verification Code',
-        );
-    }
-
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
-    {
-        return new Content(
-            view: 'emails.otp',
-            with: [
-                'code' => $this->code,
-                'expiresIn' => $this->data['expires_in'] ?? 5,
-                'appName' => config('app.name'),
-            ],
-        );
-    }
-
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        return [];
-    }
-}
-

@@ -1,11 +1,130 @@
-@import 'tailwindcss';
+/* assets/css/style.css */
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
-
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+.v-data-table {
+    border: 1px solid #ddd; /* Border around the entire table */
+    border-radius: 5px; /* Rounded corners */
 }
+
+.v-data-table-header {
+    /*background-color: #f8f8f8; !* Light gray header *!*/
+    border-bottom: 2px solid #ddd;
+}
+
+.v-data-table__td {
+    border: 1px solid #ddd;
+}
+
+.v-data-table-header th {
+    padding: 12px; /* Adjust padding for the header */
+    text-align: left;
+    font-weight: bold;
+    border-right: 1px solid #ddd; /* Border between header cells */
+}
+
+.v-data-table-header th:last-child {
+    border-right: none; /* Remove border for the last header cell */
+}
+
+.v-data-table tbody tr {
+    transition: background-color 0.3s ease;
+    height: 50px; /* Set a fixed row height */
+    border-bottom: 1px solid #ddd; /* Border between rows */
+}
+
+.v-data-table tbody tr:hover {
+    background-color: #f1f1f1; /* Change background color on hover */
+}
+
+.v-data-table td {
+    padding: 15px; /* Adjust padding for table cells */
+    border-right: 1px solid #ddd; /* Border between table cells */
+}
+
+.v-data-table td:last-child {
+    border-right: none; /* Remove border for the last column */
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-icon {
+    cursor: pointer;
+    margin-right: 10px;
+    transition: color 0.3s ease;
+}
+
+.action-icon.edit-icon {
+    color: #28a745; /* Green color for edit action */
+}
+
+.action-icon.delete-icon {
+    color: #dc3545; /* Red color for delete action */
+}
+
+.action-icon:hover {
+    color: #0056b3; /* Change icon color on hover */
+}
+
+.v-data-footer {
+    /*background-color: #f8f8f8;*/
+    border-top: 1px solid #ddd;
+    padding: 10px; /* Padding for pagination section */
+}
+
+
+/*.v-select {*/
+/*    min-width: 300px;*/
+/*}*/
+
+/*.v-select .v-input__control {*/
+/*    background-color: #fff;*/
+/*    border: 1px solid #ccc;*/
+/*    border-radius: 4px;*/
+/*}*/
+
+/*.v-select .v-input__slot {*/
+/*    padding: 5px;*/
+/*}*/
+
+/*.v-chip {*/
+/*    background-color: #f1f1f1;*/
+/*    color: #333;*/
+/*    margin: 2px;*/
+/*}*/
+/*.v-table > .v-table__wrapper > table > tbody > tr > td, .v-table > .v-table__wrapper > table > thead > tr > td, .v-table > .v-table__wrapper > table > tfoot > tr > td {*/
+/*    height: 40px !important;*/
+/*}*/
+
+/*.v-table  .v-table__wrapper  td {*/
+/*    height: 40px !important;*/
+/*}*/
+
+.v-table > .v-table__wrapper > table > tbody > tr > td, .v-table > .v-table__wrapper > table > thead > tr > td, .v-table > .v-table__wrapper > table > tfoot > tr > td {
+    height: 45px !important;
+}
+
+.v-table .v-data-table__tr {
+    height: 45px !important;
+}
+
+
+tr td:last-child {
+    text-align: center;
+    width: 50px !important;
+}
+
+.slide * {
+    transition: .4s all ease-in-out;
+}
+.v-table > .v-table__wrapper > table > tbody > tr > th, .v-table > .v-table__wrapper > table > thead > tr > th, .v-table > .v-table__wrapper > table > tfoot > tr > th{
+    text-transform: capitalize !important;
+}
+.v-data-table__td{
+}
+.form-control{
+    line-height: 2 !important;
+}
+

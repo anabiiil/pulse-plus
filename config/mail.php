@@ -30,8 +30,7 @@ return [
     | your mailers below. You may also add additional mailers if needed.
     |
     | Supported: "smtp", "sendmail", "mailgun", "ses", "ses-v2",
-    |            "postmark", "resend", "log", "array",
-    |            "failover", "roundrobin"
+    |            "postmark", "log", "array", "failover", "roundrobin"
     |
     */
 
@@ -39,16 +38,21 @@ return [
 
         'smtp' => [
             'transport' => 'smtp',
-            'scheme' => env('MAIL_SCHEME'),
             'url' => env('MAIL_URL'),
             'host' => env('MAIL_HOST', '127.0.0.1'),
             'port' => env('MAIL_PORT', 2525),
+            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
             'username' => env('MAIL_USERNAME'),
             'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
-            'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url((string) env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
+            'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],
-
+        'mailgun' => [
+            'transport' => 'mailgun',
+            'domain' => env('MAILGUN_DOMAIN'),
+            'secret' => env('MAILGUN_SECRET'),
+            'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
+        ],
         'ses' => [
             'transport' => 'ses',
         ],
@@ -59,10 +63,6 @@ return [
             // 'client' => [
             //     'timeout' => 5,
             // ],
-        ],
-
-        'resend' => [
-            'transport' => 'resend',
         ],
 
         'sendmail' => [
@@ -85,7 +85,6 @@ return [
                 'smtp',
                 'log',
             ],
-            'retry_after' => 60,
         ],
 
         'roundrobin' => [
@@ -94,7 +93,6 @@ return [
                 'ses',
                 'postmark',
             ],
-            'retry_after' => 60,
         ],
 
     ],

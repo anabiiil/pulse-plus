@@ -1,15 +1,20 @@
 <?php
 
+use App\Http\Controllers\Dash\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ImageUploadController;
-use App\Http\Controllers\FileUploadController;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', static function () {
+    if (auth('admin')->check()) {
+        return redirect('/admin');
+    }
+    return view('pages.admin.auth.login');
 });
 
-// Image Upload Test Routes
-// File Upload Test Routes
-Route::get('/file-upload', [FileUploadController::class, 'showForm'])->name('file.form');
-Route::post('/file-upload', [FileUploadController::class, 'upload'])->name('file.upload');
+Route::get('dash-login', [LoginController::class, 'login']);
 
+Route::group(
+    ['prefix' => 'dash', 'middleware' => 'checkAdmin'], function () {
+    Route::get('/{any?}', static function () {
+        return view('dash.pages.index');
+    })->where('any', '.*');
+});

@@ -1,8 +1,5 @@
 <?php
 
-use App\Repositories\AdminRepository;
-use App\Repositories\UserRepository;
-
 return [
 
     /*
@@ -42,36 +39,24 @@ return [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
-            'repository' => UserRepository::class,
-        ],
-
-        'user-api' => [
-            'driver' => 'sanctum',
-            'provider' => 'users',
-            'repository' => UserRepository::class,
         ],
 
         'admin' => [
             'driver' => 'session',
             'provider' => 'admins',
-            'repository' => AdminRepository::class,
         ],
-        'admin-api' => [
+        'user-api' => [
             'driver' => 'sanctum',
-            'provider' => 'admins',
-            'repository' => AdminRepository::class,
-        ],
-
-        'vendor' => [
-            'driver' => 'session',
-            'provider' => 'vendors',
-        ],
-        'vendor-api' => [
-            'driver' => 'sanctum',
-            'provider' => 'vendors',
+            'provider' => 'users',
         ],
     ],
-
+    'apple' => [
+        'client_id' => env('APPLE_CLIENT_ID'),
+        'client_secret' => env('APPLE_CLIENT_SECRET'),
+        'redirect' => env('APPLE_REDIRECT_URI'),
+        'key_id' => env('APPLE_KEY_ID'),
+        'team_id' => env('APPLE_TEAM_ID'),
+    ],
     /*
     |--------------------------------------------------------------------------
     | User Providers
@@ -97,12 +82,7 @@ return [
 
         'admins' => [
             'driver' => 'eloquent',
-            'model' => \App\Models\Admin::class,
-        ],
-
-        'vendors' => [
-            'driver' => 'eloquent',
-            'model' => \App\Models\Vendor::class,
+            'model' => env('AUTH_MODEL', App\Models\Admin::class),
         ],
 
         // 'users' => [
@@ -137,6 +117,13 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
+
+        'admins' => [
+            'provider' => 'admins',
+            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+            'expire' => 60,
+            'throttle' => 60,
+        ],
     ],
 
     /*
@@ -144,7 +131,7 @@ return [
     | Password Confirmation Timeout
     |--------------------------------------------------------------------------
     |
-    | Here you may define the number of seconds before a password confirmation
+    | Here you may define the amount of seconds before a password confirmation
     | window expires and users are asked to re-enter their password via the
     | confirmation screen. By default, the timeout lasts for three hours.
     |

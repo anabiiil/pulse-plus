@@ -1,26 +1,55 @@
 <?php
-
 return [
-
-    /*
-    |--------------------------------------------------------------------------
-    | Validation Language Lines
-    |--------------------------------------------------------------------------
-    |
-    | The following language lines contain the default error messages used by
-    | the validator class. Some of these rules have multiple versions such
-    | as the size rules. Feel free to tweak each of these messages here.
-    |
-    */
-    'actions' => [
-        'name' => 'Name',
-        'email' => 'Email',
-        'phone' => 'Phone',
-        'password' => 'Password',
-        'type' => 'Type',
-        'method' => 'Method',
+    'alerts' => [
+        'created' => ':name  Created Successfully',
+        'updated' => ':name Updated Successfully',
+        'deleted' => ':name Deleted Successfully',
+        'send_otp' => 'we sent otp to your email :email, please check it',
+        'account_activated' => 'Your Account is activated Successfully',
+        'has_social_error' => 'Your Account has social login, please login with social',
+        'validation_error' => 'validation errors',
+        'failure' => ':name Failure',
+        'success' => ':name Successfully',
+        'not_found' => ':name Not Found',
+        'credential_err' => 'Your Credential is invalid',
+        'email_not_exists' => 'البريد الالكترونى غير مسجل لدينا',
+        'otp_expired' => 'otp expired',
+        'invalid_otp' => 'invalid otp',
+        'password_reset_success' => 'your password reset successfully',
+        'already_have_team' => 'You already have a team',
+        'register_created' => 'your account has been created ,  we sent otp to verify your email :email',
     ],
-    'successful' => ':attribute successfully',
+    'otp_verified' => 'Otp Verified',
+    'send_verify_otp' => ':data we sent otp to your email :email',
+    'account_already_activated' => 'Your Account already activated',
+    'register_created' => 'Yor account created successfully, we sent otp to your email :email',
+    'goal_conceded' => 'اهداف مستقبلة',
+    'goals' => 'Goals',
+    'league_not_found' => 'لا يوجد دوري',
+    'not_member' => 'فريقك ليس في الدوري',
+    'left_league_success' => 'تم الخروج من الدوري بنجاح',
+    'member_off' => 'تم حذف العضو من الدوري بنجاح',
+    'please_try_again' => 'حدث خطأ , برجاء المحاولة لاحقًا',
+    'already_joined' => 'انت عضو في الدوري بالفعل',
+    'joined_success' => 'تم الانضمام للدوري بنجاح',
+    'minutes_played' => 'دقائق لعب',
+    'assists' => 'تمريرات حاسمة',
+    'red_cards' => 'بطاقات حمراء',
+    'yellow_cards' => 'بطاقات صفراء',
+    'clean_sheets' => 'شباك نظيفة',
+    'bonus' => 'نقاط اضافية',
 
+    'match' => [
+        'home' => 'home',
+        'away' => 'away',
+    ],
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
 
 ];

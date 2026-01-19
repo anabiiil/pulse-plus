@@ -2,41 +2,34 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Traits\Auth\HasCheckPassword;
-use Database\Factories\AdminFactory;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
+use App\Support\Enums\File\FileTypeEnum;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 class Admin extends Authenticatable
 {
-    /** @use HasFactory<AdminFactory> */
-    use HasFactory, Notifiable,HasApiTokens,HasCheckPassword;
-
+    use HasFactory, Notifiable;
+    const IMAGE_PATH = 'images/admins';
     /**
      * The attributes that are mass assignable.
      *
-     * @var list<string>
+     * @var array<int, string>
      */
     protected $fillable = [
         'name',
         'email',
         'phone',
         'password',
-        'social_provider',
-        'social_provider_id',
-        'social_avatar',
-        'email_verified_at',
-        'phone_verified_at',
     ];
 
     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var list<string>
+     * @var array<int, string>
      */
     protected $hidden = [
         'password',
@@ -52,16 +45,24 @@ class Admin extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'phone_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
     }
 
-    /**
-     * Get all OTPs for the admin.
-     */
-    public function otps(): MorphMany
+    public function files(): \Illuminate\Database\Eloquent\Relations\MorphMany
     {
-        return $this->morphMany(Otp::class, 'otpable');
+        return $this->morphMany(File::class, 'file');
     }
+
+    public function getFileUrlAttribute(): string
+    {
+        $image= $this?->files()->where('type', FileTypeEnum::BASIC->value)->first();
+
+
+        if($image) return $this->storage == 's3' ?
+            Storage::disk($this->storage)->temporaryUrl($image?->path, now()->addDay())
+            : asset(Storage::disk($this->storage)->url($image?->path));
+        return 'https://t3.ftcdn.net/jpg/04/60/01/36/360_F_460013622_6xF8uN6ubMvLx0tAJECBHfKPoNOR5cRa.jpg';
+    }
+
 }

@@ -30,36 +30,32 @@ const routes = [
         ],
     },
 
-    // Country routes with nested CRUD operations
+
+    // Nationality routes with nested CRUD operations
     {
-        path: '/dash/country',
+        path: '/dash/nationality',
         children: [
             {
                 path: '',
-                name: 'country.list',
-                component: () => import('../components/dashboard/country/List.vue'),
+                name: 'nationality.list',
+                component: () => import('../components/dashboard/nationality/List.vue'),
             },
             {
                 path: 'create',
-                name: 'country.create',
-                component: () => import('../components/dashboard/country/crud/Create.vue'),
+                name: 'nationality.create',
+                component: () => import('../components/dashboard/nationality/crud/Create.vue'),
             },
             {
                 path: ':id/update',
-                name: 'country.update',
-                component: () => import('../components/dashboard/country/crud/Update.vue'),
+                name: 'nationality.update',
+                component: () => import('../components/dashboard/nationality/crud/Update.vue'),
                 props: true,
             },
             {
                 path: ':id/delete',
-                name: 'country.delete',
-                component: () => import('../components/dashboard/country/crud/Delete.vue'),
+                name: 'nationality.delete',
+                component: () => import('../components/dashboard/nationality/crud/Delete.vue'),
                 props: true,
-            },
-            {
-                path: 'import',
-                name: 'country.import',
-                component: () => import('../components/dashboard/country/crud/Import.vue'),
             },
         ],
     },

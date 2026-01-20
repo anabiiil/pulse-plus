@@ -17,10 +17,10 @@ class Country extends Model
     use HasStatus;
     use HasTranslations;
 
-    public $timestamps = false;
-    public array $translatable = ['name'];
+    public $timestamps = true;
+    public array $translatable = ['name', 'region', 'subregion'];
 
-    protected $fillable = ['name', 'status'];
+    protected $fillable = ['name', 'region', 'subregion', 'iso3', 'phone_code', 'status'];
 
     protected $casts = ['status' => StatusEnum::class];
 

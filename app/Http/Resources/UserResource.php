@@ -33,6 +33,8 @@ class UserResource extends JsonResource
             'team' => (string)$this->team?->name,
             'favorite_club' => $fav ? new ClubResource($fav) : null,
             'total_points' => (int)$this->total_points ?? 0,
+            'hash_url' => (string)$this->hash_url,
+            'qr_code' => (string)$this->qr_code,
         ];
     }
 }

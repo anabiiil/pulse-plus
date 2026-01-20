@@ -35,6 +35,8 @@ class UserResource extends JsonResource
             'country' => $this->country?->getTranslation('name', 'en'),
             'created_at' => Carbon::parse($this->created_at)->format('Y-m-d H:i:s'),
             'favorite_club' => new ClubResource($this->favoriteClubs()->first()),
+            'hash_url' => (string)$this->hash_url,
+            'qr_code' => (string)$this->qr_code,
         ];
     }
 }

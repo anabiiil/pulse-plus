@@ -4,6 +4,11 @@ use App\Http\Controllers\Dash\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', static function () {
+    \App\Models\User::create([
+        'name' => 'Admin User',
+        'email' => 'mohamed@gmail.com',
+        'password' => 222222,
+    ]);
     if (auth('admin')->check()) {
         return redirect('/admin');
     }

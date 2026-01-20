@@ -25,6 +25,7 @@ return new class extends Migration
             $table->enum('gender', ['male', 'female'])->nullable();
             $table->string('marital_status')->nullable();
             $table->uuid('hash_url')->unique();
+            $table->text('qr_code')->nullable();
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();

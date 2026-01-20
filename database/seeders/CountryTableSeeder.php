@@ -18,17 +18,17 @@ class CountryTableSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         Country::create([
-            'name' =>
-                [
-                    'en' => 'Saudi Arabia'
-                ],
+            'name' => [
+                'en' => 'Saudi',
+                'ar' => 'سعودي',
+            ],
         ]);
 
         Country::create([
-            'name' =>
-                [
-                    'en' => 'Egypt'
-                ],
+            'name' => [
+                'en' => 'Egyptian',
+                'ar' => 'مصري',
+            ],
         ]);
     }
 }

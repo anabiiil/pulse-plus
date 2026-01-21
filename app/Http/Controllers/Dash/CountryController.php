@@ -4,74 +4,61 @@ namespace App\Http\Controllers\Dash;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Country\CreateCountryRequest;
-use App\Http\Requests\Admin\Country\ImportRequest;
 use App\Http\Resources\Dashboard\CountryResource;
-use App\Imports\CountryImport;
 use App\Models\Country;
-use App\Models\Season;
 use App\Support\Traits\Api\ApiResponseTrait;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Facades\Excel;
 
 class CountryController extends Controller
 {
     use ApiResponseTrait;
 
-    public mixed $perPage, $sortBy, $orderBy, $search, $status;
+    public mixed $perPage;
 
-    public function show($id)
+    public mixed $sortBy;
+
+    public mixed $orderBy;
+
+    public mixed $search;
+
+    public mixed $status;
+
+    public function show(Country $country): \Illuminate\Http\JsonResponse
     {
-        $country = Country::find($id);
-        if (!$country) {
-            return $this->responseError(msg: 'country not found');
-        }
         return $this->responseData(new CountryResource($country));
     }
 
-    public function destroy($id)
+    public function destroy(Country $country): \Illuminate\Http\JsonResponse
     {
-        $country = Country::find($id);
-        if (!$country) {
-            return $this->responseError(msg: 'country not found');
-        }
         $country->delete();
+
         return $this->responseData([], msg: 'country deleted successfully');
     }
 
-
-    public function list(Request $request)
+    public function list(Request $request): \Illuminate\Http\JsonResponse
     {
         $this->handleData($request);
         $query = Country::query();
         if ($this->search) {
-            $query->where('name', 'like', "%$this->search%")
-                ->orWhere('iso3', 'like', "%$this->search%")
-                ->orWhere('region', 'like', "%$this->search%")
-                ->orWhere('subregion', 'like', "%$this->search%")
-                ->orWhere('phone_code', 'like', "%$this->search%");
+            $query->where('name', 'like', "%$this->search%");
         }
         $query->orderBy(DB::raw($this->sortBy), $this->orderBy);
 
         if ($this->perPage == -1) {
             $this->perPage = Country::count();
         }
+
         return $this->responsePaginated([CountryResource::collection($query->paginate($this->perPage))]);
     }
 
     public function handleData($request)
     {
         $sortFieldMapping = [
-            'name' => "name",
-            'region' => "region",
+            'name' => 'name',
             'id' => 'id',
             'status' => 'status',
-            'subregion' => 'subregion',
-            'created_at' => 'created_at',
-            'iso3' => 'iso3',
-            'phone_code' => 'phone_code',
+
         ];
         $this->sortBy = $sortFieldMapping[$request->get('sortBy', 'id')];
 
@@ -80,19 +67,18 @@ class CountryController extends Controller
         $this->search = $request->get('search', null);
     }
 
-    public function create(CreateCountryRequest $request)
+    public function create(CreateCountryRequest $request): \Illuminate\Http\JsonResponse
     {
         $country = Country::create($request->validated());
+
         return $this->responseData([new CountryResource($country)], 201);
     }
 
-    public function update(CreateCountryRequest $request, $id)
+    public function update(CreateCountryRequest $request,Country $country)
     {
         $data = $request->validated();
-        $country = Country::find($id);
-
         $country->update($data);
+
         return $this->responseData([new CountryResource($country)], 200);
     }
-
 }

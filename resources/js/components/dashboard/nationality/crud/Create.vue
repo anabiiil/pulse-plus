@@ -16,36 +16,61 @@
             <div class="card-body">
                 <div class="table-responsive">
                     <div id="hidden-columns_wrapper" class="dataTables_wrapper dt-bootstrap5">
-                        <form class="container" @submit.prevent="store">
+                        <form class="container" @submit.prevent="handleSubmit">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group mb-3">
                                         <label class="form-label">Name En</label>
-                                        <input type="text" class="form-control" v-model="formData.name.en">
-                                        <span class="text-danger" v-if="errors?.name?.en">{{ errors?.name?.en }}</span>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            :class="{ 'is-invalid': errors['name.en'] }"
+                                            v-model="formData.name.en"
+                                        >
+                                        <span class="text-danger d-block mt-2" v-if="errors['name.en']">
+                                            {{ Array.isArray(errors['name.en']) ? errors['name.en'][0] : errors['name.en'] }}
+                                        </span>
                                     </div>
                                 </div>
 
                                 <div class="col-lg-6">
                                     <div class="form-group mb-3">
                                         <label class="form-label">Name Ar</label>
-                                        <input type="text" class="form-control" v-model="formData.name.ar">
-                                        <span class="text-danger" v-if="errors?.name?.ar">{{ errors?.name?.ar }}</span>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            :class="{ 'is-invalid': errors['name.ar'] }"
+                                            v-model="formData.name.ar"
+                                        >
+                                        <span class="text-danger d-block mt-2" v-if="errors['name.ar']">
+                                            {{ Array.isArray(errors['name.ar']) ? errors['name.ar'][0] : errors['name.ar'] }}
+                                        </span>
                                     </div>
                                 </div>
 
                                 <div class="col-lg-6">
                                     <div class="form-group mb-3">
                                         <label class="form-label">Status</label>
-                                        <v-switch v-model="formData.status" density="compact"
-                                                  :color="formData.status ? 'success' : ''" label=""></v-switch>
-
-                                        <span class="text-danger" v-if="errors?.status">{{ errors?.status }}</span>
+                                        <v-switch
+                                            v-model="formData.status"
+                                            density="compact"
+                                            :color="formData.status ? 'success' : ''"
+                                            label=""
+                                        ></v-switch>
+                                        <span class="text-danger d-block mt-2" v-if="errors['status']">
+                                            {{ Array.isArray(errors['status']) ? errors['status'][0] : errors['status'] }}
+                                        </span>
                                     </div>
                                 </div>
 
                                 <div class="col-md-12 text-center my-4">
-                                    <button type="submit" class="btn btn-success">Create</button>
+                                    <button
+                                        type="submit"
+                                        class="btn btn-success"
+                                        :disabled="loading"
+                                    >
+                                        {{ loading ? 'Creating...' : 'Create' }}
+                                    </button>
                                 </div>
                             </div>
                         </form>
@@ -57,78 +82,67 @@
 
 
 </template>
-<script>
+<script setup lang="ts">
 
+import { ref, reactive } from 'vue';
+import { useRouter } from 'vue-router';
+import { useHead } from '@vueuse/head';
+import { useNationalities } from '../../../../composables/useNationalities';
 
-import {useHead} from "@vueuse/head";
+useHead({
+    title: 'Create Nationality',
+});
 
+const router = useRouter();
+const { create } = useNationalities();
 
+// Reactive state
+const loading = ref(false);
+const errors = reactive({});
 
-export default {
-
-    setup() {
-        useHead({
-            title: 'Create Nationality',
-        });
+const formData = reactive({
+    name: {
+        en: '',
+        ar: '',
     },
-    props: {
-        id: {
-            required: true,
-        },
-    },
-    data: () => ({
-        errors: {},
-        selectedStatus: null,
-        formData: {
-            name: {
-                en: null,
-                ar: null
-            },
-            status: null,
-        },
-        item: null,
-        errorList: '',
-        loading: false,
-    }),
-    methods: {
-        async store() {
-            this.resetErrors()
-            if (this.checkValidation()) {
-                axios.post(`/countries/create`, this.formData).then((response) => {
-                    showSuccessToast('Nationality created successfully');
-                    this.$router.push('/dash/nationality');
-                }).catch((error) => {
-                    this.errors = error?.response?.data?.errors;
-                    if (error?.response?.data?.message) {
-                        for (let key in error?.response?.data?.errors) {
-                            this.errorList += error?.response?.data?.errors[key] + '<br>';
-                        }
-                        showErrorToast(error?.response?.data?.message)
-                    } else {
-                        showErrorToast('Accurate error,please try again later')
-                    }
-                }).finally(() => {
-                    this.loading = false;
-                });
-            }
+    status: true,
+});
 
-        },
+/**
+ * Reset form errors
+ */
+const resetErrors = () => {
+    Object.keys(errors).forEach(key => {
+        delete errors[key];
+    });
+};
 
+/**
+ * Handle form submission
+ */
+const handleSubmit = async () => {
+    resetErrors();
+    loading.value = true;
 
-
-        checkValidation() {
-            return true;
-        },
-        resetErrors() {
-            for (let key in this.errors) {
-                if (this.errors.hasOwnProperty(key)) {
-                    this.errors[key] = null;
-                }
-            }
+    try {
+        await create(formData);
+        // Success - redirect to list
+        await router.push('/dash/nationality');
+    } catch (error) {
+        // Handle 422 Unprocessable Entity (validation errors)
+        if (error?.response?.status === 422) {
+            const apiErrors = error?.response?.data?.errors || {};
+            Object.assign(errors, apiErrors);
+        } else {
+            // Handle other errors
+            const apiErrors = error?.response?.data?.errors || {};
+            Object.assign(errors, apiErrors);
+            const errorMsg = error?.response?.data?.message || 'Failed to create nationality';
+            console.error(errorMsg);
         }
-    },
-    mounted() {
+    } finally {
+        loading.value = false;
     }
+};
 
-}
 </script>

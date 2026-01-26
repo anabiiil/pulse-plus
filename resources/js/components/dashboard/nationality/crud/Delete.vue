@@ -15,7 +15,7 @@
             <div class="card-body">
                 <div class="table-responsive">
                     <div id="hidden-columns_wrapper" class="dataTables_wrapper dt-bootstrap5">
-                        <form class="container" @submit.prevent="destroy">
+                        <form class="container" @submit.prevent="handleDelete" v-if="!loading">
                             <div class="row">
                                 <div class="col-12 my-4">
                                     <div class="alert alert-danger d-flex align-items-center" role="alert">
@@ -37,15 +37,25 @@
                                             </g>
                                         </svg>
                                         <div>
-                                            Are you sure delete ({{ item?.name.en }})?
+                                            Are you sure you want to delete <strong>{{ nationality?.name?.en }}</strong>? This action cannot be undone.
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-12 text-center my-4">
-                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                    <button
+                                        type="submit"
+                                        class="btn btn-danger"
+                                        :disabled="deleting"
+                                    >
+                                        {{ deleting ? 'Deleting...' : 'Delete' }}
+                                    </button>
                                 </div>
                             </div>
                         </form>
+
+                        <div v-else class="text-center py-4">
+                            <v-progress-circular indeterminate color="primary"></v-progress-circular>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -54,86 +64,64 @@
 
 
 </template>
-<script>
+<script setup lang="ts">
 
+import { ref, onMounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { useHead } from '@vueuse/head';
+import { useNationalities } from '../../../../composables/useNationalities';
 
-import {useHead} from "@vueuse/head";
+useHead({
+    title: 'Delete Nationality',
+});
 
-export default {
-    setup() {
-        useHead({
-            title: 'Delete Nationality',
-        });
-    },
-    props: {
-        id: {
-            required: true,
-        },
-    },
+const router = useRouter();
+const route = useRoute();
+const { delete: deleteNationality, getNationality: fetchNationality, nationality } = useNationalities();
 
-    data: () => ({
-        errors: {},
-        item: null,
-        loading: false,
-    }),
-    mounted() {
-        this.getItem();
-    },
-    methods: {
-        async destroy() {
-            this.resetErrors()
-            if (this.checkValidation()) {
-                axios.delete(`countries/delete/${this.id}`, this.formData).then((response) => {
-                    showSuccessToast('Nationality deleted successfully');
-                    this.$router.push('/dash/nationality');
-                }).catch((error) => {
-                    if (error?.response?.data?.message) {
-                        showErrorToast(error.response.data.message)
-                    } else {
-                        showErrorToast('Accurate error,please try again later')
-                    }
-                });
+// Reactive state
+const loading = ref(true);
+const deleting = ref(false);
+const nationalityId = ref(route.params.id);
 
+/**
+ * Load nationality data on mount
+ */
+const loadNationality = async () => {
+    try {
+        loading.value = true;
+        await fetchNationality(nationalityId.value);
 
-            }else{
-                showErrorToast('Nationality not found')
-            }
+        if (!nationality) {
+            console.error('Nationality not found');
+            await router.push('/dash/nationality');
+        }
+    } catch (error: any) {
+        console.error('Failed to load nationality');
+        await router.push('/dash/nationality');
+    } finally {
+        loading.value = false;
+    }
+};
 
-        },
+/**
+ * Handle deletion
+ */
+const handleDelete = async () => {
+    deleting.value = true;
 
-        async getItem() {
-            axios.get(`/countries/list/${this.id}`, {}).then((response) => {
-                this.item = response.data.data;
+    try {
+        await deleteNationality(nationalityId.value);
+        await router.push('/dash/nationality');
+    } catch (error: any) {
+        console.error(error?.response?.data?.message || 'Failed to delete nationality');
+    } finally {
+        deleting.value = false;
+    }
+};
 
-            }).catch((error) => {
+onMounted(() => {
+    loadNationality();
+});
 
-                if (error?.response?.data?.message) {
-                    showErrorToast(error.response.data.message)
-                } else {
-                    showErrorToast('Accurate error,please try again later')
-                }
-            }).finally(() => {
-                this.loading = false;
-            });
-
-        },
-        checkValidation() {
-            return this.item;
-
-        },
-
-        resetErrors() {
-            for (let key in this.errors) {
-                if (this.errors.hasOwnProperty(key)) {
-                    this.errors[key] = null;
-                }
-            }
-        },
-        handleEvent(payload) {
-            this.admin = payload.item;
-        },
-
-    },
-
-}
 </script>

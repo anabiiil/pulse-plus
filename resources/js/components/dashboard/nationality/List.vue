@@ -20,7 +20,7 @@
                             <div class="col-md-4 d-flex">
                                 <div class="search-input mb-4">
                                     <label for="search" class="form-label">Search</label>
-                                    <input type="search" v-model="search" class="form-control">
+                                    <input type="search" v-model="searchQuery" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -32,13 +32,13 @@
                                 <v-data-table-server
                                     v-model:items-per-page="itemsPerPage"
                                     :headers="headers"
-                                    :items="serverItems"
-                                    :items-length="totalItems"
+                                    :items="nationalities"
+                                    :items-length="totalCount"
                                     :loading="loading"
-                                    :search="search"
+                                    :search="searchQuery"
                                     item-value="name"
                                     :items-per-page-options="[50,100, 200, 300, 500, -1]"
-                                    @update:options="loadItems"
+                                    @update:options="handleTableOptionsChange"
                                 >
                                     <template #item.created_at="{ item }">
                                         {{ $formatDate(item.created_at) }}
@@ -94,75 +94,44 @@
     </div>
 
 </template>
-<script>
+<script setup>
 
-import eventBus from "../../../main/event-bus.ts";
-import {provide, ref} from "vue";
-import {useHead} from "@vueuse/head";
-import {StatusEnum} from "../../../enums/StatusEnum";
+import { useHead } from "@vueuse/head";
+import { StatusEnum } from "../../../enums/StatusEnum";
+import { useNationalities } from "../../../composables/useNationalities";
+import { onMounted } from "vue";
 
-export default {
-    computed: {
-        StatusEnum() {
-            return StatusEnum
-        }
+useHead({
+    title: 'Nationalities',
+});
+
+// Use nationalities composable
+const {
+    itemsPerPage,
+    searchQuery,
+    nationalities,
+    loading,
+    totalCount,
+    fetchNationalities,
+    handleTableOptionsChange,
+} = useNationalities();
+
+// Table headers configuration
+const headers = [
+    {
+        align: 'start',
+        key: 'name',
+        sortable: true,
+        title: 'Name',
     },
-    setup() {
-        useHead({
-            title: 'Nationalities',
-        });
-    },
-    data: () => ({
-        itemsPerPage: 50,
-        headers: [
-            {
-                align: 'start',
-                key: 'name',
-                sortable: true,
-                title: 'Name',
-            },
-            {key: 'created_at', title: 'Created At', sortable: true},
-            {key: 'status', title: 'Status', sortable: true},
-            {key: 'actions', title: 'Actions', sortable: false},
-        ],
-        serverItems: [],
-        loading: true,
-        totalItems: 0,
-        options: {},
-        name: '',
-        search: '',
-        page: 1,
+    { key: 'created_at', title: 'Created At', sortable: true },
+    { key: 'status', title: 'Status', sortable: true },
+    { key: 'actions', title: 'Actions', sortable: false },
+];
 
-    }),
+// Lifecycle hook - fetch data on mount
+onMounted(() => {
+    fetchNationalities();
+});
 
-    methods: {
-        loadItems({page, itemsPerPage, sortBy, search}) {
-            this.page = page;
-            this.options.sortBy = sortBy[0]?.key;
-            this.options.sortDesc = sortBy[0]?.order;
-            this.fetchData();
-        },
-        fetchData() {
-            this.loading = true;
-            axios.get('countries/list', {
-                params: {
-                    page: this.page,
-                    per_page: this.itemsPerPage,
-                    sortBy: this.options.sortBy,
-                    sortDesc: this.options.sortDesc,
-                    search: this.search,
-                },
-            }).then((response) => {
-                this.serverItems = response.data.data
-                this.totalItems = response.data.pagination.meta.page.total
-                this.loading = false
-            }).catch((error) => {
-                console.error(error);
-                this.loading = false;
-            });
-        },
-
-    },
-
-}
 </script>

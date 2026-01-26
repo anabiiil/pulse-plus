@@ -49,13 +49,11 @@ const routes = [
                 path: ':id/update',
                 name: 'nationality.update',
                 component: () => import('../components/dashboard/nationality/crud/Update.vue'),
-                props: true,
             },
             {
                 path: ':id/delete',
                 name: 'nationality.delete',
                 component: () => import('../components/dashboard/nationality/crud/Delete.vue'),
-                props: true,
             },
         ],
     },

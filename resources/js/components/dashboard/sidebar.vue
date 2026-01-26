@@ -54,8 +54,8 @@
                     </router-link>
                 </li>
 
-                <li class="slide has-sub mb-1" :class="activeItem == 'users' ? 'active  open' : ''">
-                    <a href="#" class="side-menu__item" @click.prevent="selectActiveItem('users')">
+                <li class="slide">
+                    <router-link to="/users" class="side-menu__item">
                         <span class="me-2">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                  fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -65,22 +65,7 @@
                                 d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                         </span>
                         <span class="side-menu__label">Users</span>
-                        <i class="fe fe-chevron-right side-menu__angle"></i>
-                    </a>
-                    <ul class="slide-menu child1" :class="activeItem == 'users' ? 'active d-block' : ''">
-                        <li class="slide">
-                            <router-link to="/dash/users/new" class="side-menu__item">
-                                <span class="side-menu__label">New Users</span>
-                            </router-link>
-                        </li>
-
-                        <li class="slide">
-                            <router-link to="/dash/users/old" class="side-menu__item">
-                                <span class="side-menu__label">Old Users</span>
-                            </router-link>
-                        </li>
-
-                    </ul>
+                    </router-link>
                 </li>
 
 

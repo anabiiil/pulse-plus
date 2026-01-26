@@ -21,7 +21,9 @@ class File extends Model
         'url',
         'path',
         'order_column',
-        'size'
+        'size',
+        'file_id',
+        'file_type'
     ];
 
     public function file(): \Illuminate\Database\Eloquent\Relations\MorphTo

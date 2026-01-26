@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('country_id')->index()->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('marriage_status')->nullable()->after('marital_status');
             $table->string('status')->default(0)->comment('from User StatusEnum');
             $table->text('address')->nullable();
             $table->date('birthdate')->nullable();

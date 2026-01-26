@@ -8,77 +8,74 @@ use App\Http\Resources\Dashboard\CountryResource;
 use App\Models\Country;
 use App\Support\Traits\Api\ApiResponseTrait;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class CountryController extends Controller
 {
     use ApiResponseTrait;
 
-    public mixed $perPage;
+    private const array SORT_FIELD_MAPPING = [
+        'name' => 'name',
+        'id' => 'id',
+        'status' => 'status',
+    ];
 
-    public mixed $sortBy;
+    private const int DEFAULT_PER_PAGE = 50;
 
-    public mixed $orderBy;
+    /**
+     * Display a listing of countries with filtering and pagination.
+     */
+    public function index(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $perPage = $request->get('per_page', self::DEFAULT_PER_PAGE);
+        $sortBy = self::SORT_FIELD_MAPPING[$request->get('sortBy', 'id')] ?? 'id';
+        $sortDesc = $request->get('sortDesc', 'desc');
+        $search = $request->get('search');
 
-    public mixed $search;
+        $perPage = $perPage === -1 ? Country::count() : $perPage;
 
-    public mixed $status;
+        $countries = Country::query()
+            ->when($search, fn ($query) => $query->where('name', 'like', "%{$search}%"))
+            ->orderBy($sortBy, $sortDesc)
+            ->paginate($perPage);
 
+        return $this->responsePaginated([CountryResource::collection($countries)]);
+    }
+
+    /**
+     * Store a newly created country in storage.
+     */
+    public function store(CreateCountryRequest $request): \Illuminate\Http\JsonResponse
+    {
+        $country = Country::create($request->validated());
+
+        return $this->responseData(new CountryResource($country), 201);
+    }
+
+    /**
+     * Display the specified country.
+     */
     public function show(Country $country): \Illuminate\Http\JsonResponse
     {
         return $this->responseData(new CountryResource($country));
     }
 
+    /**
+     * Update the specified country in storage.
+     */
+    public function update(CreateCountryRequest $request, Country $country): \Illuminate\Http\JsonResponse
+    {
+        $country->update($request->validated());
+
+        return $this->responseData(new CountryResource($country));
+    }
+
+    /**
+     * Remove the specified country from storage.
+     */
     public function destroy(Country $country): \Illuminate\Http\JsonResponse
     {
         $country->delete();
 
         return $this->responseData([], msg: 'country deleted successfully');
-    }
-
-    public function list(Request $request): \Illuminate\Http\JsonResponse
-    {
-        $this->handleData($request);
-        $query = Country::query();
-        if ($this->search) {
-            $query->where('name', 'like', "%$this->search%");
-        }
-        $query->orderBy(DB::raw($this->sortBy), $this->orderBy);
-
-        if ($this->perPage == -1) {
-            $this->perPage = Country::count();
-        }
-
-        return $this->responsePaginated([CountryResource::collection($query->paginate($this->perPage))]);
-    }
-
-    public function handleData($request)
-    {
-        $sortFieldMapping = [
-            'name' => 'name',
-            'id' => 'id',
-            'status' => 'status',
-
-        ];
-        $this->sortBy = $sortFieldMapping[$request->get('sortBy', 'id')];
-
-        $this->perPage = $request->get('per_page', 50);
-        $this->orderBy = $request->get('sortDesc', 'desc');
-        $this->search = $request->get('search', null);
-    }
-
-    public function create(CreateCountryRequest $request): \Illuminate\Http\JsonResponse
-    {
-        $country = Country::create($request->validated());
-
-        return $this->responseData([new CountryResource($country)], 201);
-    }
-
-    public function update(CreateCountryRequest $request,Country $country)
-    {
-        $data = $request->validated();
-        $country->update($data);
-
-        return $this->responseData([new CountryResource($country)], 200);
     }
 }

@@ -6,6 +6,7 @@ namespace App\Models;
 use App\Support\Enums\Main\UserStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -78,6 +79,22 @@ class User extends Authenticatable
     public function country(): BelongsTo
     {
         return $this->belongsTo(Country::class);
+    }
+
+    /**
+     * Get the medical information for the user.
+     */
+    public function medicalInfo(): HasOne
+    {
+        return $this->hasOne(UserMedicalInfo::class);
+    }
+
+    /**
+     * Get the diseases associated with the user.
+     */
+    public function diseases(): BelongsToMany
+    {
+        return $this->belongsToMany(Disease::class, 'user_diseases');
     }
 
     /**

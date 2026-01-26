@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sliders', function (Blueprint $table) {
+        Schema::create('user_medical_info', function (Blueprint $table) {
             $table->id();
-            $table->mediumText('title')->nullable();
-            $table->text('desc')->nullable();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->text('notes')->nullable();
+            $table->string('blood_type')->nullable();
+            $table->string('emergency_number')->nullable();
             $table->timestamps();
         });
     }
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sliders');
+        Schema::dropIfExists('user_medical_info');
     }
 };

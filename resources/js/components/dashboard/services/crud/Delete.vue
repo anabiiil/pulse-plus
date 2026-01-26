@@ -1,6 +1,6 @@
 <template>
     <div class="text-start my-4">
-        <router-link to="/dash/nationality" class="btn btn-secondary me-2 btn-b">
+        <router-link to="/dash/services" class="btn btn-secondary me-2 btn-b">
             <i class="las la-arrow-alt-circle-left"></i>
             Back
         </router-link>
@@ -9,7 +9,7 @@
         <div class="card custom-card">
             <div class="card-header">
                 <div class="card-title text-capitalize">
-                    Delete Nationality
+                    Delete Service
                 </div>
             </div>
             <div class="card-body">
@@ -37,7 +37,7 @@
                                             </g>
                                         </svg>
                                         <div>
-                                            Are you sure you want to delete <strong>{{ nationality?.name?.en }}</strong>? This action cannot be undone.
+                                            Are you sure you want to delete <strong>{{ service?.name?.en }}</strong>? This action cannot be undone.
                                         </div>
                                     </div>
                                 </div>
@@ -61,45 +61,44 @@
             </div>
         </div>
     </div>
-
-
 </template>
+
 <script setup lang="ts">
 
 import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useHead } from '@vueuse/head';
-import { useNationalities } from '../../../../composables/useNationalities';
+import { useServices } from '../../../../composables/useServices';
 
 useHead({
-    title: 'Delete Nationality',
+    title: 'Delete Service',
 });
 
 const router = useRouter();
 const route = useRoute();
-const { delete: deleteNationality, getNationality: fetchNationality, nationality } = useNationalities();
+const { delete: deleteService, getService: fetchService, service } = useServices();
 
 // Reactive state
 const loading = ref(true);
 const deleting = ref(false);
-const nationalityId = ref(route.params.id);
+const serviceId = ref(route.params.id);
 
 /**
- * Load nationality data on mount
+ * Load service data on mount
  */
-const loadNationality = async () => {
+const loadService = async () => {
     try {
         loading.value = true;
-        await fetchNationality(nationalityId.value);
+        await fetchService(serviceId.value);
 
-        if (!nationality) {
-            showErrorToast('Nationality not found');
-            await router.push('/dash/nationality');
+        if (!service) {
+            showErrorToast('Service not found');
+            await router.push('/dash/services');
         }
     } catch (error: any) {
-        const errorMsg = error?.response?.data?.message || 'Failed to load nationality';
+        const errorMsg = error?.response?.data?.message || 'Failed to load service';
         showErrorToast(errorMsg);
-        await router.push('/dash/nationality');
+        await router.push('/dash/services');
     } finally {
         loading.value = false;
     }
@@ -112,10 +111,10 @@ const handleDelete = async () => {
     deleting.value = true;
 
     try {
-        await deleteNationality(nationalityId.value);
-        await router.push('/dash/nationality');
+        await deleteService(serviceId.value);
+        await router.push('/dash/services');
     } catch (error: any) {
-        const errorMsg = error?.response?.data?.message || 'Failed to delete nationality';
+        const errorMsg = error?.response?.data?.message || 'Failed to delete service';
         showErrorToast(errorMsg);
     } finally {
         deleting.value = false;
@@ -123,7 +122,7 @@ const handleDelete = async () => {
 };
 
 onMounted(() => {
-    loadNationality();
+    loadService();
 });
 
 </script>

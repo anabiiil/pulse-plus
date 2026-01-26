@@ -16,10 +16,10 @@ class ServiceResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'description' => $this->description,
-            'status' => $this->status,
-            'image_url' => $this->image?->file_url,
+            'name' => $this->getTranslations('name'),
+            'description' => $this->getTranslations('description'),
+            'status' => (bool) $this->status,
+            'image_url' => $this->image?->url,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

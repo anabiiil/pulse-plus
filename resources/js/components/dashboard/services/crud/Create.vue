@@ -1,6 +1,6 @@
 <template>
     <div class="text-start my-4">
-        <router-link to="/dash/nationality" class="btn btn-secondary me-2 btn-b">
+        <router-link to="/dash/services" class="btn btn-secondary me-2 btn-b">
             <i class="las la-arrow-alt-circle-left"></i>
             Back
         </router-link>
@@ -10,7 +10,7 @@
         <div class="card custom-card">
             <div class="card-header">
                 <div class="card-title text-capitalize">
-                    Create Nationality
+                    Create Service
                 </div>
             </div>
             <div class="card-body">
@@ -50,6 +50,36 @@
 
                                 <div class="col-lg-6">
                                     <div class="form-group mb-3">
+                                        <label class="form-label">Description En</label>
+                                        <textarea
+                                            class="form-control"
+                                            :class="{ 'is-invalid': errors['description.en'] }"
+                                            v-model="formData.description.en"
+                                            rows="3"
+                                        ></textarea>
+                                        <span class="text-danger d-block mt-2" v-if="errors['description.en']">
+                                            {{ Array.isArray(errors['description.en']) ? errors['description.en'][0] : errors['description.en'] }}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">Description Ar</label>
+                                        <textarea
+                                            class="form-control"
+                                            :class="{ 'is-invalid': errors['description.ar'] }"
+                                            v-model="formData.description.ar"
+                                            rows="3"
+                                        ></textarea>
+                                        <span class="text-danger d-block mt-2" v-if="errors['description.ar']">
+                                            {{ Array.isArray(errors['description.ar']) ? errors['description.ar'][0] : errors['description.ar'] }}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group mb-3">
                                         <label class="form-label">Status</label>
                                         <v-switch
                                             v-model="formData.status"
@@ -60,6 +90,23 @@
                                         <span class="text-danger d-block mt-2" v-if="errors['status']">
                                             {{ Array.isArray(errors['status']) ? errors['status'][0] : errors['status'] }}
                                         </span>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">Image</label>
+                                        <input
+                                            type="file"
+                                            class="form-control"
+                                            :class="{ 'is-invalid': errors['image'] }"
+                                            @change="handleImageChange"
+                                            accept="image/*"
+                                        >
+                                        <span class="text-danger d-block mt-2" v-if="errors['image']">
+                                            {{ Array.isArray(errors['image']) ? errors['image'][0] : errors['image'] }}
+                                        </span>
+                                        <img v-if="previewImage" :src="previewImage" alt="preview" style="height: 100px; margin-top: 10px;">
                                     </div>
                                 </div>
 
@@ -79,33 +126,38 @@
             </div>
         </div>
     </div>
-
-
 </template>
+
 <script setup lang="ts">
 
 import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { useHead } from '@vueuse/head';
-import { useNationalities } from '../../../../composables/useNationalities';
+import { useServices } from '../../../../composables/useServices';
 
 useHead({
-    title: 'Create Nationality',
+    title: 'Create Service',
 });
 
 const router = useRouter();
-const { create } = useNationalities();
+const { create } = useServices();
 
 // Reactive state
 const loading = ref(false);
 const errors = reactive({});
+const previewImage = ref(null);
 
 const formData = reactive({
     name: {
         en: '',
         ar: '',
     },
+    description: {
+        en: '',
+        ar: '',
+    },
     status: true,
+    image: null,
 });
 
 /**
@@ -118,6 +170,21 @@ const resetErrors = () => {
 };
 
 /**
+ * Handle image selection and preview
+ */
+const handleImageChange = (event: any) => {
+    const file = event.target.files[0];
+    if (file) {
+        formData.image = file;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            previewImage.value = e.target?.result;
+        };
+        reader.readAsDataURL(file);
+    }
+};
+
+/**
  * Handle form submission
  */
 const handleSubmit = async () => {
@@ -125,20 +192,29 @@ const handleSubmit = async () => {
     loading.value = true;
 
     try {
-        await create(formData);
-        // Success - redirect to list
-        await router.push('/dash/nationality');
-    } catch (error) {
-        // Handle 422 Unprocessable Entity (validation errors)
+        // Create FormData for file upload
+        const data = new FormData();
+        data.append('name[en]', formData.name.en);
+        data.append('name[ar]', formData.name.ar);
+        data.append('description[en]', formData.description.en);
+        data.append('description[ar]', formData.description.ar);
+        data.append('status', formData.status);
+
+        if (formData.image) {
+            data.append('image', formData.image);
+        }
+
+        await create(data);
+        await router.push('/dash/services');
+    } catch (error: any) {
         if (error?.response?.status === 422) {
             const apiErrors = error?.response?.data?.errors || {};
             Object.assign(errors, apiErrors);
             showErrorToast(error?.response?.data?.message || 'Validation error occurred');
         } else {
-            // Handle other errors
             const apiErrors = error?.response?.data?.errors || {};
             Object.assign(errors, apiErrors);
-            const errorMsg = error?.response?.data?.message || 'Failed to create nationality';
+            const errorMsg = error?.response?.data?.message || 'Failed to create service';
             showErrorToast(errorMsg);
         }
     } finally {

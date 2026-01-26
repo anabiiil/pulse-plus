@@ -166,12 +166,13 @@ const handleSubmit = async () => {
         if (error?.response?.status === 422) {
             const apiErrors = error?.response?.data?.errors || {};
             Object.assign(errors, apiErrors);
+            showErrorToast(error?.response?.data?.message || 'Validation error occurred');
         } else {
             // Handle other errors
             const apiErrors = error?.response?.data?.errors || {};
             Object.assign(errors, apiErrors);
             const errorMsg = error?.response?.data?.message || 'Failed to update nationality';
-            console.error(errorMsg);
+            showErrorToast(errorMsg);
         }
     } finally {
         loading.value = false;

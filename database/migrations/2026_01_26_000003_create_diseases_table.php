@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('diseases', function (Blueprint $table) {
             $table->id();
-            $table->mediumText('name')->unique();
+            $table->mediumText('name');
             $table->timestamps();
         });
     }

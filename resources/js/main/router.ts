@@ -57,6 +57,33 @@ const routes = [
             },
         ],
     },
+
+    // Services routes with nested CRUD operations
+    {
+        path: '/dash/services',
+        children: [
+            {
+                path: '',
+                name: 'services.list',
+                component: () => import('../components/dashboard/services/List.vue'),
+            },
+            {
+                path: 'create',
+                name: 'services.create',
+                component: () => import('../components/dashboard/services/crud/Create.vue'),
+            },
+            {
+                path: ':id/update',
+                name: 'services.update',
+                component: () => import('../components/dashboard/services/crud/Update.vue'),
+            },
+            {
+                path: ':id/delete',
+                name: 'services.delete',
+                component: () => import('../components/dashboard/services/crud/Delete.vue'),
+            },
+        ],
+    },
 ];
 
 const router = createRouter({

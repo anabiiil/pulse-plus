@@ -24,7 +24,8 @@ class CreateServiceRequest extends FormRequest
             'name.ar' => 'required|string|max:100',
             'description.en' => 'nullable|string',
             'description.ar' => 'nullable|string',
-            'status' => 'nullable|string|in:active,inactive',
+            'status' => 'nullable|in:0,1,true,false',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
         ];
     }
 
@@ -42,8 +43,7 @@ class CreateServiceRequest extends FormRequest
             'name.ar.max' => 'The service name (Arabic) must not exceed 100 characters.',
             'description.en.string' => 'The description (English) must be a string.',
             'description.ar.string' => 'The description (Arabic) must be a string.',
-            'status.string' => 'The status must be a string.',
-            'status.in' => 'The status must be either active or inactive.',
+            'status.boolean' => 'The status must be a boolean value (true/false).',
             'image.image' => 'The image must be a valid image file.',
             'image.mimes' => 'The image must be a file of type: jpeg, png, jpg, gif, webp.',
             'image.max' => 'The image must not exceed 10MB.',

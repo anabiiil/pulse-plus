@@ -55,6 +55,15 @@
                 </li>
 
                 <li class="slide">
+                    <router-link to="/dash/services" class="side-menu__item">
+                        <span class="me-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-briefcase"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 7v-2a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path></svg>
+                        </span>
+                        <span class="side-menu__label">Services</span>
+                    </router-link>
+                </li>
+
+                <li class="slide">
                     <router-link to="/users" class="side-menu__item">
                         <span class="me-2">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"

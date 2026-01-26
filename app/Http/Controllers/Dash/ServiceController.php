@@ -7,10 +7,11 @@ use App\Http\Requests\Admin\Service\CreateServiceRequest;
 use App\Http\Resources\Dashboard\ServiceResource;
 use App\Models\File;
 use App\Models\Service;
-use App\Services\Image\ImageProcessor;
+use App\Support\Services\Image\ImageService;
 use App\Support\Traits\Api\ApiResponseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class ServiceController extends Controller
 {
@@ -24,7 +25,7 @@ class ServiceController extends Controller
 
     private const int DEFAULT_PER_PAGE = 50;
 
-    public function __construct(protected ImageProcessor $imageProcessor) {}
+    public function __construct(protected ImageService $imageService) {}
 
     /**
      * Display a listing of services with filtering and pagination.
@@ -51,9 +52,9 @@ class ServiceController extends Controller
      */
     public function store(CreateServiceRequest $request): \Illuminate\Http\JsonResponse
     {
+
         return DB::transaction(function () use ($request) {
             $service = Service::create($request->validated());
-
             // Handle image upload if present
             if ($request->hasFile('image')) {
                 $this->extracted($request, $service);
@@ -73,19 +74,23 @@ class ServiceController extends Controller
 
     /**
      * Update the specified service in storage.
+     *
+     * @throws Throwable
      */
     public function update(CreateServiceRequest $request, Service $service): \Illuminate\Http\JsonResponse
     {
+
         return DB::transaction(function () use ($request, $service) {
-            $service->update($request->validated());
+            $data = $request->validated();
+            $data['status'] = $data['status'] == 'true' ?? false;
+
+            $service->update($data);
 
             // Handle image upload if present
             if ($request->hasFile('image')) {
                 // Delete old image if exists
                 $oldImage = $service->image()->first();
-                if ($oldImage) {
-                    $oldImage->delete();
-                }
+                $oldImage?->delete();
 
                 $this->extracted($request, $service);
             }
@@ -96,6 +101,8 @@ class ServiceController extends Controller
 
     /**
      * Remove the specified service from storage.
+     *
+     * @throws Throwable
      */
     public function destroy(Service $service): \Illuminate\Http\JsonResponse
     {
@@ -112,17 +119,18 @@ class ServiceController extends Controller
         });
     }
 
-    public function extracted(CreateServiceRequest $request, $service): void
+    public function extracted(CreateServiceRequest $request, Service $service): void
     {
-        $imageInfo = $this->imageProcessor
-            ->load($request->file('image'))
-            ->convert('webp')
-            ->compress(85)
-            ->saveAndGetInfo('services', 'public');
+        $imageInfo = $this->imageService->storeImage(
+            $request->file('image'),
+            'services',
+            'image',
+            'public'
+        );
 
         File::create([
-            'file_name' => basename($imageInfo['path']),
-            'original_name' => $imageInfo['filename'],
+            'file_name' => $imageInfo['file_name'],
+            'original_name' => $imageInfo['original_name'],
             'mime_type' => $imageInfo['mime_type'],
             'collection_name' => 'image',
             'type' => 'image',

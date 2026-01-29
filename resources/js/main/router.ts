@@ -111,6 +111,65 @@ const routes = [
             },
         ],
     },
+
+    // Sliders routes with nested CRUD operations
+    {
+        path: '/dash/sliders',
+        children: [
+            {
+                path: '',
+                name: 'sliders.list',
+                component: () => import('../components/dashboard/sliders/List.vue'),
+            },
+            {
+                path: 'create',
+                name: 'sliders.create',
+                component: () => import('../components/dashboard/sliders/crud/Create.vue'),
+            },
+            {
+                path: ':id/edit',
+                name: 'sliders.update',
+                component: () => import('../components/dashboard/sliders/crud/Update.vue'),
+            },
+            {
+                path: ':id/delete',
+                name: 'sliders.delete',
+                component: () => import('../components/dashboard/sliders/crud/Delete.vue'),
+            },
+        ],
+    },
+
+    // Users routes with nested CRUD operations
+    {
+        path: '/dash/users',
+        children: [
+            {
+                path: '',
+                name: 'users.list',
+                component: () => import('../components/dashboard/users/List.vue'),
+            },
+            {
+                path: 'create',
+                name: 'users.create',
+                component: () => import('../components/dashboard/users/crud/Create.vue'),
+            },
+            {
+                path: ':id/show',
+                name: 'users.show',
+                component: () => import('../components/dashboard/users/crud/Show.vue'),
+            },
+            {
+                path: ':id/edit',
+                name: 'users.update',
+                component: () => import('../components/dashboard/users/crud/Update.vue'),
+            },
+            {
+                path: ':id/delete',
+                name: 'users.delete',
+                component: () => import('../components/dashboard/users/crud/Delete.vue'),
+            },
+        ],
+    },
 ];
 
 const router = createRouter({

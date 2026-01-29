@@ -18,25 +18,26 @@ class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-//        $fav = auth('user-api')?->user()?->favoriteClubs()->first();
         return [
             'id' => $this->id,
-            'full_name' => $this->first_name ? $this->full_name : '---',
-            'first_name' => $this->first_name,
-            'last_name' => $this->last_name,
-            'team_name' => $this->team?->name,
+            'name' => $this->name,
             'email' => $this->email,
-            'phone_number' => $this->phone ? $this->phone_number : null,
-            'status' => $this->status?->value,
-            'last_login' => $this->last_login,
-            'social_type' => $this->social_type ?? 'email',
-            'type' => $this->type,
-            'image' => $this->fileUrl,
-            'country' => $this->country?->getTranslation('name', 'en'),
-            'created_at' => Carbon::parse($this->created_at)->format('Y-m-d H:i:s'),
-            'favorite_club' => new ClubResource($this->favoriteClubs()->first()),
-            'hash_url' => (string)$this->hash_url,
-            'qr_code' => (string)$this->qr_code,
+            'phone' => $this->phone,
+            'address' => $this->address,
+            'birthdate' => $this->birthdate,
+            'gender' => $this->gender,
+            'marital_status' => $this->marital_status,
+            'country_id' => $this->country_id,
+            'country' => $this->country ? [
+                'id' => $this->country->id,
+                'name' => $this->country->name,
+            ] : null,
+            'status' => (bool) $this->status,
+            'hash_url' => $this->hash_url,
+            'qr_code' => $this->qr_code,
+            'qr_code_path' => $this->qr_code_path ?? null,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

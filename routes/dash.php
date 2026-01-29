@@ -6,6 +6,7 @@ use App\Http\Controllers\Dash\CountryController;
 use App\Http\Controllers\Dash\ProductController;
 use App\Http\Controllers\Dash\ServiceController;
 use App\Http\Controllers\Dash\SliderController;
+use App\Http\Controllers\Dash\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['guest:admin']], static function () {
@@ -24,24 +25,10 @@ Route::group(
             Route::delete('/delete/{id}', [AdminsController::class, 'destroy']);
         });
 
-        Route::group(['prefix' => 'slider'], static function () {
-            Route::get('/list', [SliderController::class, 'list']);
-            Route::get('/list/{id}', [SliderController::class, 'show']);
-            Route::post('/create', [SliderController::class, 'create']);
-            Route::post('/update/{id}', [SliderController::class, 'update']);
-            Route::delete('/delete/{id}', [SliderController::class, 'destroy']);
-        });
-
-        //    Route::group(['prefix' => 'countries'], static function () {
-        //        Route::get('/list', [CountryController::class, 'list']);
-        //        Route::get('/list/{id}', [CountryController::class, 'show']);
-        //        Route::post('/create', [CountryController::class, 'create']);
-        //        Route::patch('/update/{id}', [CountryController::class, 'update']);
-        //        Route::delete('/delete/{id}', [CountryController::class, 'destroy']);
-        //    });
-
         Route::apiResource('countries', CountryController::class);
         Route::apiResource('services', ServiceController::class);
         Route::apiResource('products', ProductController::class);
+        Route::apiResource('sliders', SliderController::class);
+        Route::apiResource('users', UserController::class);
 
     });

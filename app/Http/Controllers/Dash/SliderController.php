@@ -2,112 +2,147 @@
 
 namespace App\Http\Controllers\Dash;
 
-use App\Action\Image\SendImageToDB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Slider\CreateSliderRequest;
-use App\Http\Requests\Admin\Slider\UpdateSliderRequest;
 use App\Http\Resources\Dashboard\SliderResource;
+use App\Models\File;
 use App\Models\Slider;
-use App\Support\Enums\File\FileTypeEnum;
 use App\Support\Services\Image\ImageService;
 use App\Support\Traits\Api\ApiResponseTrait;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class SliderController extends Controller
 {
     use ApiResponseTrait;
 
-    protected ImageService $imageService;
-    protected SendImageToDB $sendImageToDB;
+    private const array SORT_FIELD_MAPPING = [
+        'title' => 'title',
+        'id' => 'id',
+        'status' => 'status',
+    ];
 
-    public mixed $perPage, $sortBy, $orderBy, $search;
+    private const int DEFAULT_PER_PAGE = 50;
 
-    public function __construct()
+    public function __construct(protected ImageService $imageService) {}
+
+    /**
+     * Display a listing of sliders with filtering and pagination.
+     */
+    public function index(Request $request): \Illuminate\Http\JsonResponse
     {
-        $this->imageService = new ImageService();
-        $this->sendImageToDB = new SendImageToDB();
+        $perPage = $request->get('per_page', self::DEFAULT_PER_PAGE);
+        $sortBy = self::SORT_FIELD_MAPPING[$request->get('sortBy', 'id')] ?? 'id';
+        $sortDesc = $request->get('sortDesc', 'desc');
+        $search = $request->get('search');
+
+        $perPage = $perPage === -1 ? Slider::count() : $perPage;
+
+        $sliders = Slider::query()
+            ->when($search, fn ($query) => $query->where('title', 'like', "%{$search}%"))
+            ->orderBy($sortBy, $sortDesc)
+            ->paginate($perPage);
+
+        return $this->responsePaginated([SliderResource::collection($sliders)]);
     }
 
-    public function index()
+    /**
+     * Store a newly created slider in storage.
+     */
+    public function store(CreateSliderRequest $request): \Illuminate\Http\JsonResponse
     {
 
-        return view('dash.pages.admins.index');
+        return DB::transaction(function () use ($request) {
+            $slider = Slider::create($request->validated());
+            // Handle image upload if present
+            if ($request->hasFile('image')) {
+                $this->extracted($request, $slider);
+            }
+
+            return $this->responseData(new SliderResource($slider), 201);
+        });
     }
 
-    public function show($id)
+    /**
+     * Display the specified slider.
+     */
+    public function show(Slider $slider): \Illuminate\Http\JsonResponse
     {
-        $slider = Slider::find($id);
-        if (!$slider) {
-            return $this->responseError(msg: 'slider not found');
-        }
         return $this->responseData(new SliderResource($slider));
     }
 
-
-    public function list(Request $request)
+    /**
+     * Update the specified slider in storage.
+     *
+     * @throws Throwable
+     */
+    public function update(CreateSliderRequest $request, Slider $slider): \Illuminate\Http\JsonResponse
     {
-        $this->handleData($request);
-        $query = Slider::query();
-        if ($this->search) {
-            $query->where('title', 'like', "%$this->search%")
-                ->orWhere('desc', 'like', "%$this->search%");
-        }
-        $query->orderBy($this->sortBy, $this->orderBy);
 
-        if ($this->perPage == -1) {
-            $this->perPage = Slider::count();
-        }
-        return $this->responseData(SliderResource::collection($query->paginate($this->perPage)));
+        return DB::transaction(function () use ($request, $slider) {
+            $data = $request->validated();
+            // Convert status to boolean properly
+            if (isset($data['status'])) {
+                $data['status'] = in_array($data['status'], ['1', 1, 'true', true], true);
+            }
+
+            $slider->update($data);
+
+            // Handle image upload if present
+            if ($request->hasFile('image')) {
+                // Delete old image if exists
+                $oldImage = $slider->image()->first();
+                $oldImage?->delete();
+
+                $this->extracted($request, $slider);
+            }
+
+            return $this->responseData(new SliderResource($slider));
+        });
     }
 
-    public function handleData($request)
+    /**
+     * Remove the specified slider from storage.
+     *
+     * @throws Throwable
+     */
+    public function destroy(Slider $slider): \Illuminate\Http\JsonResponse
     {
+        return DB::transaction(function () use ($slider) {
+            // Delete associated image if exists
+            $image = $slider->image()->first();
+            if ($image) {
+                $image->delete();
+            }
 
-        $sortFieldMapping = [
-            'id' => 'id',
-            'created_at' => 'created_at',
-        ];
-        $this->sortBy = $sortFieldMapping[$request->get('sortBy', 'id')];
-        $this->orderBy = $request->get('sortDesc', 'desc');
-        $this->perPage = $request->get('per_page', 50);
-        $this->sortBy = $sortFieldMapping[$request->get('sortBy', 'id')];
-        $this->search = $request->get('search', '');
+            $slider->delete();
+
+            return $this->responseData([], msg: 'slider deleted successfully');
+        });
     }
 
-    public function create(CreateSliderRequest $request)
+    public function extracted(CreateSliderRequest $request, Slider $slider): void
     {
-        $data = $request->validated();
-//        $data['status'] = $data['status'] == 'true' ? 1 : 0;
-        $store = Slider::create($data);
-        if (isset($data['image'])) {
-            $this->sendImageToDB->handle(model: $store, image: $data['image'], path: Slider::IMAGE_PATH, type: FileTypeEnum::BASIC);
-        }
-        Cache::tags('on_boarding')->flush();
+        $imageInfo = $this->imageService->storeImage(
+            $request->file('image'),
+            'sliders',
+            'image',
+            'public'
+        );
 
-        return $this->responseData([new SliderResource($store)], 201);
-    }
-
-    public function update(UpdateSliderRequest $request, $id)
-    {
-        $data = $request->validated();
-        $slider = Slider::find($id);
-        if (isset($data['image'])) {
-            $this->sendImageToDB->update(model: $slider, image: $data['image'], path: Slider::IMAGE_PATH, type: FileTypeEnum::BASIC);
-        }
-        $slider->update($data);
-        return $this->responseData([new SliderResource($slider)], 200);
-    }
-
-
-    public function destroy($id)
-    {
-        $slider = Slider::find($id);
-        if (!$slider) {
-            return $this->responseError(msg: 'slider not found');
-        }
-        $slider->delete();
-        return $this->responseData([], msg: 'slider deleted successfully');
+        File::create([
+            'file_name' => $imageInfo['file_name'],
+            'original_name' => $imageInfo['original_name'],
+            'mime_type' => $imageInfo['mime_type'],
+            'collection_name' => 'image',
+            'type' => 'image',
+            'storage' => 'public',
+            'url' => $imageInfo['url'],
+            'path' => $imageInfo['path'],
+            'size' => $imageInfo['size'],
+            'file_id' => $slider->id,
+            'file_type' => Slider::class,
+        ]);
     }
 }

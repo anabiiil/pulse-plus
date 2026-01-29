@@ -83,7 +83,10 @@ class ProductController extends Controller
 
         return DB::transaction(function () use ($request, $product) {
             $data = $request->validated();
-            $data['status'] = $data['status'] == 'true' ?? false;
+            // Convert status to boolean properly
+            if (isset($data['status'])) {
+                $data['status'] = in_array($data['status'], ['1', 1, 'true', true], true);
+            }
 
             $product->update($data);
 

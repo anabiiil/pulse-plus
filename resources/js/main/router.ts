@@ -73,7 +73,7 @@ const routes = [
                 component: () => import('../components/dashboard/services/crud/Create.vue'),
             },
             {
-                path: ':id/update',
+                path: ':id/edit',
                 name: 'services.update',
                 component: () => import('../components/dashboard/services/crud/Update.vue'),
             },
@@ -81,6 +81,33 @@ const routes = [
                 path: ':id/delete',
                 name: 'services.delete',
                 component: () => import('../components/dashboard/services/crud/Delete.vue'),
+            },
+        ],
+    },
+
+    // Products routes with nested CRUD operations
+    {
+        path: '/dash/products',
+        children: [
+            {
+                path: '',
+                name: 'products.list',
+                component: () => import('../components/dashboard/products/List.vue'),
+            },
+            {
+                path: 'create',
+                name: 'products.create',
+                component: () => import('../components/dashboard/products/crud/Create.vue'),
+            },
+            {
+                path: ':id/edit',
+                name: 'products.update',
+                component: () => import('../components/dashboard/products/crud/Update.vue'),
+            },
+            {
+                path: ':id/delete',
+                name: 'products.delete',
+                component: () => import('../components/dashboard/products/crud/Delete.vue'),
             },
         ],
     },

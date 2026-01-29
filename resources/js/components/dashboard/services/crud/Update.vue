@@ -51,12 +51,13 @@
                                 <div class="col-lg-6">
                                     <div class="form-group mb-3">
                                         <label class="form-label">Description En</label>
-                                        <textarea
-                                            class="form-control"
+                                        <div
+                                            class="tiptap-editor"
                                             :class="{ 'is-invalid': errors['description.en'] }"
-                                            v-model="formData.description.en"
-                                            rows="3"
-                                        ></textarea>
+                                        >
+                                            <tiptap-menu-bar :editor="editorEn" />
+                                            <editor-content :editor="editorEn" />
+                                        </div>
                                         <span class="text-danger d-block mt-2" v-if="errors['description.en']">
                                             {{ Array.isArray(errors['description.en']) ? errors['description.en'][0] : errors['description.en'] }}
                                         </span>
@@ -66,12 +67,13 @@
                                 <div class="col-lg-6">
                                     <div class="form-group mb-3">
                                         <label class="form-label">Description Ar</label>
-                                        <textarea
-                                            class="form-control"
+                                        <div
+                                            class="tiptap-editor"
                                             :class="{ 'is-invalid': errors['description.ar'] }"
-                                            v-model="formData.description.ar"
-                                            rows="3"
-                                        ></textarea>
+                                        >
+                                            <tiptap-menu-bar :editor="editorAr" />
+                                            <editor-content :editor="editorAr" />
+                                        </div>
                                         <span class="text-danger d-block mt-2" v-if="errors['description.ar']">
                                             {{ Array.isArray(errors['description.ar']) ? errors['description.ar'][0] : errors['description.ar'] }}
                                         </span>
@@ -135,10 +137,21 @@
 
 <script setup lang="ts">
 
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, onMounted, onBeforeUnmount, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useHead } from '@vueuse/head';
 import { useServices } from '../../../../composables/useServices';
+import { useEditor, EditorContent } from '@tiptap/vue-3';
+import StarterKit from '@tiptap/starter-kit';
+import TiptapMenuBar from '../../../TiptapMenuBar.vue';
+
+// Declare global functions
+declare global {
+    interface Window {
+        showErrorToast: (message: string) => void;
+        showSuccessToast: (message: string) => void;
+    }
+}
 
 useHead({
     title: 'Update Service',
@@ -150,9 +163,9 @@ const { update, getService: fetchService, service } = useServices();
 
 // Reactive state
 const loading = ref(true);
-const errors = reactive({});
+const errors = reactive<Record<string, any>>({});
 const serviceId = ref(route.params.id);
-const previewImage = ref(null);
+const previewImage = ref<string | null>(null);
 
 const formData = reactive({
     name: {
@@ -165,6 +178,41 @@ const formData = reactive({
     },
     status: true,
     image: null,
+});
+
+// TipTap Editor for Description En
+const editorEn = useEditor({
+    extensions: [StarterKit],
+    content: formData.description.en,
+    editorProps: {
+        attributes: {
+            class: 'prose prose-sm focus:outline-none',
+        },
+    },
+    onUpdate: ({ editor }) => {
+        formData.description.en = editor.getHTML();
+    },
+});
+
+// TipTap Editor for Description Ar
+const editorAr = useEditor({
+    extensions: [StarterKit],
+    content: formData.description.ar,
+    editorProps: {
+        attributes: {
+            class: 'prose prose-sm focus:outline-none',
+            dir: 'rtl',
+        },
+    },
+    onUpdate: ({ editor }) => {
+        formData.description.ar = editor.getHTML();
+    },
+});
+
+// Cleanup editors on unmount
+onBeforeUnmount(() => {
+    editorEn.value?.destroy();
+    editorAr.value?.destroy();
 });
 
 /**
@@ -181,10 +229,18 @@ const loadService = async () => {
             formData.description.en = service.value.description?.en || '';
             formData.description.ar = service.value.description?.ar || '';
             formData.status = !!service.value.status;
+
+            // Update editor content after data is loaded
+            if (editorEn.value) {
+                editorEn.value.commands.setContent(formData.description.en);
+            }
+            if (editorAr.value) {
+                editorAr.value.commands.setContent(formData.description.ar);
+            }
         }
     } catch (error: any) {
         const errorMsg = error?.response?.data?.message || 'Failed to load service';
-        showErrorToast(errorMsg);
+        window.showErrorToast(errorMsg);
         await router.push('/dash/services');
     } finally {
         loading.value = false;
@@ -210,7 +266,7 @@ const handleImageChange = (event: any) => {
         formData.image = file;
         const reader = new FileReader();
         reader.onload = (e) => {
-            previewImage.value = e.target?.result;
+            previewImage.value = e.target?.result as string;
         };
         reader.readAsDataURL(file);
     }
@@ -230,7 +286,7 @@ const handleSubmit = async () => {
         data.append('name[ar]', formData.name.ar);
         data.append('description[en]', formData.description.en);
         data.append('description[ar]', formData.description.ar);
-        data.append('status', formData.status == 1);
+        data.append('status', formData.status ? '1' : '0');
 
         if (formData.image) {
             data.append('image', formData.image);
@@ -242,12 +298,12 @@ const handleSubmit = async () => {
         if (error?.response?.status === 422) {
             const apiErrors = error?.response?.data?.errors || {};
             Object.assign(errors, apiErrors);
-            showErrorToast(error?.response?.data?.message || 'Validation error occurred');
+            window.showErrorToast(error?.response?.data?.message || 'Validation error occurred');
         } else {
             const apiErrors = error?.response?.data?.errors || {};
             Object.assign(errors, apiErrors);
             const errorMsg = error?.response?.data?.message || 'Failed to update service';
-            showErrorToast(errorMsg);
+            window.showErrorToast(errorMsg);
         }
     } finally {
         loading.value = false;
@@ -259,3 +315,95 @@ onMounted(() => {
 });
 
 </script>
+
+<style scoped>
+.tiptap-editor {
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    min-height: 150px;
+    background-color: white;
+}
+
+.tiptap-editor.is-invalid {
+    border-color: #dc3545;
+}
+
+.tiptap-editor :deep(.ProseMirror) {
+    outline: none;
+    min-height: 120px;
+    padding: 0.75rem;
+}
+
+.tiptap-editor :deep(.ProseMirror p) {
+    margin-bottom: 0.5rem;
+}
+
+.tiptap-editor :deep(.ProseMirror p:last-child) {
+    margin-bottom: 0;
+}
+
+.tiptap-editor :deep(.ProseMirror h1),
+.tiptap-editor :deep(.ProseMirror h2),
+.tiptap-editor :deep(.ProseMirror h3) {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.tiptap-editor :deep(.ProseMirror h1) {
+    font-size: 2rem;
+}
+
+.tiptap-editor :deep(.ProseMirror h2) {
+    font-size: 1.5rem;
+}
+
+.tiptap-editor :deep(.ProseMirror h3) {
+    font-size: 1.25rem;
+}
+
+.tiptap-editor :deep(.ProseMirror ul),
+.tiptap-editor :deep(.ProseMirror ol) {
+    padding-left: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.tiptap-editor :deep(.ProseMirror code) {
+    background-color: #f5f5f5;
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.25rem;
+    font-family: monospace;
+    font-size: 0.875em;
+}
+
+.tiptap-editor :deep(.ProseMirror pre) {
+    background-color: #f5f5f5;
+    padding: 0.75rem;
+    border-radius: 0.25rem;
+    overflow-x: auto;
+    margin: 0.5rem 0;
+}
+
+.tiptap-editor :deep(.ProseMirror pre code) {
+    background: none;
+    padding: 0;
+    font-size: 0.875rem;
+}
+
+.tiptap-editor :deep(.ProseMirror blockquote) {
+    border-left: 3px solid #dee2e6;
+    padding-left: 1rem;
+    margin-left: 0;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+    color: #6c757d;
+}
+
+.tiptap-editor :deep(.ProseMirror hr) {
+    border: none;
+    border-top: 2px solid #dee2e6;
+    margin: 1rem 0;
+}
+</style>
+

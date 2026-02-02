@@ -1,5 +1,5 @@
 <template>
-    <div class="website-layout">
+    <v-app>
         <!-- Header/Navbar -->
         <v-app-bar app color="primary" dark elevation="2">
             <v-toolbar-title>
@@ -16,6 +16,18 @@
             <v-btn :to="{ name: 'services' }" text class="d-none d-md-flex">Services</v-btn>
             <v-btn :to="{ name: 'products' }" text class="d-none d-md-flex">Products</v-btn>
             <v-btn :to="{ name: 'contact' }" text class="d-none d-md-flex">Contact</v-btn>
+
+            <!-- Auth Links - Desktop -->
+            <template v-if="isAuthenticated">
+                <v-btn :to="{ name: 'profile' }" text class="d-none d-md-flex">
+                    <v-icon left>mdi-account</v-icon>
+                    Profile
+                </v-btn>
+            </template>
+            <template v-else>
+                <v-btn :to="{ name: 'login' }" text class="d-none d-md-flex">Login</v-btn>
+                <v-btn :to="{ name: 'register' }" text class="d-none d-md-flex" color="secondary">Register</v-btn>
+            </template>
 
             <!-- Mobile Menu -->
             <v-app-bar-nav-icon @click="drawer = !drawer" class="d-md-none"></v-app-bar-nav-icon>
@@ -39,6 +51,26 @@
                 <v-list-item :to="{ name: 'contact' }" @click="drawer = false">
                     <v-list-item-title>Contact</v-list-item-title>
                 </v-list-item>
+
+                <v-divider class="my-2"></v-divider>
+
+                <!-- Mobile Auth Links -->
+                <template v-if="isAuthenticated">
+                    <v-list-item :to="{ name: 'profile' }" @click="drawer = false">
+                        <v-list-item-title>
+                            <v-icon left>mdi-account</v-icon>
+                            Profile
+                        </v-list-item-title>
+                    </v-list-item>
+                </template>
+                <template v-else>
+                    <v-list-item :to="{ name: 'login' }" @click="drawer = false">
+                        <v-list-item-title>Login</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item :to="{ name: 'register' }" @click="drawer = false">
+                        <v-list-item-title>Register</v-list-item-title>
+                    </v-list-item>
+                </template>
             </v-list>
         </v-navigation-drawer>
 
@@ -78,13 +110,18 @@
                 </v-row>
             </v-container>
         </v-footer>
-    </div>
+    </v-app>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useAuthStore } from '../../stores/authStore';
 
 const drawer = ref(false);
+const authStore = useAuthStore();
+
+// Check if user is authenticated using Pinia store
+const isAuthenticated = authStore.isAuthenticated;
 </script>
 
 <style scoped>

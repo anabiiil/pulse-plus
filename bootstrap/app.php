@@ -41,6 +41,7 @@ return Application::configure(basePath: dirname(__DIR__))
 //            'localeViewPath' => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath::class,
             'checkUserStatus' => CheckUserStatus::class,
             'checkAdmin' => CheckAdminAuth::class,
+            'checkUser' => \App\Http\Middleware\CheckUserAuth::class,
 //            'auth' => \App\Http\Middleware\Authenticate::class,
 //            'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
             'doNotCacheResponse' => \Spatie\ResponseCache\Middlewares\DoNotCacheResponse::class,

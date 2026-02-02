@@ -7,6 +7,11 @@
     <title>Pulse</title>
 
     @vite(['resources/js/website.js', 'resources/css/app.css'])
+
+    <!-- Pass auth user to JavaScript -->
+    <script>
+        window.authUser = @json(auth('web')->user());
+    </script>
 </head>
 <body>
     <div id="website-app">

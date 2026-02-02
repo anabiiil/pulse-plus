@@ -3,18 +3,6 @@
 use App\Http\Controllers\Dash\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', static function () {
-    \App\Models\User::create([
-        'name' => 'Admin User',
-        'email' => 'mohamed@gmail.com',
-        'password' => 222222,
-    ]);
-    if (auth('admin')->check()) {
-        return redirect('/admin');
-    }
-    return view('pages.admin.auth.login');
-});
-
 Route::get('dash-login', [LoginController::class, 'login']);
 
 Route::group(
@@ -23,3 +11,9 @@ Route::group(
         return view('dash.pages.index');
     })->where('any', '.*');
 });
+
+// Website routes - catch all routes that are not /dash
+Route::get('/{any?}', static function () {
+    return view('website.index');
+})->where('any', '^(?!dash).*$');
+

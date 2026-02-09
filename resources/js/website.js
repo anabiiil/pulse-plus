@@ -1,5 +1,10 @@
 import './bootstrap';
+import '../css/website.css';
 import 'vuetify/styles';
+import 'primeicons/primeicons.css';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 import { createApp } from 'vue';
 import { createVuetify } from 'vuetify';
 import { createHead } from '@vueuse/head';

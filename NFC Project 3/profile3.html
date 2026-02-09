@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFC</title>
+    <link rel="stylesheet" href="scss/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/primeicons@6.0.1/primeicons.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div
+      id="loader"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-[#123057] transition-opacity duration-700 ease-out"
+    >
+      <div class="relative w-24 h-24">
+        <div class="absolute inset-0 rounded-full border-4 border-white/30"></div>
+        <div class="absolute! inset-0! rounded-full! border-4! border-[#1BB2B1]! border-t-transparent! animate-spin!"></div>
+        <div class="absolute inset-6 rounded-full bg-white"></div>
+      </div>
+    </div>
+      <nav class="hidden lg:flex py-4 px-20 bg-white/90 shadow-md flex justify-between items-center">
+      <div class="flex items-center gap-4"  >
+        <a href="index.html" class="text-2xl font-bold text-gray-800"><img src="img/logo.png" class="w-[120px]" alt=""></a>
+        <div>
+          <a href="index.html" class="mx-4 text-teal-500!  transition duration-150  font-semibold before:w-full before:h-0.5 before:bg-teal-500 before:absolute before:-bottom-2 before:left-0 relative">الرئيسية</a>
+          <a href="#products" class="relative  transition duration-150 font-semibold mx-4 hover:text-teal-500 "> المتجر</a>
+          <a href="#features" class="hover:text-teal-500! transition duration-150  font-semibold mx-4">خدماتنا</a>
+          <a href="#features" class="hover:text-teal-500! transition duration-150  font-semibold mx-4 ">من نحن</a>
+          <a href="contact-us.html" class="hover:text-teal-500! transition duration-150  font-semibold mx-4 ">اتصل بنا</a>
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <button  class="flex! items-center! justify-center! w-[50px]! h-[50px]! text-[18px]! rounded-full! shadow-xl!"><i class="pi pi-moon"></i></button>
+        <button  class="flex! items-center! justify-center! w-[50px]! h-[50px]! text-[18px]! rounded-full! shadow-xl!">
+          EN
+        </button>
+        <a href="login.html" class="bg-teal-500! text-white! px-5! py-2! rounded-[30px]! shadow-lg! font-semibold! hover:bg-teal-600! transition duration-150!"> 
+          تسجيل الدخول
+        </a>
+      </div>
+    
+    </nav>
+    <nav class=" lg:hidden block w-full bg-white shadow-md px-6 py-4 flex items-center justify-between relative">
+
+      <div>
+        <a href="/index.html">
+          <div class=""><img src="img/logo.png" class="w-[100px]" alt=""></div>
+        </a>
+      </div>
+      <div class="flex items-center justify-center gap-4">
+        <a href="profile.html" class="w-9! h-9! rounded-full! flex! items-center! justify-center! bg-[#1BB2B1]! cursor-pointer! text-white! shadow-xl!"><i class="pi pi-user"></i></a>
+        <button class="w-9! h-9! rounded-full! flex! items-center! justify-center! bg-[#FF6760]! cursor-pointer! text-white! shadow-xl!" id="menu-btn"><i class="pi pi-bars"></i></button>
+      </div>
+
+
+      <div id="burgerMenu" class="absolute hidden   flex-col z-50 p-6 bg-white/80 top-[100%] left-0  backdrop-blur-md  shadow-lg">
+        <div> 
+          <button class="bg-[#123057]! rounded-4xl! py-3! px-7! text-white! cursor-pointer! font-semibold!">EN</button>
+          <button class="bg-[#123057]! rounded-4xl! py-3! px-7! text-white! cursor-pointer! font-semibold!"><i class="pi pi-moon"></i></button>
+        </div>
+        <div>
+          <ul class="p-2 flex flex-col gap-2 text-right ">
+            <li>
+              <a href="index.html" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all">
+                الرئيسية
+              </a>
+            </li>
+            <li>
+              <a href="#products" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all">
+                المتجر
+              </a>
+            </li>
+            <li>
+              <a href="#features" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all">
+                خدماتنا
+              </a>
+            </li>
+            <li>
+              <a href="#features" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all">
+                من نحن
+              </a>
+            </li>
+            <li>
+              <a href="contact-us.html" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all">
+                اتصل بنا
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <section class="lg:px-10 px-4 py-5 bg-gray-100">
+      <div class="grid lg:grid-cols-3 grid-cols-1 lg:gap-10 gap-0">
+        <div>
+           <div class=" hidden  lg:block bg-white rounded-[48px] shadow-xl p-8">
+            <div class="mb-6">
+              <div class="flex justify-between text-sm text-teal-600 mb-2">
+                <span class="font-medium">اكتمال الملف</span>
+                <span>%20</span>
+              </div>
+              <div class="w-full h-5 shadow-[inset_0_4px_4px_0_#00000040]! flex items-center bg-gray-200 rounded-full overflow-hidden">
+                <div class="h-4 w-1/4 bg-[#1BB2B1] rounded-full"></div>
+              </div>
+            </div>
+             <div class="space-y-4">
+              <div class="bg-gray-100 cursor-pointer hover:scale-102! transition-transform! duration-300! ease-in-out! rounded-3xl px-7 py-6 my-9 text-[#123057] flex items-center justify-between shadow-md">
+                <div class="flex items-center justify-between!">
+                  <div class="flex items-center gap-3">
+                    <div class="p-5 bg-white shadow-2xl! rounded-xl flex items-center justify-center">
+                      <i class="pi pi-user text-teal-500!  text-[22px]"></i>
+                    </div>
+                    <div>
+                      <p class="font-semibold">المعلومات الشخصية</p>
+                      <p class="text-sm opacity-90">الاسم، الميلاد، العنوان</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="text-xl text-gray-400 "><i class="pi pi-angle-left"></i></div>
+              </div>
+              <div class=" profile-tap-active cursor-pointer hover:scale-102! transition-transform! duration-300! ease-in-out! ">
+                <div class="flex items-center justify-between!">
+                  <div class="flex items-center gap-3">
+                    <div class="p-5 bg-white rounded-xl flex items-center justify-center">
+                      <i class="pi pi-heart text-teal-500! text-[22px]"></i>
+                    </div>
+                    <div>
+                      <p class="font-semibold  ">البيانات الطبية </p>
+                      <p class="text-sm opacity-90">  فصيلة الدم ,الحساسية...</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="text-xl text-gray-400 "><i class="pi pi-angle-left"></i></div>
+              </div>
+              <div class="bg-gray-100 cursor-pointer hover:scale-102! transition-transform! duration-300! ease-in-out! rounded-3xl px-7 py-6 my-9 text-[#123057] flex items-center justify-between shadow-md">
+                <div class="flex items-center justify-between!">
+                  <div class="flex items-center gap-3">
+                    <div class="p-5 bg-white rounded-xl flex items-center justify-center">
+                      <i class="pi pi-user text-teal-500! text-[22px]"></i>
+                    </div>
+                    <div>
+                      <p class="font-semibold  "> الأرشيف الطبي</p>
+                      <p class="text-sm opacity-90">الأشعة والتقارير والروشتات...  </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="text-xl text-gray-400 "><i class="pi pi-angle-left"></i></div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-8 py-20 my-4  bg-[#0E2A4F] text-white rounded-[48px] px-10 relative">
+            <div class=" my-5">
+              <i class="pi pi-shield font-bold text-[35px]"></i>
+            </div>
+            <h3 class="font-semibold mb-2 text-[20px]">بياناتك في أمان</h3>
+            <p class="text-sm leading-relaxed text-white/80">
+              نستخدم أعلى معايير التشفير لضمان أن بياناتك متاحة فقط لمن تسمح لهم في حالات الطوارئ  
+            </p>
+          </div>
+          <div class="lg:hidden my-4 block bg-white rounded-[48px] shadow-xl p-8">
+            <div class="mb-6">
+              <div class="flex justify-between text-sm text-teal-600 mb-2">
+                <span class="font-medium">اكتمال الملف</span>
+                <span>%20</span>
+              </div>
+              <div class="w-full h-5 shadow-[inset_0_4px_4px_0_#00000040]! flex items-center bg-gray-200 rounded-full overflow-hidden">
+                <div class="h-4 w-1/4 bg-[#1BB2B1] rounded-full"></div>
+              </div>
+            </div>
+          </div>
+          <p class=" hidden lg:block text-center text-xs text-gray-400 mt-6 border-t border-gray-400 pt-5 ">
+            جميع الحقوق محفوظة © Pulse
+          </p>
+        </div>
+
+        <div class="col-span-2">
+          <div class="bg-white p-10 rounded-[48px] shadow-xl transform transition duration-500  hover:shadow-2xl cursor-pointer relative overflow-hidden ">
+            <div class="mb-10!">
+              <h3 class="text-2xl! font-bold! mb-2!">
+                الأرشيف والتقارير
+              </h3>
+              <p class="text-gray-600! text-[14px]! font-semibold!">
+                نظم ملفاتك الطبية في مكان واحد آمن.
+              </p>
+            </div>
+
+            <div class="grid! grid-cols-4! gap-6! mb-10!">
+              <div
+                class="files-tab-active"
+              >
+                <i class="pi pi-heart-fill text-2xl!"></i>
+                <span>تحاليل</span>
+              </div>
+              <div
+                class="flex! flex-col! items-center! justify-center! gap-3!
+                       rounded-3xl!
+                      py-6! cursor-pointer!
+                      text-gray-400! font-semibold!
+                      hover:text-teal-500! transition! col-span-4 md:col-span-1"
+              >
+                <i class="pi pi-search text-2xl!"></i>
+                <span>أشعة</span>
+              </div>
+              <div
+                class="flex! flex-col! items-center! justify-center! gap-3!
+                      rounded-3xl! 
+                      py-6! cursor-pointer!
+                      text-gray-400! font-semibold!
+                      hover:text-teal-500! transition! col-span-4 md:col-span-1"
+              >
+                <i class="pi pi-file-edit text-2xl!"></i>
+                <span>روشتات</span>
+              </div>
+              <div
+                class="flex! flex-col! items-center! justify-center! gap-3!
+                      rounded-3xl! 
+                      py-6! cursor-pointer!
+                      text-gray-400! font-semibold!
+                      hover:text-teal-500! transition! col-span-4 md:col-span-1"
+              >
+                <i class="pi pi-file text-2xl!"></i>
+                <span>تقارير طبية</span>
+              </div>
+            </div>
+
+            <div class="grid! grid-cols-2! gap-6!">
+
+              <div class="flex! flex-col! col-span-2 lg:col-span-1">
+                <label class="font-bold! mb-2!">
+                  عنوان المستند (الفحص)
+                </label>
+                <div class="relative!">
+                  <input
+                    type="text"
+                    placeholder="عنوان المستند (الفحص)"
+                    class="bg-gray-50! border-0! shadow-xl! font-semibold! rounded-[30px]! w-full! p-4! pr-12!"
+                  />
+                  <i class="pi pi-file absolute! top-1/2! right-5! -translate-y-1/2! text-[18px]!"></i>
+                </div>
+              </div>
+              <div class="flex! flex-col! col-span-2 lg:col-span-1">
+                <label class="font-bold! mb-2!">
+                  التصنيف
+                </label>
+                <div class="relative!">
+                  <select
+                    class="bg-gray-50! border-0! shadow-xl! font-semibold! rounded-[30px]! w-full! p-4! pr-12! appearance-none!"
+                  >
+                    <option>تحاليل</option>
+                    <option>أشعة</option>
+                    <option>تقارير</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="flex! flex-col! col-span-2 lg:col-span-1">
+                <label class="font-bold! mb-2!">
+                  صورة المستند
+                </label>
+
+                <div
+                  class="bg-gray-50! border-2! border-dashed! border-gray-300! rounded-[30px]! p-4! flex! items-center! justify-center! gap-3! shadow-xl!"
+                >
+                  <i class="pi pi-camera! text-gray-400!"></i>
+                  <span class="text-gray-400! font-semibold!">
+                    رفع صورة التقرير
+                  </span>
+                </div>
+              </div>
+
+              <div class="flex! flex-col! col-span-2 lg:col-span-1">
+                <label class="font-bold! mb-2!">
+                  الطبيب المعالج
+                </label>
+                <div class="relative!">
+                  <input
+                    type="text"
+                    placeholder="الطبيب المعالج"
+                    class="bg-gray-50! border-0! shadow-xl! font-semibold! rounded-[30px]! w-full! p-4! pr-12!"
+                  />
+                  <i class="pi pi-user absolute! top-1/2! right-5! -translate-y-1/2! text-[18px]!"></i>
+                </div>
+              </div>
+
+              <div class="flex! flex-col! col-span-2!">
+                <label class="font-bold! mb-2!">
+                  ملاحظاتك الإضافية
+                </label>
+                <textarea
+                  rows="4"
+                  placeholder="اكتب أي ملاحظة تريد تذكرها عن هذا الفحص..."
+                  class="bg-gray-50! border-0! shadow-xl! font-semibold! rounded-[30px]! w-full! p-5! resize-none!"
+                ></textarea>
+              </div>
+
+            </div>
+
+            <div class="my-10! h-px! bg-gray-200!"></div>
+
+            <div class="flex! flex-col! items-center! justify-center!">
+              <button
+                class="py-3! px-24! rounded-xl! bg-[#123057]! text-white! font-bold! hover:bg-[#0e2540]! transition! duration-150!"
+              >
+                حفظ التغييرات
+              </button>
+              <button
+                class="py-3! px-24! text-gray-400! mt-4! font-semibold!"
+              >
+                إلغاء التعديلات
+              </button>
+            </div>
+
+
+          </div>
+        </div>
+        <p class=" lg:hidden block text-center text-xs text-gray-400 mt-6 border-t border-gray-400 pt-5 ">
+            جميع الحقوق محفوظة © Pulse
+          </p>
+      </div>
+    </section>
+
+     <footer class="lg:hidden flex  p-4 justify-between items-center ">
+      <div class="p-4 w-full flex items-center justify-center">
+        <i class="pi pi-user text-[28px] text-[#1BB2B1]"></i>
+      </div> 
+      <div class="p-4  w-full flex items-center justify-center">
+        <i class="pi pi-heart text-[28px] text-gray-400"></i>
+      </div> 
+      <div class="p-4  w-full flex items-center justify-center">
+        <svg width="45" height="40" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22.4852 14.6318C23.5352 13.6844 25.1102 13.6844 26.1602 14.6318C26.685 15.158 27 15.7896 27 16.5263C27 17.2632 26.7898 17.8945 26.2648 18.4208L21.3296 23.3684L20.3852 24.6318C19.8602 25.2633 19.1251 25.7892 18.2852 25.7893L14.925 26L15.1352 22.6314C15.2402 21.7894 15.6599 21.0524 16.2898 20.5261L17.55 19.5794L22.4852 14.6318ZM21.8546 6C23.5345 6 24.7953 7.36831 24.7954 8.94716V12.3158H23.2204V8.94716C23.2203 8.31572 22.695 7.68392 21.9602 7.6838H8.83521C8.20526 7.6838 7.57512 8.21043 7.575 8.94716V22.0002L7.67959 22.2109C7.67982 22.8423 8.20506 23.4732 8.93979 23.4733H13.35V25.0522H8.93979C7.25989 25.0521 6 23.6839 6 22.1051V8.94716C6.00012 7.26313 7.36495 6.00011 8.93979 6H21.8546ZM17.1296 21.7895C16.8148 22 16.6046 22.3163 16.6046 22.7373C16.6024 22.7703 16.5 24.3144 16.5 24.2103H18.075C18.495 24.2103 18.8104 23.9998 19.0204 23.684L19.65 22.8421L17.9704 21.1583L17.1296 21.7895ZM25.1102 15.7893C24.6902 15.3682 24.0598 15.3682 23.6398 15.7893L19.2296 20.2105L20.7 21.6846L25.1102 17.2634C25.4252 17.0528 25.425 16.842 25.425 16.5263C25.425 16.2105 25.3202 15.9998 25.1102 15.7893ZM11.775 16.5263V21.2632H10.2V16.5263H11.775ZM16.1842 18.6316H14.6092V9.68421H16.1842V18.6316ZM20.7 14.9474H19.125V13.3684H20.7V14.9474Z" fill="#9F9F9F"/>
+        </svg>
+
+      </div> 
+    </footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

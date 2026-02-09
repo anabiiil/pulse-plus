@@ -78,7 +78,7 @@ const formatDate = (date: string) => {
 const fetchProduct = async () => {
     try {
         loading.value = true;
-        const response = await axios.get(`/api/products/${route.params.id}`);
+        const response = await axios.get(`/api/website/products/${route.params.id}`);
         product.value = response.data.data || response.data;
     } catch (error) {
         console.error('Error fetching product:', error);

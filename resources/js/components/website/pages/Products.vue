@@ -60,11 +60,7 @@ const loading = ref(true);
 const fetchProducts = async () => {
     try {
         loading.value = true;
-        const response = await axios.get('/api/products', {
-            params: {
-                status: 'active'
-            }
-        });
+        const response = await axios.get('/api/website/products');
         products.value = response.data.data || response.data;
     } catch (error) {
         console.error('Error fetching products:', error);

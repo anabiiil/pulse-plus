@@ -69,10 +69,9 @@ const loading = ref(true);
 const fetchServices = async () => {
     try {
         loading.value = true;
-        const response = await axios.get('/api/services', {
+        const response = await axios.get('/api/website/services', {
             params: {
-                limit: 3,
-                status: 'active'
+                limit: 3
             }
         });
         services.value = response.data.data || response.data;

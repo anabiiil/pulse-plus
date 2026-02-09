@@ -78,7 +78,7 @@ const formatDate = (date: string) => {
 const fetchService = async () => {
     try {
         loading.value = true;
-        const response = await axios.get(`/api/services/${route.params.id}`);
+        const response = await axios.get(`/api/website/services/${route.params.id}`);
         service.value = response.data.data || response.data;
     } catch (error) {
         console.error('Error fetching service:', error);

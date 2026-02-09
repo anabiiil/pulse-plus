@@ -111,7 +111,7 @@ const submitForm = async () => {
     loading.value = true;
 
     try {
-        const response = await axios.post('/api/contact', formData);
+        const response = await axios.post('/api/website/contact', formData);
         window.showSuccessToast?.('Message sent successfully!');
 
         // Reset form

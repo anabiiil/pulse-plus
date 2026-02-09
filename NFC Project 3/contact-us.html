@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="scss/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/primeicons@6.0.1/primeicons.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <title>contact-us</title>
+  </head>
+  <body>
+    <!-- nav -->
+     <nav class="hidden lg:flex py-4 px-20 bg-white/90 shadow-md flex justify-between items-center">
+      <div class="flex items-center gap-4"  >
+        <a href="index.html" class="text-2xl font-bold text-gray-800"><img src="img/logo.png" class="w-[120px]" alt=""></a>
+        <div>
+          <a href="index.html" class="mx-4 text-teal-500!  transition duration-150  font-semibold before:w-full before:h-0.5 before:bg-teal-500 before:absolute before:-bottom-2 before:left-0 relative">الرئيسية</a>
+          <a href="#products" class="relative  transition duration-150 font-semibold mx-4 hover:text-teal-500 "> المتجر</a>
+          <a href="#features" class="hover:text-teal-500! transition duration-150  font-semibold mx-4">خدماتنا</a>
+          <a href="#features" class="hover:text-teal-500! transition duration-150  font-semibold mx-4 ">من نحن</a>
+          <a href="contact-us.html" class="hover:text-teal-500! transition duration-150  font-semibold mx-4 ">اتصل بنا</a>
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <button  class="flex! items-center! justify-center! w-[50px]! h-[50px]! text-[18px]! rounded-full! shadow-xl!"><i class="pi pi-moon"></i></button>
+        <button  class="flex! items-center! justify-center! w-[50px]! h-[50px]! text-[18px]! rounded-full! shadow-xl!">
+          EN
+        </button>
+        <a href="login.html" class="bg-teal-500! text-white! px-5! py-2! rounded-[30px]! shadow-lg! font-semibold! hover:bg-teal-600! transition duration-150!"> 
+          تسجيل الدخول
+        </a>
+      </div>
+    
+    </nav>
+    <nav class=" lg:hidden block w-full bg-white shadow-md px-6 py-4 flex items-center justify-between relative">
+
+      <div>
+        <a href="/index.html">
+          <div class=""><img src="img/logo.png" class="w-[100px]" alt=""></div>
+        </a>
+      </div>
+      <div class="flex items-center justify-center gap-4">
+        <a href="profile.html" class="w-9! h-9! rounded-full! flex! items-center! justify-center! bg-[#1BB2B1]! cursor-pointer! text-white! shadow-xl!"><i class="pi pi-user"></i></a>
+        <button class="w-9! h-9! rounded-full! flex! items-center! justify-center! bg-[#FF6760]! cursor-pointer! text-white! shadow-xl!" id="menu-btn"><i class="pi pi-bars"></i></button>
+      </div>
+
+
+      <div id="burgerMenu" class="absolute hidden   flex-col z-50 p-6 bg-white/80 top-[100%] left-0  backdrop-blur-md  shadow-lg">
+        <div> 
+          <button class="bg-[#123057]! rounded-4xl! py-3! px-7! text-white! cursor-pointer! font-semibold!">EN</button>
+          <button class="bg-[#123057]! rounded-4xl! py-3! px-7! text-white! cursor-pointer! font-semibold!"><i class="pi pi-moon"></i></button>
+        </div>
+        <div>
+          <ul class="p-2 flex flex-col gap-2 text-right ">
+            <li>
+              <a href="index.html" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all">
+                الرئيسية
+              </a>
+            </li>
+            <li>
+              <a href="#products" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all">
+                المتجر
+              </a>
+            </li>
+            <li>
+              <a href="#features" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all">
+                خدماتنا
+              </a>
+            </li>
+            <li>
+              <a href="#features" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all">
+                من نحن
+              </a>
+            </li>
+            <li>
+              <a href="contact-us.html" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all">
+                اتصل بنا
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- main -->
+    <div class="p-10 bg-gray-100">
+      <div class="p-10 text-center">
+        <h2 class="text-4xl font-bold mb-6 text-[#123057]">
+          تواصل معنا
+        </h2>
+        <p class=" text-gray-500 font-bold">نحن هنا للإجابة على جميع استفساراتك. لا تتردد في مراسلتنا في أي وقت.</p>
+      </div>
+      <div class="mx-auto grid grid-cols-3 gap-12 px-4">
+        <div>
+          <div class="mx-auto space-y-4">
+
+            <div class="bg-white p-10  rounded-[24px]  space-y-3 shadow-[0_12px_30px_-18px_rgba(0,0,0,0.25)]">
+
+              <div class="flex items-center gap-3 bg-[#F6F7F9] rounded-[14px] px-4 py-3">
+                <div class="p-3 rounded-xl shadow-[inset_0px_4px_4px_0px_rgba(0,0,0,0.25)] bg-[#1BB2B1] flex items-center justify-center">
+                  <i class="pi pi-envelope text-white text-[20px]"></i>
+                </div>
+                <span class=" flex flex-col gap-2">
+                  <p class="text-gray-500 text-[13px] ">البريد الإلكتروني</p>
+                  <p>info@pulse-plus.com</p>
+                </span>
+              </div>
+
+              <div class="flex items-center gap-3 bg-[#F6F7F9] rounded-[14px] px-4 py-3">
+                <div class="p-3 rounded-xl shadow-[inset_0px_4px_4px_0px_rgba(0,0,0,0.25)] bg-[#1BB2B1] flex items-center justify-center">
+                  <i class="pi pi-phone text-white text-[20px]"></i>
+                </div>
+                <span class=" flex flex-col gap-2">
+                  <p class="text-[13px] text-gray-500">رقم الهاتف</p>
+                  <p class="[direction:ltr]">+20 15 55227756</p>
+                </span>
+              </div>
+
+              <div class="flex items-center gap-3 bg-[#F6F7F9] rounded-[14px] px-4 py-3">
+                <div class="p-3 rounded-xl shadow-[inset_0px_4px_4px_0px_rgba(0,0,0,0.25)] bg-[#1BB2B1] flex items-center justify-center">
+                  <i class="pi pi-map-marker text-white text-[20px]"></i>
+                </div>
+                <span class=" flex flex-col gap-2">
+                  <p class="text-[13px] text-gray-500">المقر الرئيسي </p>
+                  <p class="[direction:ltr]">القاهرة، جمهورية مصر العربية</p>
+                </span>
+              </div>
+
+            </div>
+
+            <div class="bg-[#0C2A44]
+                        rounded-[22px]
+                        p-5 text-white
+                        shadow-[0_18px_40px_-20px_rgba(12,42,68,0.9)]">
+
+              <h3 class="text-[15px] font-semibold mb-2">
+                خدمة مميزة
+              </h3>
+
+              <p class="text-[13px] leading-relaxed text-gray-200 mb-4">
+                احصل على استشارة مجانية وتواصل مع فريقنا
+                لمساعدتك في اختيار الحل الأنسب لك
+              </p>
+
+              <button
+                class="w-full! py-3! rounded-xl!
+                      bg-[#19C5A3]!
+                      text-center! text-white!
+                      text-[14px]! font-semibold!
+                      hover:bg-[#14b092]!
+                      transition! duration-150!">
+                احجز استشارة مجانية
+              </button>
+
+            </div>
+
+          </div>
+
+
+
+        </div>
+        <div class="col-span-2">
+          <div class="bg-white p-10 rounded-[48px] shadow-xl">
+            <div class="text-2xl font-bold p-10 mb-8 text-[#123057]">
+              أرسل لنا رسالة
+            </div>
+            <div class="grid gap-7 grid-cols-2">
+              <div>
+                <label class="block text-gray-700 font-semibold mb-2" for="">الاسم الكامل</label>
+                <input class=" focus-visible:outline-none focus-visible:ring-0 focus:ring-0 focus:border-transparent bg-gray-50 border-0! transition-shadow! duration-300! ease-in-out!  hover:shadow-2xl! cursor-pointer! shadow-xl! font-semibold! rounded-[30px]! w-full! p-4!  my-2 pr-12!  " type="text"  placeholder=" مثال: أحمد محمد ">
+              </div>
+              <div>
+                <label class="block text-gray-700 font-semibold mb-2" for=""> البريد الإلكتروني</label>
+                <input class=" focus-visible:outline-none focus-visible:ring-0 focus:ring-0 focus:border-transparent bg-gray-50 border-0! transition-shadow! duration-300! ease-in-out!  hover:shadow-2xl! cursor-pointer! shadow-xl! font-semibold! rounded-[30px]! w-full! p-4!  my-2 pr-12!  " type="email"  placeholder=" example@mail.com">
+              </div>
+              <div class="col-span-2">
+                <label class="block text-gray-700 font-semibold mb-2" for=""> الموضوع</label>
+                <input class=" focus-visible:outline-none focus-visible:ring-0 focus:ring-0 focus:border-transparent bg-gray-50 border-0! transition-shadow! duration-300! ease-in-out!  hover:shadow-2xl! cursor-pointer! shadow-xl! font-semibold! rounded-[30px]! w-full! p-4!  my-2 pr-12!  " type="text"  placeholder=" كيف يمكننا مساعدتك؟">
+              </div>
+              <div class="col-span-2">
+                <label class="block text-gray-700 font-semibold mb-2" for=""> الرسالة</label>
+                <textarea class=" focus-visible:outline-none focus-visible:ring-0 focus:ring-0! focus:border-transparent! bg-gray-50 border-0! transition-shadow! duration-300! ease-in-out!  hover:shadow-2xl! cursor-pointer! shadow-xl! font-semibold! rounded-[30px]! w-full! p-4!  my-2 pr-12! min-h-[150px]"  type="text"  placeholder=" ">اكتب رسالتك هنا...
+                </textarea>
+              </div>
+              <div class="col-span-2 p-2 flex items-center justify-center">
+                <button class="px-20! py-2! rounded-xl! bg-[#00A5AA]! text-white! flex items-center"><i class="pi pi-send mx-2"></i> إرسال رسالة </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- footer -->
+    <footer class="bg-[#03315A] text-white">
+      <div class="max-w-7xl mx-auto px-6 py-10 flex flex-col md:flex-row justify-between gap-8">
+        
+        <div class="md:w-1/3 flex justify-start">
+          <div class="w-fit">
+            <div class="flex items-center  gap-3 mb-3">
+            <img src="img/footer-logo.png" class="w-[200px]" alt="">
+            </div>
+            <p class="text-sm pl-42 text-center">
+              نحن نؤمن أن التكنولوجيا يجب أن تخدم الإنسانية ,خصوصاً في لحظات الضغف والقوة
+            </p>
+          </div>
+        </div>
+
+        <div class="md:w-1/3 flex justify-center">
+          <div>
+            <h3 class="font-semibold mb-2">روابط سريعة</h3>
+            <ul class="space-y-1 text-sm">
+              <li><a href="#" class="hover:text-teal-400 transition-colors">خدماتنا</a></li>
+              <li><a href="#" class="hover:text-teal-400 transition-colors">المتجر</a></li>
+              <li><a href="#" class="hover:text-teal-400 transition-colors">من نحن</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="md:w-1/3 flex justify-end">
+          <div >
+            <h3 class="font-semibold mb-2">تواصل معنا</h3>
+            <p class="text-sm">info@pulse-plus.com</p>
+            <p class="text-sm">+2 01022335566</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-t border-white/20 mt-6 py-4 text-center text-xs text-white/70">
+        © 2024 Pulse+ جميع الحقوق محفوظة
+      </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

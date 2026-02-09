@@ -60,11 +60,7 @@ const loading = ref(true);
 const fetchServices = async () => {
     try {
         loading.value = true;
-        const response = await axios.get('/api/services', {
-            params: {
-                status: 'active'
-            }
-        });
+        const response = await axios.get('/api/website/services');
         services.value = response.data.data || response.data;
     } catch (error) {
         console.error('Error fetching services:', error);

@@ -1,6 +1,4 @@
 
-
-
   new Swiper('.mySwiper', {
     loop: true,
     speed: 900,
@@ -30,33 +28,27 @@ window.addEventListener("load", () => {
 });
 
 
-const animatedItems = Array.from(document.querySelectorAll(
-  '.swiper, section, footer, nav, .shadow-lg, .shadow-xl'
-)).filter(el => !el.closest('#burgerMenu'));
+const animatedItems = Array.from(
+  document.querySelectorAll('.swiper, section, footer, nav,')
+).filter(el => !el.closest('#burgerMenu'));
 
 animatedItems.forEach(el => {
   el.style.opacity = '0';
-  el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+  el.style.transition = 'opacity 0.8s ease';
 });
 
 function animate(el) {
   el.style.opacity = '1';
 }
 
-const observer = new IntersectionObserver(
-  (entries, obs) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        animate(entry.target);
-        obs.unobserve(entry.target);
-      }
-    });
-  },
-  {
-    threshold: 0.15,
-    rootMargin: '0px 0px -50px 0px', 
-  }
-);
+const observer = new IntersectionObserver((entries, obs) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      animate(entry.target);
+      obs.unobserve(entry.target);
+    }
+  });
+});
 
 animatedItems.forEach(el => {
   observer.observe(el);
@@ -75,3 +67,6 @@ const box = document.getElementById('burgerMenu');
 btn.addEventListener('click', () => {
   box.classList.toggle('flex!');
 });
+
+flatpickr("#birthdate", {dateFormat:"Y-m-d"});
+

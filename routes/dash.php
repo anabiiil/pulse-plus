@@ -5,6 +5,7 @@ use App\Http\Controllers\Dash\Auth\LoginController;
 use App\Http\Controllers\Dash\CountryController;
 use App\Http\Controllers\Dash\ProductController;
 use App\Http\Controllers\Dash\ServiceController;
+use App\Http\Controllers\Dash\SettingController;
 use App\Http\Controllers\Dash\SliderController;
 use App\Http\Controllers\Dash\UserController;
 use Illuminate\Support\Facades\Route;
@@ -30,5 +31,7 @@ Route::group(
         Route::apiResource('products', ProductController::class);
         Route::apiResource('sliders', SliderController::class);
         Route::apiResource('users', UserController::class);
+        Route::apiResource('settings', SettingController::class);
+        Route::get('settings/slug/{slug}', [SettingController::class, 'getBySlug']);
 
     });

@@ -115,6 +115,19 @@
                     </router-link>
                 </li>
 
+                <li class="slide">
+                    <router-link to="/dash/settings" class="side-menu__item">
+                        <span class="me-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round" class="feather feather-settings"><circle cx="12" cy="12"
+                                                                                                   r="3"></circle><path
+                                d="M12 1v6m0 6v6m6-6h6M1 12h6m4.2-6.8l4.2-4.2m0 16.2l-4.2-4.2m9.9-4.2l-4.2 4.2m-12-4.2l4.2 4.2"></path></svg>
+                        </span>
+                        <span class="side-menu__label">Settings</span>
+                    </router-link>
+                </li>
+
             </ul>
             <div class="slide-right" id="slide-right">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191" width="20" height="20" viewBox="0 0 24 24">

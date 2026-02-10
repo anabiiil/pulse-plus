@@ -177,6 +177,23 @@ const routes = [
             },
         ],
     },
+
+    // Settings routes (Edit only - no create or delete)
+    {
+        path: '/dash/settings',
+        children: [
+            {
+                path: '',
+                name: 'settings.list',
+                component: () => import('../components/dashboard/settings/List.vue'),
+            },
+            {
+                path: ':id/update',
+                name: 'settings.update',
+                component: () => import('../components/dashboard/settings/crud/Update.vue'),
+            },
+        ],
+    },
 ];
 
 const router = createRouter({

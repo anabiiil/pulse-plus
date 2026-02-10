@@ -55,8 +55,7 @@ Route::prefix('user')->group(function () {
     });
 });
 
-// Website routes - catch all routes that are not /dash or /user
-Route::get('/{any?}', static function () {
-    return view('website.index');
-})->where('any', '^(?!dash|user).*$');
-
+// Website routes - DISABLED
+// Route::get('/{any?}', static function () {
+//     return view('website.index');
+// })->where('any', '^(?!dash|user).*$');

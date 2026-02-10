@@ -23,8 +23,8 @@ const vuetify = createVuetify({
 
 
 // Import your components
-import mainDashboard from './components/dashboard/AppMain.vue';
 import AdminLoginForm from './components/dashboard/auth/LoginForm.vue';
+import Sidebar from './components/dashboard/sidebar.vue';
 
 import router from './main/router.ts'; // Import router
 
@@ -39,6 +39,7 @@ const pinia = createPinia();
 
 // Register components
 app.component('admin-login-form', AdminLoginForm);
+app.component('sidebar-component', Sidebar);
 
 // Mount the app to a DOM element
 let appMain = document.getElementById('app')
@@ -63,6 +64,14 @@ if (appMain) {
     });
     app.config.globalProperties.$formatDate = formatDate;
     app.mount('#app');
+}
+
+// Mount sidebar separately with the same router
+let sidebarElement = document.getElementById('sidebar');
+if (sidebarElement) {
+    const sidebarApp = createApp(Sidebar);
+    sidebarApp.use(router);
+    sidebarApp.mount('#sidebar');
 }
 
 head.addHeadObjs({

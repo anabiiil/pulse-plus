@@ -42,6 +42,5 @@
 
     <!-- Choices Css -->
     <link rel="stylesheet" href="{{ asset('dash/assets') }}/libs/choices.js/public/assets/styles/choices.min.css">
-    @vite('resources/css/app.css')
 
 </head>

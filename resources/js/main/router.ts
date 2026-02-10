@@ -1,6 +1,13 @@
 import {createRouter, createWebHistory} from 'vue-router';
 
 const routes = [
+    // Dashboard Index
+    {
+        path: '/dash',
+        name: 'dashboard.index',
+        component: () => import('../components/dashboard/Dashboard.vue'),
+    },
+
     // Slider routes with nested CRUD operations
     {
         path: '/dash/slider',

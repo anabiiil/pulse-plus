@@ -1,5 +1,6 @@
 import {createApp} from 'vue';
 import Sidebar from '../components/dashboard/sidebar.vue';
+// @ts-ignore
 import sidebarRouter from './router.ts';
 
 const sidebarApp = createApp(Sidebar);

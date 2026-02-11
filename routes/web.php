@@ -55,7 +55,7 @@ Route::prefix('user')->group(function () {
     });
 });
 
-// Website routes
+// Website routes (Vue SPA)
 Route::get('/{any?}', static function () {
     return view('website.index');
 })->where('any', '^(?!dash|user|api).*$');

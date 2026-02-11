@@ -10,6 +10,16 @@ const routes = [
             title: 'Home'
         }
     },
+    // Login page
+    {
+        path: '/login',
+        name: 'login',
+        component: () => import('../components/website/pages/Login.vue'),
+        meta: {
+            title: 'تسجيل الدخول',
+            guest: true
+        }
+    },
 ];
 
 const router = createRouter({

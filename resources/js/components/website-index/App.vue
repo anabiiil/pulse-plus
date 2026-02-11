@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="min-h-screen transition-all duration-300" :class="{ 'rtl': appStore.isRTL }">
+  <div id="app" class="min-h-screen transition-all duration-300">
     <!-- Loader -->
     <Loader />
 
@@ -44,9 +44,34 @@ watch(() => appStore.locale, () => {
 .fade-leave-to {
   opacity: 0;
 }
+</style>
 
-.rtl {
+<style>
+/* Global RTL/LTR styles */
+html[dir="rtl"] {
   direction: rtl;
+  text-align: right;
+}
+
+html[dir="ltr"] {
+  direction: ltr;
+  text-align: left;
+}
+
+/* Ensure body follows HTML direction */
+html[dir="rtl"] body {
+  direction: rtl;
+  text-align: right;
+}
+
+html[dir="ltr"] body {
+  direction: ltr;
+  text-align: left;
+}
+
+/* Smooth transition for direction changes */
+* {
+  transition: direction 0.3s ease;
 }
 </style>
 

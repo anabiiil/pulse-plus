@@ -16,9 +16,9 @@
           <h3 class="text-xl font-bold mt-4">
             {{ product.name }}
           </h3>
-          <button class="flex items-center text-teal-500 font-semibold mt-4">
-            اطلب الان <i class="pi pi-arrow-circle-left mt-2 mr-2"></i>
-          </button>
+<!--          <button class="flex items-center text-teal-500 font-semibold mt-4">-->
+<!--            اطلب الان <i class="pi pi-arrow-circle-left mt-2 mr-2"></i>-->
+<!--          </button>-->
         </div>
       </div>
     </div>

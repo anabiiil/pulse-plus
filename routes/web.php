@@ -55,7 +55,7 @@ Route::prefix('user')->group(function () {
     });
 });
 
-// Website routes - DISABLED
-// Route::get('/{any?}', static function () {
-//     return view('website.index');
-// })->where('any', '^(?!dash|user).*$');
+// Website routes
+Route::get('/{any?}', static function () {
+    return view('website.index');
+})->where('any', '^(?!dash|user|api).*$');

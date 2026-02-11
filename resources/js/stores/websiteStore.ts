@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
-import { useTranslation, type Locale } from '../../locales/website-index';
-import { switchLocaleRoute } from '../../composables/useLocaleRouter';
+import { useTranslation, type Locale } from '../locales/website';
+import { switchLocaleRoute } from '../composables/useLocaleRouter';
 
-export const useAppStore = defineStore('website-index-app', () => {
+export const useWebsiteStore = defineStore('website', () => {
     // State
     const isLoading = ref(true);
     const isDarkMode = ref(false);
@@ -25,6 +25,19 @@ export const useAppStore = defineStore('website-index-app', () => {
     function toggleDarkMode() {
         isDarkMode.value = !isDarkMode.value;
         localStorage.setItem('darkMode', isDarkMode.value.toString());
+
+        // Apply dark mode class
+        if (isDarkMode.value) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    }
+
+    function setLocale(newLocale: Locale) {
+        locale.value = newLocale;
+        localStorage.setItem('locale', locale.value);
+        updateHtmlAttributes();
     }
 
     function setRouter(router: any) {
@@ -39,9 +52,7 @@ export const useAppStore = defineStore('website-index-app', () => {
         const newPath = switchLocaleRoute(currentPath, newLocale);
 
         // Update state first
-        locale.value = newLocale;
-        localStorage.setItem('locale', newLocale);
-        updateHtmlAttributes();
+        setLocale(newLocale);
 
         // Navigate using Vue Router (no page reload!)
         if (routerInstance) {
@@ -71,6 +82,9 @@ export const useAppStore = defineStore('website-index-app', () => {
         const savedDarkMode = localStorage.getItem('darkMode');
         if (savedDarkMode !== null) {
             isDarkMode.value = savedDarkMode === 'true';
+            if (isDarkMode.value) {
+                document.documentElement.classList.add('dark');
+            }
         }
 
         // Get locale from route path or localStorage
@@ -105,6 +119,7 @@ export const useAppStore = defineStore('website-index-app', () => {
         // Actions
         setLoading,
         toggleDarkMode,
+        setLocale,
         setRouter,
         toggleLocale,
         toggleMobileMenu,
@@ -113,6 +128,4 @@ export const useAppStore = defineStore('website-index-app', () => {
         init,
     };
 });
-
-
 

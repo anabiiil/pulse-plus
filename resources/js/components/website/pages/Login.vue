@@ -7,10 +7,10 @@
         <div class="bg-gray-50 min-h-[70vh] py-16">
             <div class="flex flex-col items-center justify-center text-center px-4">
                 <h1 class="text-3xl font-bold text-[#123057] mb-2">
-                    مرحباً بك مجدداً
+                    {{ t.login.title }}
                 </h1>
                 <p class="text-sm font-semibold text-gray-500 mb-6">
-                    ادخل إلى خزنتك الطبية الآمنة
+                    {{ t.login.subtitle }}
                 </p>
 
                 <div class="w-25 h-25 my-6 animate-[float_3s_ease-in-out_infinite]">
@@ -21,7 +21,7 @@
                 <LoginForm />
 
                 <p class="text-xs text-gray-400 mt-6">
-                    © 2025 Pulse+ جميع الحقوق محفوظة
+                    {{ t.footer.copyright }}
                 </p>
             </div>
         </div>
@@ -32,7 +32,9 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, computed } from 'vue';
 import { useHead } from '@vueuse/head';
+import { useWebsiteStore } from '../../../stores/websiteStore';
 
 // Import components
 import Navigation from '../Navigation.vue';
@@ -42,8 +44,15 @@ import LoginForm from '../forms/LoginForm.vue';
 // Import images
 import shieldImg from '../../../images/website/shield.png';
 
+const websiteStore = useWebsiteStore();
+const t = computed(() => websiteStore.t);
+
+onMounted(() => {
+    websiteStore.init();
+});
+
 useHead({
-    title: 'تسجيل الدخول - Pulse',
+    title: computed(() => `${t.value.nav.login} - Pulse`),
 });
 </script>
 

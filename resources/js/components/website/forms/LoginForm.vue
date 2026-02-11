@@ -68,13 +68,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
+import { ref, reactive, computed } from 'vue';
 import { useToast } from 'vue-toastification';
+import { useWebsiteStore } from '../../../stores/websiteStore';
 import axios from 'axios';
 
+const websiteStore = useWebsiteStore();
 const toast = useToast();
 const loading = ref(false);
 const showPassword = ref(false);
+
+const t = computed(() => websiteStore.t);
+const isRTL = computed(() => websiteStore.isRTL);
 
 const formData = reactive({
     email: '',
@@ -101,7 +106,7 @@ const handleSubmit = async () => {
 
     try {
         await axios.post('/user/login', formData);
-        toast.success('تم تسجيل الدخول بنجاح!');
+        toast.success(t.value.login.successMessage);
 
         // Redirect to profile after successful login
         setTimeout(() => {
@@ -117,7 +122,7 @@ const handleSubmit = async () => {
                 }
             });
         } else {
-            toast.error('فشل تسجيل الدخول. يرجى التحقق من بيانات الدخول.');
+            toast.error(t.value.login.errorMessage);
         }
     } finally {
         loading.value = false;

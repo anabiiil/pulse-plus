@@ -51,10 +51,18 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { useAppStore } from '../../stores/website-index/appStore';
 import logoImg from '../../images/website/logo.png';
 
+const router = useRouter();
 const appStore = useAppStore();
+
+onMounted(() => {
+    // Inject router into store for navigation
+    appStore.setRouter(router);
+});
 </script>
 
 

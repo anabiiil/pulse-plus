@@ -12,25 +12,25 @@
                 <img :src="logoImg" class="w-[120px]" alt="Pulse Logo">
             </router-link>
             <div>
-                <router-link to="/" class="mx-4 transition duration-150 font-semibold" :class="$route.path === '/' ? 'text-teal-500 before:w-full before:h-0.5 before:bg-teal-500 before:absolute before:-bottom-2 before:left-0 relative' : 'hover:text-teal-500'">الرئيسية</router-link>
-                <a href="/#products" class="relative transition duration-150 font-semibold mx-4 hover:text-teal-500">المتجر</a>
-                <a href="/#features" class="hover:text-teal-500 transition duration-150 font-semibold mx-4">خدماتنا</a>
-                <a href="/#features" class="hover:text-teal-500 transition duration-150 font-semibold mx-4">من نحن</a>
-                <router-link to="/contact" class="hover:text-teal-500 transition duration-150 font-semibold mx-4">اتصل بنا</router-link>
+                <router-link to="/" class="mx-4 transition duration-150 font-semibold" :class="$route.path === '/' ? 'text-teal-500 before:w-full before:h-0.5 before:bg-teal-500 before:absolute before:-bottom-2 before:left-0 relative' : 'hover:text-teal-500'">{{ t.nav.home }}</router-link>
+                <a href="/#products" class="relative transition duration-150 font-semibold mx-4 hover:text-teal-500">{{ t.nav.store }}</a>
+                <a href="/#features" class="hover:text-teal-500 transition duration-150 font-semibold mx-4">{{ t.nav.services }}</a>
+                <a href="/#features" class="hover:text-teal-500 transition duration-150 font-semibold mx-4">{{ t.nav.about }}</a>
+                <router-link to="/contact" class="hover:text-teal-500 transition duration-150 font-semibold mx-4">{{ t.nav.contact }}</router-link>
             </div>
         </div>
         <div class="flex items-center gap-4">
-            <button class="flex items-center justify-center w-[50px] h-[50px] text-[18px] rounded-full shadow-xl">
+            <button @click="toggleDarkMode" class="flex items-center justify-center w-[50px] h-[50px] text-[18px] rounded-full shadow-xl">
                 <i class="pi pi-moon"></i>
             </button>
-            <button class="flex items-center justify-center w-[50px] h-[50px] text-[18px] rounded-full shadow-xl">
-                EN
+            <button @click="toggleLanguage" class="flex items-center justify-center w-[50px] h-[50px] text-[18px] rounded-full shadow-xl font-semibold">
+                {{ t.nav.language }}
             </button>
             <router-link v-if="!isAuthenticated" to="/login" class="bg-teal-500 text-white px-5 py-2 rounded-[30px] shadow-lg font-semibold hover:bg-teal-600 transition duration-150">
-                تسجيل الدخول
+                {{ t.nav.login }}
             </router-link>
             <router-link v-else to="/profile" class="bg-teal-500 text-white px-5 py-2 rounded-[30px] shadow-lg font-semibold hover:bg-teal-600 transition duration-150">
-                الملف الشخصي
+                {{ t.nav.profile }}
             </router-link>
         </div>
     </nav>
@@ -53,17 +53,17 @@
 
         <!-- Mobile Menu -->
         <div v-if="menuOpen" class="absolute flex-col z-50 p-6 bg-white/80 top-[100%] left-0 backdrop-blur-md shadow-lg">
-            <div>
-                <button class="bg-[#123057] rounded-4xl py-3 px-7 text-white cursor-pointer font-semibold">EN</button>
-                <button class="bg-[#123057] rounded-4xl py-3 px-7 text-white cursor-pointer font-semibold"><i class="pi pi-moon"></i></button>
+            <div class="mb-4 flex gap-2">
+                <button @click="toggleLanguage" class="bg-[#123057] rounded-4xl py-3 px-7 text-white cursor-pointer font-semibold">{{ t.nav.language }}</button>
+                <button @click="toggleDarkMode" class="bg-[#123057] rounded-4xl py-3 px-7 text-white cursor-pointer font-semibold"><i class="pi pi-moon"></i></button>
             </div>
             <div>
-                <ul class="p-2 flex flex-col gap-2 text-right">
-                    <li><router-link to="/" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all">الرئيسية</router-link></li>
-                    <li><a href="/#products" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all">المتجر</a></li>
-                    <li><a href="/#features" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all">خدماتنا</a></li>
-                    <li><a href="/#features" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all">من نحن</a></li>
-                    <li><router-link to="/contact" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all">اتصل بنا</router-link></li>
+                <ul class="p-2 flex flex-col gap-2" :class="isRTL ? 'text-right' : 'text-left'">
+                    <li><router-link to="/" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all">{{ t.nav.home }}</router-link></li>
+                    <li><a href="/#products" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all">{{ t.nav.store }}</a></li>
+                    <li><a href="/#features" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all">{{ t.nav.services }}</a></li>
+                    <li><a href="/#features" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all">{{ t.nav.about }}</a></li>
+                    <li><router-link to="/contact" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all">{{ t.nav.contact }}</router-link></li>
                 </ul>
             </div>
         </div>
@@ -71,10 +71,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { useWebsiteStore } from '../../stores/websiteStore';
 import logoImg from '../../images/website/logo.png';
 
+const router = useRouter();
+const websiteStore = useWebsiteStore();
 const menuOpen = ref(false);
+
+const t = computed(() => websiteStore.t);
+const isRTL = computed(() => websiteStore.isRTL);
 
 const isAuthenticated = computed(() => {
     return (window as any).authUser !== null && (window as any).authUser !== undefined;
@@ -83,5 +90,22 @@ const isAuthenticated = computed(() => {
 const toggleMenu = () => {
     menuOpen.value = !menuOpen.value;
 };
+
+const toggleLanguage = () => {
+    websiteStore.toggleLocale();
+};
+
+const toggleDarkMode = () => {
+    websiteStore.toggleDarkMode();
+};
+
+onMounted(() => {
+    // Initialize store if not already initialized
+    if (!websiteStore.isLoading) {
+        websiteStore.init();
+    }
+    // Inject router into store for navigation
+    websiteStore.setRouter(router);
+});
 </script>
 

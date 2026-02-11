@@ -8,7 +8,7 @@
             <img :src="footerLogo" class="w-[150px] md:w-[200px]" alt="Pulse Logo">
           </div>
           <p class="text-sm">
-            نحن نؤمن أن التكنولوجيا يجب أن تخدم الإنسانية، خصوصاً في لحظات الضغف والقوة
+            {{ appStore.t.footer.description }}
           </p>
         </div>
       </div>
@@ -16,11 +16,11 @@
       <!-- Quick Links -->
       <div class="md:w-1/3 flex justify-center">
         <div>
-          <h3 class="font-semibold mb-2 text-center md:text-left">روابط سريعة</h3>
+          <h3 class="font-semibold mb-2 text-center md:text-left">{{ appStore.t.footer.quickLinks }}</h3>
           <ul class="space-y-1 text-sm text-center md:text-left">
-            <li><a href="#features" class="hover:text-teal-400 transition-colors">خدماتنا</a></li>
-            <li><a href="#products" class="hover:text-teal-400 transition-colors">المتجر</a></li>
-            <li><a href="#about" class="hover:text-teal-400 transition-colors">من نحن</a></li>
+            <li><a href="#features" class="hover:text-teal-400 transition-colors">{{ appStore.t.nav.services }}</a></li>
+            <li><a href="#products" class="hover:text-teal-400 transition-colors">{{ appStore.t.nav.store }}</a></li>
+            <li><a href="#about" class="hover:text-teal-400 transition-colors">{{ appStore.t.nav.about }}</a></li>
           </ul>
         </div>
       </div>
@@ -28,7 +28,7 @@
       <!-- Contact Info -->
       <div class="md:w-1/3 flex justify-center md:justify-end text-center md:text-right">
         <div>
-          <h3 class="font-semibold mb-2">تواصل معنا</h3>
+          <h3 class="font-semibold mb-2">{{ appStore.t.footer.contactUs }}</h3>
           <p class="text-sm">{{ dataStore.settings.email }}</p>
           <p class="text-sm">{{ dataStore.settings.phone }}</p>
         </div>
@@ -37,16 +37,18 @@
 
     <!-- Copyright -->
     <div class="border-t border-white/20 mt-6 py-4 text-center text-xs text-white/70">
-      © 2024 Pulse+ جميع الحقوق محفوظة
+      {{ appStore.t.footer.copyright }}
     </div>
   </footer>
 </template>
 
 <script setup lang="ts">
 import { useDataStore } from '../../stores/website-index/dataStore';
+import { useAppStore } from '../../stores/website-index/appStore';
 import footerLogo from '../../images/website/footer-logo.png';
 
 const dataStore = useDataStore();
+const appStore = useAppStore();
 </script>
 
 

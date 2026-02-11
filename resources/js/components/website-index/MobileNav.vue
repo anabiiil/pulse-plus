@@ -25,16 +25,18 @@
       v-show="appStore.isMobileMenuOpen"
       class="absolute flex-col z-50 p-6 bg-white/80 top-[100%] left-0 backdrop-blur-md shadow-lg"
     >
-      <div>
+      <div class="flex gap-2">
         <button
           @click="appStore.toggleLocale"
           class="bg-[#123057] rounded-4xl py-3 px-7 text-white cursor-pointer font-semibold"
+          :title="appStore.t.nav.language"
         >
-          {{ appStore.locale === 'ar' ? 'EN' : 'AR' }}
+          {{ appStore.t.nav.language }}
         </button>
         <button
           @click="appStore.toggleDarkMode"
-          class="bg-[#123057] rounded-4xl py-3 px-7 text-white cursor-pointer font-semibold ml-2"
+          class="bg-[#123057] rounded-4xl py-3 px-7 text-white cursor-pointer font-semibold"
+          :title="appStore.t.nav.darkMode"
         >
           <i class="pi pi-moon"></i>
         </button>
@@ -47,7 +49,7 @@
               @click="appStore.closeMobileMenu"
               class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all"
             >
-              الرئيسية
+              {{ appStore.t.nav.home }}
             </router-link>
           </li>
           <li>
@@ -56,7 +58,7 @@
               @click="appStore.closeMobileMenu"
               class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all"
             >
-              المتجر
+              {{ appStore.t.nav.store }}
             </a>
           </li>
           <li>
@@ -65,7 +67,7 @@
               @click="appStore.closeMobileMenu"
               class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all"
             >
-              خدماتنا
+              {{ appStore.t.nav.services }}
             </a>
           </li>
           <li>
@@ -74,7 +76,7 @@
               @click="appStore.closeMobileMenu"
               class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all"
             >
-              من نحن
+              {{ appStore.t.nav.about }}
             </a>
           </li>
           <li>
@@ -83,7 +85,7 @@
               @click="appStore.closeMobileMenu"
               class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all"
             >
-              اتصل بنا
+              {{ appStore.t.nav.contact }}
             </a>
           </li>
         </ul>

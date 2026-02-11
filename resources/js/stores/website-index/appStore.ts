@@ -66,6 +66,37 @@ export const useAppStore = defineStore('website-index-app', () => {
         isMobileMenuOpen.value = false;
     }
 
+    async function scrollToSection(sectionId: string) {
+        // Close mobile menu if open
+        closeMobileMenu();
+
+        // Get current route
+        const currentPath = routerInstance?.currentRoute?.value?.path || window.location.pathname;
+
+        // Check if we're on the home page
+        const isHome = currentPath === '/' || currentPath === '/en';
+
+        if (!isHome) {
+            // Navigate to home page first
+            const homePath = locale.value === 'en' ? '/en' : '/';
+
+            if (routerInstance) {
+                await routerInstance.push(homePath);
+                // Wait for navigation and DOM update
+                await new Promise(resolve => setTimeout(resolve, 100));
+            } else {
+                window.location.href = homePath + '#' + sectionId;
+                return;
+            }
+        }
+
+        // Scroll to section
+        const element = document.getElementById(sectionId);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+
     // Initialize from localStorage
     function init() {
         const savedDarkMode = localStorage.getItem('darkMode');
@@ -109,6 +140,7 @@ export const useAppStore = defineStore('website-index-app', () => {
         toggleLocale,
         toggleMobileMenu,
         closeMobileMenu,
+        scrollToSection,
         updateHtmlAttributes,
         init,
     };

@@ -12,11 +12,11 @@
                 <img :src="logoImg" class="w-[120px]" alt="Pulse Logo">
             </router-link>
             <div>
-                <router-link to="/" class="mx-4 transition duration-150 font-semibold" :class="$route.path === '/' ? 'text-teal-500 before:w-full before:h-0.5 before:bg-teal-500 before:absolute before:-bottom-2 before:left-0 relative' : 'hover:text-teal-500'">{{ t.nav.home }}</router-link>
-                <a href="/#products" class="relative transition duration-150 font-semibold mx-4 hover:text-teal-500">{{ t.nav.store }}</a>
-                <a href="/#features" class="hover:text-teal-500 transition duration-150 font-semibold mx-4">{{ t.nav.services }}</a>
-                <a href="/#features" class="hover:text-teal-500 transition duration-150 font-semibold mx-4">{{ t.nav.about }}</a>
-                <router-link to="/contact" class="hover:text-teal-500 transition duration-150 font-semibold mx-4">{{ t.nav.contact }}</router-link>
+                <router-link to="/" class="mx-4 transition duration-150 font-semibold" :class="$route.path === '/' || $route.path === '/en' ? 'text-teal-500 before:w-full before:h-0.5 before:bg-teal-500 before:absolute before:-bottom-2 before:left-0 relative' : 'hover:text-teal-500'">{{ t.nav.home }}</router-link>
+                <button @click="scrollToSection('products')" class="relative transition duration-150 font-semibold mx-4 hover:text-teal-500 cursor-pointer">{{ t.nav.store }}</button>
+                <button @click="scrollToSection('features')" class="hover:text-teal-500 transition duration-150 font-semibold mx-4 cursor-pointer">{{ t.nav.services }}</button>
+                <button @click="scrollToSection('about')" class="hover:text-teal-500 transition duration-150 font-semibold mx-4 cursor-pointer">{{ t.nav.about }}</button>
+                <button @click="scrollToSection('contact')" class="hover:text-teal-500 transition duration-150 font-semibold mx-4 cursor-pointer">{{ t.nav.contact }}</button>
             </div>
         </div>
         <div class="flex items-center gap-4">
@@ -59,11 +59,11 @@
             </div>
             <div>
                 <ul class="p-2 flex flex-col gap-2" :class="isRTL ? 'text-right' : 'text-left'">
-                    <li><router-link to="/" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all">{{ t.nav.home }}</router-link></li>
-                    <li><a href="/#products" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all">{{ t.nav.store }}</a></li>
-                    <li><a href="/#features" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all">{{ t.nav.services }}</a></li>
-                    <li><a href="/#features" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all">{{ t.nav.about }}</a></li>
-                    <li><router-link to="/contact" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all">{{ t.nav.contact }}</router-link></li>
+                    <li><router-link to="/" @click="toggleMenu" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all">{{ t.nav.home }}</router-link></li>
+                    <li><button @click="scrollToSection('products')" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all w-full" :class="isRTL ? 'text-right' : 'text-left'">{{ t.nav.store }}</button></li>
+                    <li><button @click="scrollToSection('features')" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all w-full" :class="isRTL ? 'text-right' : 'text-left'">{{ t.nav.services }}</button></li>
+                    <li><button @click="scrollToSection('about')" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all w-full" :class="isRTL ? 'text-right' : 'text-left'">{{ t.nav.about }}</button></li>
+                    <li><button @click="scrollToSection('contact')" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all w-full" :class="isRTL ? 'text-right' : 'text-left'">{{ t.nav.contact }}</button></li>
                 </ul>
             </div>
         </div>
@@ -89,6 +89,11 @@ const isAuthenticated = computed(() => {
 
 const toggleMenu = () => {
     menuOpen.value = !menuOpen.value;
+};
+
+const scrollToSection = (sectionId: string) => {
+    menuOpen.value = false; // Close menu
+    websiteStore.scrollToSection(sectionId);
 };
 
 const toggleLanguage = () => {

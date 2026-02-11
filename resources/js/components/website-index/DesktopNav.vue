@@ -7,22 +7,35 @@
       <div>
         <router-link
           to="/"
-          class="mx-4 text-teal-500 transition duration-150 font-semibold before:w-full before:h-0.5 before:bg-teal-500 before:absolute before:-bottom-2 before:left-0 relative"
+          class="mx-4 transition duration-150 font-semibold"
+          :class="$route.path === '/' || $route.path === '/en' ? 'text-teal-500 before:w-full before:h-0.5 before:bg-teal-500 before:absolute before:-bottom-2 before:left-0 relative' : 'hover:text-teal-500'"
         >
           {{ appStore.t.nav.home }}
         </router-link>
-        <a href="#products" class="relative transition duration-150 font-semibold mx-4 hover:text-teal-500">
+        <button
+          @click="appStore.scrollToSection('products')"
+          class="relative transition duration-150 font-semibold mx-4 hover:text-teal-500 cursor-pointer"
+        >
           {{ appStore.t.nav.store }}
-        </a>
-        <a href="#features" class="hover:text-teal-500 transition duration-150 font-semibold mx-4">
+        </button>
+        <button
+          @click="appStore.scrollToSection('features')"
+          class="hover:text-teal-500 transition duration-150 font-semibold mx-4 cursor-pointer"
+        >
           {{ appStore.t.nav.services }}
-        </a>
-        <a href="#about" class="hover:text-teal-500 transition duration-150 font-semibold mx-4">
+        </button>
+        <button
+          @click="appStore.scrollToSection('about')"
+          class="hover:text-teal-500 transition duration-150 font-semibold mx-4 cursor-pointer"
+        >
           {{ appStore.t.nav.about }}
-        </a>
-        <a href="#contact" class="hover:text-teal-500 transition duration-150 font-semibold mx-4">
+        </button>
+        <button
+          @click="appStore.scrollToSection('contact')"
+          class="hover:text-teal-500 transition duration-150 font-semibold mx-4 cursor-pointer"
+        >
           {{ appStore.t.nav.contact }}
-        </a>
+        </button>
       </div>
     </div>
     <div class="flex items-center gap-4">

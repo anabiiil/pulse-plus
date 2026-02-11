@@ -53,40 +53,36 @@
             </router-link>
           </li>
           <li>
-            <a
-              href="#products"
-              @click="appStore.closeMobileMenu"
-              class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all"
+            <button
+              @click="appStore.scrollToSection('products')"
+              class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all w-full text-right"
             >
               {{ appStore.t.nav.store }}
-            </a>
+            </button>
           </li>
           <li>
-            <a
-              href="#features"
-              @click="appStore.closeMobileMenu"
-              class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all"
+            <button
+              @click="appStore.scrollToSection('features')"
+              class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all w-full text-right"
             >
               {{ appStore.t.nav.services }}
-            </a>
+            </button>
           </li>
           <li>
-            <a
-              href="#about"
-              @click="appStore.closeMobileMenu"
-              class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all"
+            <button
+              @click="appStore.scrollToSection('about')"
+              class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all w-full text-right"
             >
               {{ appStore.t.nav.about }}
-            </a>
+            </button>
           </li>
           <li>
-            <a
-              href="#contact"
-              @click="appStore.closeMobileMenu"
-              class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all"
+            <button
+              @click="appStore.scrollToSection('contact')"
+              class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all w-full text-right"
             >
               {{ appStore.t.nav.contact }}
-            </a>
+            </button>
           </li>
         </ul>
       </div>

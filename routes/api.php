@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Website\AuthController;
 use App\Http\Controllers\Api\Website\ContactController;
 use App\Http\Controllers\Api\Website\ProductController;
 use App\Http\Controllers\Api\Website\ServiceController;
@@ -22,6 +23,17 @@ Route::get('/', function (Request $request) {
 
 // Website Public API Routes
 Route::prefix('website')->group(function () {
+
+    // Authentication (Guest)
+    Route::post('/auth/login', [AuthController::class, 'login']);
+
+    // Authentication (Protected)
+    Route::middleware('auth:web')->group(function () {
+        Route::post('/auth/logout', [AuthController::class, 'logout']);
+        Route::get('/auth/me', [AuthController::class, 'me']);
+        Route::put('/auth/profile', [AuthController::class, 'updateProfile']);
+        Route::post('/auth/change-password', [AuthController::class, 'changePassword']);
+    });
 
     // Services
     Route::get('/services', [ServiceController::class, 'index']);

@@ -1,0 +1,165 @@
+import { ref, computed } from 'vue';
+import axios from 'axios';
+import { useRouter } from 'vue-router';
+
+interface User {
+    id: number;
+    name: string;
+    email: string;
+    phone?: string | null;
+}
+
+interface LoginCredentials {
+    email: string;
+    password: string;
+    remember?: boolean;
+}
+
+interface UpdateProfileData {
+    name: string;
+    email: string;
+    phone?: string;
+}
+
+interface ChangePasswordData {
+    current_password: string;
+    password: string;
+    password_confirmation: string;
+}
+
+export const useAuth = () => {
+    const router = useRouter();
+    const user = ref<User | null>(null);
+    const loading = ref(false);
+    const error = ref<string | null>(null);
+
+    // Check if user is authenticated
+    const isAuthenticated = computed(() => !!user.value);
+
+    /**
+     * Login user
+     */
+    const login = async (credentials: LoginCredentials): Promise<boolean> => {
+        try {
+            loading.value = true;
+            error.value = null;
+
+            const response = await axios.post('/api/website/auth/login', credentials);
+
+            user.value = response.data.data.user;
+
+            return true;
+        } catch (err: any) {
+            error.value = err.response?.data?.message || 'Login failed';
+            throw err;
+        } finally {
+            loading.value = false;
+        }
+    };
+
+    /**
+     * Logout user
+     */
+    const logout = async (): Promise<void> => {
+        try {
+            loading.value = true;
+            error.value = null;
+
+            await axios.post('/api/website/auth/logout');
+
+            user.value = null;
+
+            // Redirect to home
+            router.push('/');
+        } catch (err: any) {
+            error.value = err.response?.data?.message || 'Logout failed';
+            console.error('Logout error:', err);
+        } finally {
+            loading.value = false;
+        }
+    };
+
+    /**
+     * Get current authenticated user
+     */
+    const fetchUser = async (): Promise<void> => {
+        try {
+            loading.value = true;
+            error.value = null;
+
+            const response = await axios.get('/api/website/auth/me');
+
+            user.value = response.data.data.user;
+        } catch (err: any) {
+            error.value = err.response?.data?.message || 'Failed to fetch user';
+            user.value = null;
+        } finally {
+            loading.value = false;
+        }
+    };
+
+    /**
+     * Update user profile
+     */
+    const updateProfile = async (data: UpdateProfileData): Promise<boolean> => {
+        try {
+            loading.value = true;
+            error.value = null;
+
+            const response = await axios.put('/api/website/auth/profile', data);
+
+            user.value = response.data.data.user;
+
+            return true;
+        } catch (err: any) {
+            error.value = err.response?.data?.message || 'Profile update failed';
+            throw err;
+        } finally {
+            loading.value = false;
+        }
+    };
+
+    /**
+     * Change user password
+     */
+    const changePassword = async (data: ChangePasswordData): Promise<boolean> => {
+        try {
+            loading.value = true;
+            error.value = null;
+
+            await axios.post('/api/website/auth/change-password', data);
+
+            return true;
+        } catch (err: any) {
+            error.value = err.response?.data?.message || 'Password change failed';
+            throw err;
+        } finally {
+            loading.value = false;
+        }
+    };
+
+    /**
+     * Clear error
+     */
+    const clearError = () => {
+        error.value = null;
+    };
+
+    return {
+        // State
+        user,
+        loading,
+        error,
+        isAuthenticated,
+        // Methods
+        login,
+        logout,
+        fetchUser,
+        updateProfile,
+        changePassword,
+        clearError,
+    };
+};
+
+
+

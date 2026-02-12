@@ -69,21 +69,26 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
 import { useWebsiteStore } from '../../../stores/websiteStore';
-import axios from 'axios';
+import { useAuth } from '../../../composables/useAuth';
 
 const websiteStore = useWebsiteStore();
+const router = useRouter();
 const toast = useToast();
-const loading = ref(false);
+const { login, loading: authLoading } = useAuth();
+
 const showPassword = ref(false);
 
 const t = computed(() => websiteStore.t);
 const isRTL = computed(() => websiteStore.isRTL);
+const loading = computed(() => authLoading.value);
 
 const formData = reactive({
     email: '',
     password: '',
+    remember: false,
 });
 
 const errors = reactive<{
@@ -102,30 +107,36 @@ const resetErrors = () => {
 
 const handleSubmit = async () => {
     resetErrors();
-    loading.value = true;
 
     try {
-        await axios.post('/user/login', formData);
-        toast.success(t.value.login.successMessage);
+        await login({
+            email: formData.email,
+            password: formData.password,
+            remember: formData.remember,
+        });
+
+        toast.success('تم تسجيل الدخول بنجاح');
 
         // Redirect to profile after successful login
         setTimeout(() => {
-            window.location.href = '/profile';
+            const currentLocale = websiteStore.locale || 'ar';
+            const profilePath = currentLocale === 'en' ? '/en/profile' : '/profile';
+            router.push(profilePath);
         }, 500);
     } catch (error: any) {
-        if (error.response?.data?.errors) {
-            Object.keys(error.response.data.errors).forEach(key => {
+        if (error.response?.status === 422) {
+            // Validation errors
+            const responseErrors = error.response.data.errors || {};
+            Object.keys(responseErrors).forEach(key => {
                 if (key in errors) {
-                    errors[key] = Array.isArray(error.response.data.errors[key])
-                        ? error.response.data.errors[key][0]
-                        : error.response.data.errors[key];
+                    errors[key] = Array.isArray(responseErrors[key])
+                        ? responseErrors[key][0]
+                        : responseErrors[key];
                 }
             });
         } else {
-            toast.error(t.value.login.errorMessage);
+            toast.error('فشل تسجيل الدخول. يرجى المحاولة مرة أخرى');
         }
-    } finally {
-        loading.value = false;
     }
 };
 </script>

@@ -7,8 +7,9 @@
           <div class="flex justify-center md:justify-start items-center gap-3 mb-3">
             <img :src="footerLogo" class="w-[150px] md:w-[200px]" alt="Pulse Logo">
           </div>
+          <!-- Display footer description from settings if available, otherwise use translation -->
           <p class="text-sm">
-            {{ appStore.t.footer.description }}
+            {{ getSettingContent('footer_description') || appStore.t.footer.description }}
           </p>
         </div>
       </div>
@@ -29,8 +30,13 @@
       <div class="md:w-1/3 flex justify-center md:justify-end text-center md:text-right">
         <div>
           <h3 class="font-semibold mb-2">{{ appStore.t.footer.contactUs }}</h3>
-          <p class="text-sm">{{ dataStore.settings.email }}</p>
-          <p class="text-sm">{{ dataStore.settings.phone }}</p>
+          <!-- Email and Phone with LTR direction -->
+          <p class="text-sm" dir="ltr" style="text-align: inherit;">
+            {{ getSettingContent('contact_email') || 'info@pulse-plus.com' }}
+          </p>
+          <p class="text-sm" dir="ltr" style="text-align: inherit;">
+            {{ getSettingContent('contact_phone') || '+2 01022335566' }}
+          </p>
         </div>
       </div>
     </div>
@@ -49,6 +55,28 @@ import footerLogo from '../../images/website/footer-logo.png';
 
 const dataStore = useDataStore();
 const appStore = useAppStore();
+
+/**
+ * Get setting content based on current locale
+ * Handles both object format {ar: "...", en: "..."} and string format
+ */
+const getSettingContent = (slug: string): string | null => {
+  const settings = dataStore.settings as any;
+  const setting = settings[slug];
+
+  if (!setting) return null;
+
+  const content = setting.content;
+
+  // If content is an object with locale keys
+  if (content && typeof content === 'object' && !Array.isArray(content)) {
+    const currentLocale = appStore.locale || 'ar';
+    return content[currentLocale] || content['ar'] || content['en'] || null;
+  }
+
+  // If content is a string
+  return content || null;
+};
 </script>
 
 

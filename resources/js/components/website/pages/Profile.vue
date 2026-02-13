@@ -40,7 +40,8 @@
                             <div class="text-xl text-gray-400"><i class="pi pi-angle-left"></i></div>
                         </div>
 
-                        <!-- Medical Data Tab -->
+                        <!-- Medical Data Tab - Commented for future use -->
+                        <!--
                         <div
                             @click="activeTab = 'medical'"
                             :class="activeTab === 'medical' ? 'bg-teal-500 text-white shadow-xl' : 'bg-gray-100 text-[#123057]'"
@@ -57,8 +58,10 @@
                             </div>
                             <div class="text-xl text-gray-400"><i class="pi pi-angle-left"></i></div>
                         </div>
+                        -->
 
-                        <!-- Medical Archive Tab -->
+                        <!-- Medical Archive Tab - Commented for future use -->
+                        <!--
                         <div
                             @click="activeTab = 'archive'"
                             :class="activeTab === 'archive' ? 'bg-teal-500 text-white shadow-xl' : 'bg-gray-100 text-[#123057]'"
@@ -75,6 +78,7 @@
                             </div>
                             <div class="text-xl text-gray-400"><i class="pi pi-angle-left"></i></div>
                         </div>
+                        -->
                     </div>
                 </div>
 
@@ -230,12 +234,19 @@
                                 <label class="font-bold">الجنسية</label>
                                 <div class="relative">
                                     <select
-                                        v-model="formData.nationality"
+                                        v-model="formData.nationality_id"
                                         class="focus:ring-0 focus:border-transparent bg-gray-50 border-0 shadow-xl transition-shadow duration-300 ease-in-out hover:shadow-2xl cursor-pointer font-semibold rounded-[30px] w-full p-4 my-2 pr-12"
                                     >
-                                        <option value="foreign">أجنبي</option>
-                                        <option value="arab">عربي</option>
+                                        <option value="" disabled>اختر الجنسية</option>
+                                        <option
+                                            v-for="nationality in nationalities"
+                                            :key="nationality.id"
+                                            :value="nationality.id"
+                                        >
+                                            {{ nationality.name_ar }}
+                                        </option>
                                     </select>
+                                    <i class="pi pi-flag absolute top-1/2 text-gray-400 right-5 text-[18px] -translate-y-1/2 pointer-events-none"></i>
                                 </div>
                             </div>
 
@@ -243,13 +254,20 @@
                             <div class="p-2 text-[#123057] flex flex-col col-span-2 lg:col-span-1 relative">
                                 <label class="font-bold">الحالة الاجتماعية</label>
                                 <div class="relative">
-                                    <input
+                                    <select
                                         v-model="formData.marital_status"
-                                        type="text"
-                                        placeholder="الحالة الاجتماعية"
                                         class="focus:ring-0 focus:border-transparent bg-gray-50 border-0 transition-shadow duration-300 ease-in-out hover:shadow-2xl cursor-pointer shadow-xl font-semibold rounded-[30px] w-full p-4 my-2 pr-12"
                                     >
-                                    <i class="pi pi-users absolute top-1/2 text-gray-400 right-5 text-[18px] -translate-y-1/2"></i>
+                                        <option value="" disabled>اختر الحالة الاجتماعية</option>
+                                        <option
+                                            v-for="status in maritalStatusOptions"
+                                            :key="status.value"
+                                            :value="status.value"
+                                        >
+                                            {{ status.label_ar }}
+                                        </option>
+                                    </select>
+                                    <i class="pi pi-users absolute top-1/2 text-gray-400 right-5 text-[18px] -translate-y-1/2 pointer-events-none"></i>
                                 </div>
                             </div>
                         </div>
@@ -275,17 +293,21 @@
                     </form>
                 </div>
 
-                <!-- Medical Data Tab -->
+                <!-- Medical Data Tab - Commented for future use -->
+                <!--
                 <div v-show="activeTab === 'medical'" class="bg-white p-10 rounded-[48px] shadow-xl">
                     <h3 class="text-2xl font-bold mb-4">البيانات الطبية</h3>
                     <p class="text-gray-600">هذا القسم قيد التطوير...</p>
                 </div>
+                -->
 
-                <!-- Medical Archive Tab -->
+                <!-- Medical Archive Tab - Commented for future use -->
+                <!--
                 <div v-show="activeTab === 'archive'" class="bg-white p-10 rounded-[48px] shadow-xl">
                     <h3 class="text-2xl font-bold mb-4">الأرشيف الطبي</h3>
                     <p class="text-gray-600">هذا القسم قيد التطوير...</p>
                 </div>
+                -->
             </div>
 
             <!-- Copyright (Mobile) -->
@@ -305,6 +327,7 @@ import { ref, reactive, onMounted, computed } from 'vue';
 import { useHead } from '@vueuse/head';
 import { useAuth } from '../../../composables/useAuth';
 import { useToast } from 'vue-toastification';
+import axios from 'axios';
 import userVectorImg from '../../../images/website/user-vector.png';
 
 // Import layout components
@@ -327,6 +350,10 @@ const profileImage = ref<string | null>(null);
 // Loading states
 const updating = ref(false);
 
+// Options for selects
+const nationalities = ref<Array<{id: number, name_ar: string, name_en: string}>>([]);
+const maritalStatusOptions = ref<Array<{value: string, label_ar: string, label_en: string}>>([]);
+
 // Form data
 const formData = reactive({
     name: '',
@@ -335,7 +362,7 @@ const formData = reactive({
     birthdate: '',
     gender: 'male',
     address: '',
-    nationality: 'arab',
+    nationality_id: null as number | null,
     marital_status: '',
 });
 
@@ -349,7 +376,7 @@ const errors = reactive<Record<string, string>>({
 // Profile completion calculation
 const profileCompletion = computed(() => {
     let completed = 0;
-    const fields = ['name', 'email', 'phone', 'birthdate', 'gender', 'address', 'nationality', 'marital_status'];
+    const fields = ['name', 'email', 'phone', 'birthdate', 'gender', 'address', 'nationality_id', 'marital_status'];
 
     fields.forEach(field => {
         if (formData[field as keyof typeof formData]) {
@@ -367,6 +394,26 @@ const resetErrors = () => {
     errors.name = '';
     errors.email = '';
     errors.phone = '';
+};
+
+// Fetch nationalities from API
+const fetchNationalities = async () => {
+    try {
+        const response = await axios.get('/api/website/nationalities');
+        nationalities.value = response.data.data.nationalities || [];
+    } catch (error) {
+        console.error('Error fetching nationalities:', error);
+    }
+};
+
+// Fetch marital status options from API
+const fetchMaritalStatus = async () => {
+    try {
+        const response = await axios.get('/api/website/enums/marital-status');
+        maritalStatusOptions.value = response.data.data.marital_status_options || [];
+    } catch (error) {
+        console.error('Error fetching marital status:', error);
+    }
 };
 
 // Load user data
@@ -442,5 +489,7 @@ const resetForm = () => {
 // Load user on mount
 onMounted(() => {
     loadUser();
+    fetchNationalities();
+    fetchMaritalStatus();
 });
 </script>

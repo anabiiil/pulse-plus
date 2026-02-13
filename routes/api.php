@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Api\Website\AuthController;
 use App\Http\Controllers\Api\Website\ContactController;
+use App\Http\Controllers\Api\Website\EnumController;
+use App\Http\Controllers\Api\Website\NationalityController;
 use App\Http\Controllers\Api\Website\ProductController;
 use App\Http\Controllers\Api\Website\ServiceController;
 use App\Http\Controllers\Api\Website\SettingController;
@@ -52,6 +54,12 @@ Route::prefix('website')->group(function () {
     Route::get('/settings/all', [SettingController::class, 'getAll']);
     Route::get('/settings/slug/{slug}', [SettingController::class, 'getBySlug']);
     Route::get('/settings/{id}', [SettingController::class, 'show']);
+
+    // Nationalities (Countries)
+    Route::get('/nationalities', [NationalityController::class, 'index']);
+
+    // Enums
+    Route::get('/enums/marital-status', [EnumController::class, 'maritalStatus']);
 
     // Contact Form
     Route::post('/contact', [ContactController::class, 'store']);

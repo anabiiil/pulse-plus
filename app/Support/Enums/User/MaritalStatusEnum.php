@@ -22,7 +22,7 @@ enum MaritalStatusEnum: string
      */
     public function label(): string
     {
-        return match($this) {
+        return match ($this) {
             self::SINGLE => 'أعزب',
             self::MARRIED => 'متزوج',
             self::DIVORCED => 'مطلق',
@@ -35,7 +35,7 @@ enum MaritalStatusEnum: string
      */
     public function labelEn(): string
     {
-        return match($this) {
+        return match ($this) {
             self::SINGLE => 'Single',
             self::MARRIED => 'Married',
             self::DIVORCED => 'Divorced',
@@ -49,7 +49,7 @@ enum MaritalStatusEnum: string
     public static function options(): array
     {
         return array_map(
-            fn($case) => [
+            static fn ($case) => [
                 'value' => $case->value,
                 'label_ar' => $case->label(),
                 'label_en' => $case->labelEn(),
@@ -58,4 +58,3 @@ enum MaritalStatusEnum: string
         );
     }
 }
-

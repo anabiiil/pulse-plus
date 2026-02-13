@@ -12,7 +12,7 @@
                     <div class="hidden lg:block bg-white rounded-[48px] shadow-xl p-8">
                     <div class="mb-6">
                         <div class="flex justify-between text-sm text-teal-600 mb-2">
-                            <span class="font-medium">اكتمال الملف</span>
+                            <span class="font-medium">{{ t.profile.profileCompletion }}</span>
                             <span>{{ profileCompletion }}%</span>
                         </div>
                         <div class="w-full h-5 shadow-[inset_0_4px_4px_0_#00000040] flex items-center bg-gray-200 rounded-full overflow-hidden">
@@ -33,11 +33,11 @@
                                     <i :class="activeTab === 'personal' ? 'text-teal-500' : 'text-teal-500'" class="pi pi-user text-[22px]"></i>
                                 </div>
                                 <div>
-                                    <p class="font-semibold">المعلومات الشخصية</p>
-                                    <p class="text-sm opacity-90">الاسم، الميلاد، العنوان</p>
+                                    <p class="font-semibold">{{ t.profile.personalInfo.title }}</p>
+                                    <p class="text-sm opacity-90">{{ t.profile.personalInfo.subtitle }}</p>
                                 </div>
                             </div>
-                            <div class="text-xl text-gray-400"><i class="pi pi-angle-left"></i></div>
+                            <div class="text-xl text-gray-400"><i :class="isRTL ? 'pi-angle-left' : 'pi-angle-right'" class="pi"></i></div>
                         </div>
 
                         <!-- Medical Data Tab - Commented for future use -->
@@ -87,9 +87,9 @@
                     <div class="my-5">
                         <i class="pi pi-shield font-bold text-[35px]"></i>
                     </div>
-                    <h3 class="font-semibold mb-2 text-[20px]">بياناتك في أمان</h3>
+                    <h3 class="font-semibold mb-2 text-[20px]">{{ t.profile.securityNotice.title }}</h3>
                     <p class="text-sm leading-relaxed text-white/80">
-                        نستخدم أعلى معايير التشفير لضمان أن بياناتك متاحة فقط لمن تسمح لهم في حالات الطوارئ
+                        {{ t.profile.securityNotice.description }}
                     </p>
                 </div>
 
@@ -97,7 +97,7 @@
                 <div class="lg:hidden my-4 block bg-white rounded-[48px] shadow-xl p-8">
                     <div class="mb-6">
                         <div class="flex justify-between text-sm text-teal-600 mb-2">
-                            <span class="font-medium">اكتمال الملف</span>
+                            <span class="font-medium">{{ t.profile.profileCompletion }}</span>
                             <span>{{ profileCompletion }}%</span>
                         </div>
                         <div class="w-full h-5 shadow-[inset_0_4px_4px_0_#00000040] flex items-center bg-gray-200 rounded-full overflow-hidden">
@@ -108,7 +108,7 @@
 
                 <!-- Copyright (Desktop) -->
                 <p class="hidden lg:block text-center text-xs text-gray-400 mt-6 border-t border-gray-400 pt-5">
-                    جميع الحقوق محفوظة © Pulse
+                    {{ t.profile.copyright }}
                 </p>
             </div>
 
@@ -117,9 +117,9 @@
                 <!-- Personal Information Tab -->
                 <div v-show="activeTab === 'personal'" class="bg-white p-10 rounded-[48px] shadow-xl transform transition duration-500 hover:shadow-2xl">
                     <div class="mb-4">
-                        <h3 class="text-2xl font-bold mb-2">من أنت؟</h3>
+                        <h3 class="text-2xl font-bold mb-2">{{ t.profile.form.whoAreYou }}</h3>
                         <p class="text-gray-600 text-[14px] font-semibold">
-                            أدخل معلوماتك الأساسية كما تحب أن تظهر في هويتك الرقمية.
+                            {{ t.profile.form.whoAreYouSubtitle }}
                         </p>
                     </div>
 
@@ -132,8 +132,8 @@
                                 <input @change="handleImageUpload" class="opacity-0 w-full h-full absolute top-0 left-0 cursor-pointer" type="file" accept="image/*">
                             </div>
                             <div class="text-center text-white mt-4">
-                                <h3 class="font-bold text-xl">صورة العضو</h3>
-                                <p>قم بتحميل صورة واضحة للعضو لأغراض التعرف عليه.</p>
+                                <h3 class="font-bold text-xl">{{ t.profile.form.profileImage }}</h3>
+                                <p>{{ t.profile.form.profileImageDesc }}</p>
                             </div>
                         </div>
                     </div>
@@ -143,12 +143,12 @@
                         <div class="grid lg:grid-cols-2 grid-cols-1">
                             <!-- Full Name -->
                             <div class="p-2 text-[#123057] flex flex-col col-span-2 relative">
-                                <label class="font-bold">الاسم بالكامل</label>
+                                <label class="font-bold">{{ t.profile.form.fullName }}</label>
                                 <div class="relative">
                                     <input
                                         v-model="formData.name"
                                         type="text"
-                                        placeholder="ادخل اسمك الثلاثي..."
+                                        :placeholder="t.profile.form.fullNamePlaceholder"
                                         class="focus:ring-0 focus:border-transparent bg-gray-50 border-0 transition-shadow duration-300 ease-in-out hover:shadow-2xl cursor-pointer shadow-xl font-semibold rounded-[30px] w-full p-4 my-2 pr-12"
                                     >
                                     <i class="pi pi-user absolute top-1/2 right-5 text-gray-400 text-[18px] -translate-y-1/2"></i>
@@ -158,7 +158,7 @@
 
                             <!-- Birth Date -->
                             <div class="p-2 text-[#123057] flex flex-col col-span-2 lg:col-span-1 relative">
-                                <label class="font-bold">تاريخ الميلاد</label>
+                                <label class="font-bold">{{ t.profile.form.birthdate }}</label>
                                 <div class="relative">
                                     <input
                                         v-model="formData.birthdate"
@@ -171,26 +171,26 @@
 
                             <!-- Gender -->
                             <div class="p-2 text-[#123057] flex flex-col col-span-2 lg:col-span-1 relative">
-                                <label class="font-bold">الجنس</label>
+                                <label class="font-bold">{{ t.profile.form.gender }}</label>
                                 <div class="relative">
                                     <select
                                         v-model="formData.gender"
                                         class="focus:ring-0 focus:border-transparent bg-gray-50 border-0 shadow-xl transition-shadow duration-300 ease-in-out hover:shadow-2xl cursor-pointer font-semibold rounded-[30px] w-full p-4 my-2 pr-12"
                                     >
-                                        <option value="male">ذكر</option>
-                                        <option value="female">أنثى</option>
+                                        <option value="male">{{ t.profile.form.male }}</option>
+                                        <option value="female">{{ t.profile.form.female }}</option>
                                     </select>
                                 </div>
                             </div>
 
                             <!-- Phone -->
                             <div class="p-2 text-[#123057] flex flex-col col-span-2 lg:col-span-1 relative">
-                                <label class="font-bold">رقم الهاتف</label>
+                                <label class="font-bold">{{ t.profile.form.phone }}</label>
                                 <div class="relative">
                                     <input
                                         v-model="formData.phone"
                                         type="text"
-                                        placeholder="رقم الهاتف"
+                                        :placeholder="t.profile.form.phonePlaceholder"
                                         dir="ltr"
                                         class="focus:ring-0 focus:border-transparent bg-gray-50 border-0 shadow-xl transition-shadow duration-300 ease-in-out hover:shadow-2xl cursor-pointer font-semibold rounded-[30px] w-full p-4 my-2 pr-12"
                                     >
@@ -201,12 +201,12 @@
 
                             <!-- Address -->
                             <div class="p-2 text-[#123057] flex flex-col col-span-2 lg:col-span-1 relative">
-                                <label class="font-bold">العنوان</label>
+                                <label class="font-bold">{{ t.profile.form.address }}</label>
                                 <div class="relative">
                                     <input
                                         v-model="formData.address"
                                         type="text"
-                                        placeholder="العنوان"
+                                        :placeholder="t.profile.form.addressPlaceholder"
                                         class="focus:ring-0 focus:border-transparent bg-gray-50 border-0 shadow-xl transition-shadow duration-300 ease-in-out hover:shadow-2xl cursor-pointer font-semibold rounded-[30px] w-full p-4 my-2 pr-12"
                                     >
                                     <i class="pi pi-map-marker absolute top-1/2 text-gray-400 right-5 text-[18px] -translate-y-1/2"></i>
@@ -215,12 +215,12 @@
 
                             <!-- Email -->
                             <div class="p-2 text-[#123057] flex flex-col col-span-2 relative">
-                                <label class="font-bold">الايميل</label>
+                                <label class="font-bold">{{ t.profile.form.email }}</label>
                                 <div class="relative">
                                     <input
                                         v-model="formData.email"
                                         type="email"
-                                        placeholder="الايميل"
+                                        :placeholder="t.profile.form.emailPlaceholder"
                                         dir="ltr"
                                         class="focus:ring-0 focus:border-transparent bg-gray-50 border-0 shadow-xl transition-shadow duration-300 ease-in-out hover:shadow-2xl cursor-pointer font-semibold rounded-[30px] w-full p-4 my-2 pr-12"
                                     >
@@ -231,19 +231,19 @@
 
                             <!-- Nationality -->
                             <div class="p-2 text-[#123057] flex flex-col col-span-2 lg:col-span-1 relative">
-                                <label class="font-bold">الجنسية</label>
+                                <label class="font-bold">{{ t.profile.form.nationality }}</label>
                                 <div class="relative">
                                     <select
                                         v-model="formData.nationality_id"
                                         class="focus:ring-0 focus:border-transparent bg-gray-50 border-0 shadow-xl transition-shadow duration-300 ease-in-out hover:shadow-2xl cursor-pointer font-semibold rounded-[30px] w-full p-4 my-2 pr-12"
                                     >
-                                        <option value="" disabled>اختر الجنسية</option>
+                                        <option value="" disabled>{{ t.profile.form.selectNationality }}</option>
                                         <option
                                             v-for="nationality in nationalities"
                                             :key="nationality.id"
                                             :value="nationality.id"
                                         >
-                                            {{ nationality.name_ar }}
+                                            {{ currentLocale === 'ar' ? nationality.name_ar : nationality.name_en }}
                                         </option>
                                     </select>
                                     <i class="pi pi-flag absolute top-1/2 text-gray-400 right-5 text-[18px] -translate-y-1/2 pointer-events-none"></i>
@@ -252,19 +252,19 @@
 
                             <!-- Marital Status -->
                             <div class="p-2 text-[#123057] flex flex-col col-span-2 lg:col-span-1 relative">
-                                <label class="font-bold">الحالة الاجتماعية</label>
+                                <label class="font-bold">{{ t.profile.form.maritalStatus }}</label>
                                 <div class="relative">
                                     <select
                                         v-model="formData.marital_status"
                                         class="focus:ring-0 focus:border-transparent bg-gray-50 border-0 transition-shadow duration-300 ease-in-out hover:shadow-2xl cursor-pointer shadow-xl font-semibold rounded-[30px] w-full p-4 my-2 pr-12"
                                     >
-                                        <option value="" disabled>اختر الحالة الاجتماعية</option>
+                                        <option value="" disabled>{{ t.profile.form.selectMaritalStatus }}</option>
                                         <option
                                             v-for="status in maritalStatusOptions"
                                             :key="status.value"
                                             :value="status.value"
                                         >
-                                            {{ status.label_ar }}
+                                            {{ currentLocale === 'ar' ? status.label_ar : status.label_en }}
                                         </option>
                                     </select>
                                     <i class="pi pi-users absolute top-1/2 text-gray-400 right-5 text-[18px] -translate-y-1/2 pointer-events-none"></i>
@@ -279,15 +279,15 @@
                                 :disabled="updating"
                                 class="py-3 px-20 border-0 rounded-xl bg-[#123057] text-white font-bold hover:bg-[#0e2540] transition duration-150 mt-6 disabled:opacity-50"
                             >
-                                <span v-if="!updating">حفظ التغييرات</span>
-                                <span v-else>جاري الحفظ...</span>
+                                <span v-if="!updating">{{ t.profile.form.saveChanges }}</span>
+                                <span v-else>{{ t.profile.form.saving }}</span>
                             </button>
                             <button
                                 type="button"
                                 @click="resetForm"
                                 class="py-3 px-20 border-0 text-gray-400 mt-4 font-semibold"
                             >
-                                إلغاء التعديلات
+                                {{ t.profile.form.cancelChanges }}
                             </button>
                         </div>
                     </form>
@@ -312,7 +312,7 @@
 
             <!-- Copyright (Mobile) -->
             <p class="lg:hidden block text-center text-xs text-gray-400 mt-6 border-t border-gray-400 pt-5">
-                جميع الحقوق محفوظة © Pulse
+                {{ t.profile.copyright }}
             </p>
         </div>
     </section>
@@ -327,6 +327,7 @@ import { ref, reactive, onMounted, computed } from 'vue';
 import { useHead } from '@vueuse/head';
 import { useAuth } from '../../../composables/useAuth';
 import { useToast } from 'vue-toastification';
+import { useAppStore } from '../../../stores/website-index/appStore';
 import axios from 'axios';
 import userVectorImg from '../../../images/website/user-vector.png';
 
@@ -336,9 +337,15 @@ import Footer from '../Footer.vue';
 
 const { user: authUser, fetchUser, updateProfile } = useAuth();
 const toast = useToast();
+const appStore = useAppStore();
+
+// Get translations
+const t = computed(() => appStore.t);
+const currentLocale = computed(() => appStore.locale);
+const isRTL = computed(() => appStore.isRTL);
 
 useHead({
-    title: 'الملف الشخصي - Pulse',
+    title: computed(() => `${t.value.profile.title} - Pulse`),
 });
 
 // Active tab state
@@ -427,7 +434,7 @@ const loadUser = async () => {
         }
     } catch (error) {
         console.error('Error loading user:', error);
-        toast.error('فشل تحميل بيانات المستخدم');
+        toast.error(t.value.profile.messages.errorLoad);
     }
 };
 
@@ -457,7 +464,7 @@ const handleUpdate = async () => {
             phone: formData.phone,
         });
 
-        toast.success('تم تحديث الملف الشخصي بنجاح!');
+        toast.success(t.value.profile.messages.successUpdate);
     } catch (error: any) {
         if (error.response?.status === 422) {
             const responseErrors = error.response.data.errors || {};
@@ -469,7 +476,7 @@ const handleUpdate = async () => {
                 }
             });
         } else {
-            toast.error('فشل تحديث الملف الشخصي');
+            toast.error(t.value.profile.messages.errorUpdate);
         }
     } finally {
         updating.value = false;

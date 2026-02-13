@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Country;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class CountryTableSeeder extends Seeder
 {
@@ -42,6 +41,6 @@ class CountryTableSeeder extends Seeder
         }
 
         $this->command->info('Countries seeded successfully!');
-        $this->command->info('Total countries: ' . Country::count());
+        $this->command->info('Total countries: '.Country::count());
     }
 }

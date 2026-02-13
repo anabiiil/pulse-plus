@@ -26,12 +26,20 @@
             <button @click="toggleLanguage" class="flex items-center justify-center w-[50px] h-[50px] text-[18px] rounded-full shadow-xl font-semibold">
                 {{ t.nav.language }}
             </button>
+            <!-- Login button when not authenticated -->
             <router-link v-if="!isAuthenticated" to="/login" class="bg-teal-500 text-white px-5 py-2 rounded-[30px] shadow-lg font-semibold hover:bg-teal-600 transition duration-150">
                 {{ t.nav.login }}
             </router-link>
-            <router-link v-else to="/profile" class="bg-teal-500 text-white px-5 py-2 rounded-[30px] shadow-lg font-semibold hover:bg-teal-600 transition duration-150">
-                {{ t.nav.profile }}
-            </router-link>
+            <!-- Profile and Logout buttons when authenticated -->
+            <template v-else>
+                <router-link to="/profile" class="bg-blue-500 text-white px-5 py-2 rounded-[30px] shadow-lg font-semibold hover:bg-blue-600 transition duration-150">
+                    {{ t.nav.profile }}
+                </router-link>
+                <button @click="handleLogout" :disabled="loggingOut" class="bg-red-500 text-white px-5 py-2 rounded-[30px] shadow-lg font-semibold hover:bg-red-600 transition duration-150 disabled:opacity-50">
+                    <span v-if="!loggingOut">{{ t.nav.logout || 'تسجيل الخروج' }}</span>
+                    <span v-else>...</span>
+                </button>
+            </template>
         </div>
     </nav>
 
@@ -64,6 +72,16 @@
                     <li><button @click="scrollToSection('features')" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all w-full" :class="isRTL ? 'text-right' : 'text-left'">{{ t.nav.services }}</button></li>
                     <li><button @click="scrollToSection('about')" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all w-full" :class="isRTL ? 'text-right' : 'text-left'">{{ t.nav.about }}</button></li>
                     <li><button @click="scrollToSection('contact')" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all w-full" :class="isRTL ? 'text-right' : 'text-left'">{{ t.nav.contact }}</button></li>
+                    <!-- Logout button for mobile when authenticated -->
+                    <li v-if="isAuthenticated">
+                        <button @click="handleLogout" :disabled="loggingOut" class="block py-2 px-3 rounded bg-red-500 text-white hover:bg-red-600 transition-all w-full font-semibold disabled:opacity-50" :class="isRTL ? 'text-right' : 'text-left'">
+                            <span v-if="!loggingOut">{{ t.nav.logout || 'تسجيل الخروج' }}</span>
+                            <span v-else>...</span>
+                        </button>
+                    </li>
+                    <li v-else>
+                        <router-link to="/login" @click="toggleMenu" class="block py-2 px-3 rounded bg-teal-500 text-white hover:bg-teal-600 transition-all font-semibold text-center">{{ t.nav.login }}</router-link>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -74,18 +92,20 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useWebsiteStore } from '../../stores/websiteStore';
+import { useAuth } from '../../composables/useAuth';
+import { useToast } from 'vue-toastification';
 import logoImg from '../../images/website/logo.png';
 
 const router = useRouter();
 const websiteStore = useWebsiteStore();
+const { isAuthenticated, logout } = useAuth();
+const toast = useToast();
+
 const menuOpen = ref(false);
+const loggingOut = ref(false);
 
 const t = computed(() => websiteStore.t);
 const isRTL = computed(() => websiteStore.isRTL);
-
-const isAuthenticated = computed(() => {
-    return (window as any).authUser !== null && (window as any).authUser !== undefined;
-});
 
 const toggleMenu = () => {
     menuOpen.value = !menuOpen.value;
@@ -102,6 +122,24 @@ const toggleLanguage = () => {
 
 const toggleDarkMode = () => {
     websiteStore.toggleDarkMode();
+};
+
+const handleLogout = async () => {
+    if (loggingOut.value) return;
+
+    loggingOut.value = true;
+    menuOpen.value = false; // Close mobile menu
+
+    try {
+        await logout();
+        toast.success('تم تسجيل الخروج بنجاح');
+        // Logout function in useAuth already redirects to home
+    } catch (error) {
+        console.error('Logout error:', error);
+        toast.error('فشل تسجيل الخروج');
+    } finally {
+        loggingOut.value = false;
+    }
 };
 
 onMounted(() => {

@@ -54,13 +54,8 @@ export const useWebsiteStore = defineStore('website', () => {
         // Update state first
         setLocale(newLocale);
 
-        // Navigate using Vue Router (no page reload!)
-        if (routerInstance) {
-            routerInstance.push(newPath);
-        } else {
-            // Fallback to window navigation if router not available
-            window.location.href = newPath;
-        }
+        // Use full page reload to ensure translations update correctly
+        window.location.href = newPath;
     }
 
     function updateHtmlAttributes() {

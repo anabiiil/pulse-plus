@@ -2,93 +2,119 @@ import { createRouter, createWebHistory } from 'vue-router';
 import { useAppStore } from '../stores/website-index/appStore';
 import { useWebsiteStore } from '../stores/websiteStore';
 
-// Define routes with locale prefixes
+// Supported locales
+const SUPPORTED_LOCALES = ['ar', 'en'] as const;
+const DEFAULT_LOCALE = 'ar';
+
+// Base routes without locale prefix (will be automatically localized)
+const baseRoutes = [
+    {
+        path: '',
+        name: 'index',
+        component: () => import('../components/website-index/pages/Index.vue'),
+        meta: {
+            title: {
+                ar: 'الرئيسية',
+                en: 'Home'
+            }
+        }
+    },
+    {
+        path: 'login',
+        name: 'login',
+        component: () => import('../components/website/pages/Login.vue'),
+        meta: {
+            title: {
+                ar: 'تسجيل الدخول',
+                en: 'Login'
+            },
+            guest: true
+        }
+    },
+    {
+        path: 'profile',
+        name: 'profile',
+        component: () => import('../components/website/pages/Profile.vue'),
+        meta: {
+            title: {
+                ar: 'الملف الشخصي',
+                en: 'Profile'
+            },
+            requiresAuth: true
+        }
+    },
+    {
+        path: 'contact',
+        name: 'contact',
+        component: () => import('../components/website/pages/Contact.vue'),
+        meta: {
+            title: {
+                ar: 'اتصل بنا',
+                en: 'Contact Us'
+            }
+        }
+    },
+];
+
+// Generate localized routes
+function generateLocalizedRoutes() {
+    const localizedRoutes: any[] = [];
+
+    SUPPORTED_LOCALES.forEach(locale => {
+        baseRoutes.forEach(route => {
+            const localizedRoute = {
+                path: `/${locale}${route.path ? '/' + route.path : ''}`,
+                name: route.name ? `${route.name}-${locale}` : undefined,
+                component: route.component,
+                meta: {
+                    ...route.meta,
+                    locale,
+                    title: typeof route.meta?.title === 'object' ? route.meta.title[locale] : route.meta?.title
+                }
+            };
+            localizedRoutes.push(localizedRoute);
+        });
+    });
+
+    return localizedRoutes;
+}
+
+// Create routes array with root redirect
 const routes = [
-    // Root redirect to Arabic
+    // Root redirect to default locale
     {
         path: '/',
-        redirect: '/ar'
+        redirect: () => {
+            // Check if user has a saved locale preference
+            const savedLocale = localStorage.getItem('locale');
+            if (savedLocale && SUPPORTED_LOCALES.includes(savedLocale as any)) {
+                return `/${savedLocale}`;
+            }
+            return `/${DEFAULT_LOCALE}`;
+        }
     },
+    // Add all localized routes
+    ...generateLocalizedRoutes(),
+    // Catch-all for unmatched routes - redirect to default locale
+    {
+        path: '/:pathMatch(.*)*',
+        redirect: (to) => {
+            // Extract path without leading slash
+            const path = to.path.substring(1);
 
-    // Arabic routes (with /ar prefix)
-    {
-        path: '/ar',
-        name: 'index-ar',
-        component: () => import('../components/website-index/pages/Index.vue'),
-        meta: {
-            title: 'الرئيسية',
-            locale: 'ar'
-        }
-    },
-    {
-        path: '/ar/login',
-        name: 'login-ar',
-        component: () => import('../components/website/pages/Login.vue'),
-        meta: {
-            title: 'تسجيل الدخول',
-            guest: true,
-            locale: 'ar'
-        }
-    },
-    {
-        path: '/ar/profile',
-        name: 'profile-ar',
-        component: () => import('../components/website/pages/Profile.vue'),
-        meta: {
-            title: 'الملف الشخصي',
-            requiresAuth: true,
-            locale: 'ar'
-        }
-    },
-    {
-        path: '/ar/contact',
-        name: 'contact-ar',
-        component: () => import('../components/website/pages/Contact.vue'),
-        meta: {
-            title: 'اتصل بنا',
-            locale: 'ar'
-        }
-    },
+            // If path starts with a locale, it's already handled
+            const startsWithLocale = SUPPORTED_LOCALES.some(locale => path.startsWith(locale + '/') || path === locale);
 
-    // English routes (with /en prefix)
-    {
-        path: '/en',
-        name: 'index-en',
-        component: () => import('../components/website-index/pages/Index.vue'),
-        meta: {
-            title: 'Home',
-            locale: 'en'
+            if (startsWithLocale) {
+                // If it's a valid locale but route not found, redirect to home of that locale
+                const locale = path.split('/')[0];
+                return `/${locale}`;
+            }
+
+            // Otherwise, add default locale prefix
+            return `/${DEFAULT_LOCALE}/${path}`;
         }
-    },
-    {
-        path: '/en/login',
-        name: 'login-en',
-        component: () => import('../components/website/pages/Login.vue'),
-        meta: {
-            title: 'Login',
-            guest: true,
-            locale: 'en'
-        }
-    },
-    {
-        path: '/en/profile',
-        name: 'profile-en',
-        component: () => import('../components/website/pages/Profile.vue'),
-        meta: {
-            title: 'Profile',
-            requiresAuth: true,
-            locale: 'en'
-        }
-    },
-    {
-        path: '/en/contact',
-        name: 'contact-en',
-        component: () => import('../components/website/pages/Contact.vue'),
-        meta: {
-            title: 'Contact Us',
-            locale: 'en'
-        }
-    },
+    }
 ];
 
 const router = createRouter({
@@ -108,10 +134,28 @@ const router = createRouter({
     },
 });
 
-// Navigation guards
+// Comprehensive locale middleware (similar to mcamara)
 router.beforeEach(async (to, from, next) => {
-    // Detect locale from route
-    const routeLocale = to.meta.locale as 'ar' | 'en' || 'ar';
+    // Extract locale from path
+    const pathSegments = to.path.split('/').filter(Boolean);
+    const firstSegment = pathSegments[0];
+
+    // Check if first segment is a valid locale
+    const isValidLocale = SUPPORTED_LOCALES.includes(firstSegment as any);
+
+    // If no locale in URL, redirect to add default locale
+    if (!isValidLocale && to.path !== '/') {
+        const savedLocale = localStorage.getItem('locale') || DEFAULT_LOCALE;
+        return next(`/${savedLocale}${to.path}`);
+    }
+
+    // Get locale from route meta or path
+    const routeLocale = (to.meta.locale as 'ar' | 'en') || firstSegment || DEFAULT_LOCALE;
+
+    // Validate locale
+    if (!SUPPORTED_LOCALES.includes(routeLocale as any)) {
+        return next(`/${DEFAULT_LOCALE}${to.path}`);
+    }
 
     // Get appropriate store based on route
     let store: any;
@@ -129,25 +173,24 @@ router.beforeEach(async (to, from, next) => {
     }
 
     // Update document title
-    const title = to.meta.title || 'Pulse';
+    const title = to.meta.title || (routeLocale === 'ar' ? 'الرئيسية' : 'Home');
     document.title = `${title} - Pulse`;
 
     // Authentication guards
     const isAuthenticated = () => {
-        // Check if user is authenticated by checking session
         const userDataStr = sessionStorage.getItem('user');
         return !!userDataStr;
     };
 
     // Guest only routes (like login) - redirect to profile if authenticated
     if (to.meta.guest && isAuthenticated()) {
-        const profilePath = routeLocale === 'en' ? '/en/profile' : '/ar/profile';
+        const profilePath = `/${routeLocale}/profile`;
         return next(profilePath);
     }
 
     // Protected routes - redirect to login if not authenticated
     if (to.meta.requiresAuth && !isAuthenticated()) {
-        const loginPath = routeLocale === 'en' ? '/en/login' : '/ar/login';
+        const loginPath = `/${routeLocale}/login`;
         return next(loginPath);
     }
 
@@ -155,5 +198,4 @@ router.beforeEach(async (to, from, next) => {
 });
 
 export default router;
-
 

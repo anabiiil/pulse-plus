@@ -357,7 +357,7 @@ import userVectorImg from '../../../images/website/user-vector.png';
 import Navigation from '../Navigation.vue';
 import Footer from '../Footer.vue';
 
-const { user: authUser, fetchUser } = useAuth();
+const { user: authUser, fetchUser, isAuthenticated } = useAuth();
 const toast = useToast();
 const appStore = useAppStore();
 

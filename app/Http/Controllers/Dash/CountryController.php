@@ -13,13 +13,13 @@ class CountryController extends Controller
 {
     use ApiResponseTrait;
 
-    private const array SORT_FIELD_MAPPING = [
+    private const SORT_FIELD_MAPPING = [
         'name' => 'name',
         'id' => 'id',
         'status' => 'status',
     ];
 
-    private const int DEFAULT_PER_PAGE = 50;
+    private const DEFAULT_PER_PAGE = 50;
 
     /**
      * Display a listing of countries with filtering and pagination.

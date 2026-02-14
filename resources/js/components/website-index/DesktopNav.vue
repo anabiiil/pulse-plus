@@ -39,13 +39,13 @@
       </div>
     </div>
     <div class="flex items-center gap-4">
-      <button
-        @click="appStore.toggleDarkMode"
-        class="flex items-center justify-center w-[50px] h-[50px] text-[18px] rounded-full shadow-xl"
-        :title="appStore.t.nav.darkMode"
-      >
-        <i class="pi pi-moon"></i>
-      </button>
+<!--      <button-->
+<!--        @click="appStore.toggleDarkMode"-->
+<!--        class="flex items-center justify-center w-[50px] h-[50px] text-[18px] rounded-full shadow-xl"-->
+<!--        :title="appStore.t.nav.darkMode"-->
+<!--      >-->
+<!--        <i class="pi pi-moon"></i>-->
+<!--      </button>-->
       <button
         @click="appStore.toggleLocale"
         class="flex items-center justify-center w-[50px] h-[50px] text-[18px] rounded-full shadow-xl font-semibold"

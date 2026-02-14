@@ -20,9 +20,9 @@
             </div>
         </div>
         <div class="flex items-center gap-4">
-            <button @click="toggleDarkMode" class="flex items-center justify-center w-[50px] h-[50px] text-[18px] rounded-full shadow-xl">
-                <i class="pi pi-moon"></i>
-            </button>
+<!--            <button @click="toggleDarkMode" class="flex items-center justify-center w-[50px] h-[50px] text-[18px] rounded-full shadow-xl">-->
+<!--                <i class="pi pi-moon"></i>-->
+<!--            </button>-->
             <button @click="toggleLanguage" class="flex items-center justify-center w-[50px] h-[50px] text-[18px] rounded-full shadow-xl font-semibold">
                 {{ t.nav.language }}
             </button>
@@ -62,19 +62,19 @@
         <!-- Mobile Menu -->
         <div v-if="menuOpen" class="absolute flex-col z-50 p-6 bg-white/80 top-[100%] left-0 backdrop-blur-md shadow-lg">
             <div class="mb-4 flex gap-2">
-                <button @click="toggleLanguage" class="bg-[#123057] rounded-4xl py-3 px-7 text-white cursor-pointer font-semibold">{{ t.nav.language }}</button>
-                <button @click="toggleDarkMode" class="bg-[#123057] rounded-4xl py-3 px-7 text-white cursor-pointer font-semibold"><i class="pi pi-moon"></i></button>
+                <button @click="toggleLanguage" class="bg-[#123057] rounded-4xl py-3 px-7 mx-auto text-white cursor-pointer font-semibold">{{ t.nav.language }}</button>
+<!--                <button @click="toggleDarkMode" class="bg-[#123057] rounded-4xl py-3 px-7 text-white cursor-pointer font-semibold"><i class="pi pi-moon"></i></button>-->
             </div>
             <div>
-                <ul class="p-2 flex flex-col gap-2" :class="isRTL ? 'text-right' : 'text-left'">
+                <ul class="p-2 flex flex-col gap-2 text-center" >
                     <li><router-link to="/" @click="toggleMenu" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all">{{ t.nav.home }}</router-link></li>
-                    <li><button @click="scrollToSection('products')" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all w-full" :class="isRTL ? 'text-right' : 'text-left'">{{ t.nav.store }}</button></li>
-                    <li><button @click="scrollToSection('features')" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all w-full" :class="isRTL ? 'text-right' : 'text-left'">{{ t.nav.services }}</button></li>
-                    <li><button @click="scrollToSection('about')" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all w-full" :class="isRTL ? 'text-right' : 'text-left'">{{ t.nav.about }}</button></li>
-                    <li><button @click="scrollToSection('contact')" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all w-full" :class="isRTL ? 'text-right' : 'text-left'">{{ t.nav.contact }}</button></li>
+                    <li><a  @click="scrollToSection('products')" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all"> {{ t.nav.store }}</a></li>
+                    <li><a @click="scrollToSection('features')" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all" >{{ t.nav.services }}</a></li>
+                    <li><a @click="scrollToSection('about')" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all" >{{ t.nav.about }}</a></li>
+                    <li><a @click="scrollToSection('contact')" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all" >{{ t.nav.contact }}</a></li>
                     <!-- Logout button for mobile when authenticated -->
                     <li v-if="isAuthenticated">
-                        <button @click="handleLogout" :disabled="loggingOut" class="block py-2 px-3 rounded bg-red-500 text-white hover:bg-red-600 transition-all w-full font-semibold disabled:opacity-50" :class="isRTL ? 'text-right' : 'text-left'">
+                        <button @click="handleLogout" :disabled="loggingOut" class="block py-2 px-3 rounded bg-red-500 text-white hover:bg-red-600 transition-all font-semibold disabled:opacity-50" >
                             <span v-if="!loggingOut">{{ t.nav.logout || 'تسجيل الخروج' }}</span>
                             <span v-else>...</span>
                         </button>

@@ -126,10 +126,10 @@
                     <!-- Profile Image Upload -->
                     <div class="bg-[#1BB2B1] shadow-[inset_0_4px_4px_0_#12305766] p-10 w-full rounded-3xl flex items-center justify-center mb-6">
                         <div class="flex flex-col items-center">
-                            <div class="p-7 w-fit rounded-4xl bg-white relative shadow-2xl cursor-pointer">
-                                <img v-if="!profileImage" :src="userVectorImg" alt="User" class="w-20 h-20">
-                                <img v-else :src="profileImage" alt="Profile" class="w-20 h-20 rounded-full object-cover">
-                                <input @change="handleImageUpload" class="opacity-0 w-full h-full absolute top-0 left-0 cursor-pointer" type="file" accept="image/*">
+                            <div class="p-3 w-fit rounded-[32px] bg-white relative shadow-2xl cursor-pointer">
+                                <img v-if="!profileImage" :src="userVectorImg" alt="User" class="rounded-2xl w-20 h-20 ">
+                                <img v-else :src="profileImage" alt="Profile" class="rounded-2xl object-cover w-20 h-20 ">
+                                <input @change="handleImageUpload" class="opacity-0 w-full h-full absolute top-0 left-0 cursor-pointer rounded-[32px]" type="file" accept="image/*">
                             </div>
                             <div class="text-center text-white mt-4">
                                 <h3 class="font-bold text-xl">{{ t.profile.form.profileImage }}</h3>
@@ -357,7 +357,7 @@ import userVectorImg from '../../../images/website/user-vector.png';
 import Navigation from '../Navigation.vue';
 import Footer from '../Footer.vue';
 
-const { user: authUser, fetchUser, isAuthenticated } = useAuth();
+const { user: authUser, fetchUser } = useAuth();
 const toast = useToast();
 const appStore = useAppStore();
 

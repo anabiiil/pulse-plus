@@ -1,8 +1,8 @@
 <template>
     <!-- Top Contact Bar -->
     <div class="flex items-center text-white font-bold justify-center p-4 gap-10 w-full bg-[#03315A]">
-        <p class="[direction:ltr]"><i class="pi pi-phone text-white mx-2 text-[18px]"></i> +2 01022335566</p>
-        <p class="[direction:ltr]"><i class="pi pi-envelope text-white mx-2 text-[18px]"></i> info@pulse-plus.com</p>
+        <p class="[direction:ltr] text-[12px] lg:text-base"><i class="pi pi-phone text-white mx-2 text-[14px] lg:text-[18px]"></i> +2 01022335566</p>
+        <p class="[direction:ltr] text-[12px] lg:text-base"><i class="pi pi-envelope text-white mx-2 text-[14px] lg:text-[18px]"></i> info@pulse-plus.com</p>
     </div>
 
     <!-- Navigation Desktop -->
@@ -68,15 +68,17 @@
             <div>
                 <ul class="p-2 flex flex-col gap-2 text-center" >
                     <li><router-link :to="homePath" @click="toggleMenu" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all">{{ t.nav.home }}</router-link></li>
-                    <li><button @click="scrollToSection('products')" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all w-full cursor-pointer">{{ t.nav.store }}</button></li>
-                    <li><button @click="scrollToSection('features')" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all w-full cursor-pointer">{{ t.nav.services }}</button></li>
-                    <li><button @click="scrollToSection('about')" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all w-full cursor-pointer">{{ t.nav.about }}</button></li>
-                    <li><button @click="scrollToSection('contact')" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all w-full cursor-pointer">{{ t.nav.contact }}</button></li>
+                    <li><button @click="scrollToSection('products')" class="block py-2 rounded hover:bg-[#123057] hover:text-white transition-all w-full cursor-pointer">{{ t.nav.store }}</button></li>
+                    <li><button @click="scrollToSection('features')" class="block py-2 rounded hover:bg-[#123057] hover:text-white transition-all w-full cursor-pointer">{{ t.nav.services }}</button></li>
+                    <li><button @click="scrollToSection('about')" class="block py-2 rounded hover:bg-[#123057] hover:text-white transition-all w-full cursor-pointer">{{ t.nav.about }}</button></li>
+                    <li><button @click="scrollToSection('contact')" class="block py-2 rounded hover:bg-[#123057] hover:text-white transition-all w-full cursor-pointer">{{ t.nav.contact }}</button></li>
                     <!-- Logout button for mobile when authenticated -->
                     <li v-if="isAuthenticated">
-                        <button @click="handleLogout" :disabled="loggingOut" class="block py-2 px-3 rounded bg-red-500 text-white hover:bg-red-600 transition-all font-semibold disabled:opacity-50 w-full">
-                            <span v-if="!loggingOut">{{ t.nav.logout }}</span>
+                        <button @click="handleLogout" :disabled="loggingOut" class="block py-2 rounded bg-red-500 text-white hover:bg-red-600 transition-all font-semibold disabled:opacity-50 w-full">
+                            <span class="block px-2">
+                                           <span v-if="!loggingOut">{{ t.nav.logout }}</span>
                             <span v-else>...</span>
+                            </span>
                         </button>
                     </li>
                     <li v-else>

@@ -50,7 +50,7 @@
             <router-link
               :to="homePath"
               @click="appStore.closeMobileMenu"
-              class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all"
+              class="block py-2  rounded hover:bg-[#123057] hover:text-white transition-all"
             >
               {{ t.nav.home }}
             </router-link>
@@ -58,7 +58,7 @@
           <li>
             <button
               @click="appStore.scrollToSection('products')"
-              class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all w-full text-right"
+              class="block py-2  rounded hover:bg-[#123057] hover:text-white transition-all w-full text-right"
             >
               {{ t.nav.store }}
             </button>
@@ -66,7 +66,7 @@
           <li>
             <button
               @click="appStore.scrollToSection('features')"
-              class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all w-full text-right"
+              class="block py-2 rounded hover:bg-[#123057] hover:text-white transition-all w-full text-right"
             >
               {{ t.nav.services }}
             </button>
@@ -74,7 +74,7 @@
           <li>
             <button
               @click="appStore.scrollToSection('about')"
-              class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all w-full text-right"
+              class="block py-2 rounded hover:bg-[#123057] hover:text-white transition-all w-full text-right"
             >
               {{ t.nav.about }}
             </button>
@@ -82,7 +82,7 @@
           <li>
             <button
               @click="appStore.scrollToSection('contact')"
-              class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all w-full text-right"
+              class="block py-2 rounded hover:bg-[#123057] hover:text-white transition-all w-full text-right"
             >
               {{ t.nav.contact }}
             </button>
@@ -93,7 +93,7 @@
             <router-link
               :to="loginPath"
               @click="appStore.closeMobileMenu"
-              class="block py-2 px-3 rounded bg-teal-500 text-white hover:bg-teal-600 transition-all font-semibold text-center"
+              class="block py-2 rounded bg-teal-500 text-white hover:bg-teal-600 transition-all font-semibold text-center"
             >
               {{ t.nav.login }}
             </router-link>

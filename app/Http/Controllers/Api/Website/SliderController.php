@@ -17,7 +17,7 @@ class SliderController extends Controller
      */
     public function index()
     {
-        $sliders = Slider::where('status', StatusEnum::ACTIVE)
+        $sliders = Slider::where('status', true)
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -29,7 +29,7 @@ class SliderController extends Controller
      */
     public function show($id)
     {
-        $slider = Slider::where('status', StatusEnum::ACTIVE)
+        $slider = Slider::where('status', true)
             ->findOrFail($id);
 
         return $this->responseData(new SliderResource($slider));

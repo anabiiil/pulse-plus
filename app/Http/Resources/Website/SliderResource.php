@@ -17,10 +17,10 @@ class SliderResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title ?? null,
-            'description' => $this->description ?? null,
-            'image_url' => $this->image_url,
+            'description' => $this->desc ?? null,
+            'image_url' => $this->image?->file_url,
             'link' => $this->link ?? null,
-            'status' => $this->status?->value ?? $this->status,
+            'status' => $this->status,
             'created_at' => $this->created_at?->format('Y-m-d H:i:s'),
         ];
     }

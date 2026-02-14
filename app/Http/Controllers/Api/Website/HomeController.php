@@ -27,20 +27,20 @@ class HomeController extends Controller
         $productLimit = $request->get('product_limit', 6);
         $serviceLimit = $request->get('service_limit', 6);
 
-        // Get active sliders
-        $sliders = Slider::where('status', StatusEnum::ACTIVE)
+        // Get active sliders (boolean status)
+        $sliders = Slider::where('status', true)
             ->orderBy('created_at', 'desc')
             ->limit($sliderLimit)
             ->get();
 
-        // Get active products
+        // Get active products (enum status)
         $products = Product::where('status', StatusEnum::ACTIVE)
             ->orderBy('created_at', 'desc')
             ->limit($productLimit)
             ->get();
 
-        // Get active services
-        $services = Service::where('status', StatusEnum::ACTIVE)
+        // Get active services (boolean status)
+        $services = Service::where('status', true)
             ->orderBy('created_at', 'desc')
             ->limit($serviceLimit)
             ->get();

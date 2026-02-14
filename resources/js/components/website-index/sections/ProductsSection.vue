@@ -16,6 +16,9 @@
           <h3 class="text-xl font-bold mt-4">
             {{ product.name }}
           </h3>
+          <p v-if="product.price" class="text-teal-600 font-bold text-lg mt-2">
+            {{ product.price }} جنيه
+          </p>
           <p v-if="product.description" class="text-gray-600 mt-2 text-sm" v-html="product.description"></p>
         </div>
       </div>
@@ -33,8 +36,9 @@ interface Product {
   id?: number;
   name: string;
   description?: string;
+  price?: number | null;
   image?: string;
-  image_url?: string;
+  image_url?: string | null;
 }
 
 const dataStore = useDataStore();

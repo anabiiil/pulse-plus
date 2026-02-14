@@ -23,7 +23,7 @@ class ServiceController extends Controller
         $limit = $request->get('limit');
 
         $query = Service::query()
-            ->where('status', StatusEnum::ACTIVE)
+            ->where('status', true)
             ->when($search, fn ($q) => $q->where('name', 'like', "%{$search}%"))
             ->orderBy('created_at', 'desc');
 
@@ -41,7 +41,7 @@ class ServiceController extends Controller
      */
     public function show($id)
     {
-        $service = Service::where('status', StatusEnum::ACTIVE)
+        $service = Service::where('status', true)
             ->findOrFail($id);
 
         return $this->responseData(new ServiceResource($service));

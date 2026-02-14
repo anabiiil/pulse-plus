@@ -106,10 +106,7 @@
                     </div>
                 </div>
 
-                <!-- Copyright (Desktop) -->
-                <p class="hidden lg:block text-center text-xs text-gray-400 mt-6 border-t border-gray-400 pt-5">
-                    {{ t.profile.copyright }}
-                </p>
+
             </div>
 
             <!-- Main Content -->
@@ -332,10 +329,6 @@
                 -->
             </div>
 
-            <!-- Copyright (Mobile) -->
-            <p class="lg:hidden block text-center text-xs text-gray-400 mt-6 border-t border-gray-400 pt-5">
-                {{ t.profile.copyright }}
-            </p>
         </div>
     </section>
 

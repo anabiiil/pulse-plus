@@ -20,9 +20,6 @@
                 <!-- Login Form Component -->
                 <LoginForm />
 
-                <p class="text-xs text-gray-400 mt-6">
-                    {{ t.footer.copyright }}
-                </p>
             </div>
         </div>
 

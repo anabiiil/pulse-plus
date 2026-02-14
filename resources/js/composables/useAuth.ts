@@ -40,8 +40,24 @@ export const useAuth = () => {
     const loading = ref(false);
     const error = ref<string | null>(null);
 
-    // Check if user is authenticated
-    const isAuthenticated = computed(() => !!user.value);
+    // Check if user is authenticated (check both reactive user and sessionStorage)
+    const isAuthenticated = computed(() => {
+        if (user.value) return true;
+
+        // Fallback to sessionStorage check
+        const userDataStr = sessionStorage.getItem('user');
+        if (userDataStr) {
+            try {
+                user.value = JSON.parse(userDataStr);
+                return true;
+            } catch {
+                sessionStorage.removeItem('user');
+                return false;
+            }
+        }
+
+        return false;
+    });
 
     /**
      * Login user
@@ -54,6 +70,9 @@ export const useAuth = () => {
             const response = await axios.post('/api/website/auth/login', credentials);
 
             user.value = response.data.data.user;
+
+            // Store user in sessionStorage for router guard
+            sessionStorage.setItem('user', JSON.stringify(response.data.data.user));
 
             return true;
         } catch (err: any) {
@@ -76,6 +95,9 @@ export const useAuth = () => {
 
             user.value = null;
 
+            // Remove user from sessionStorage
+            sessionStorage.removeItem('user');
+
             // Redirect to home
             router.push('/');
         } catch (err: any) {
@@ -97,9 +119,15 @@ export const useAuth = () => {
             const response = await axios.get('/api/website/auth/me');
 
             user.value = response.data.data.user;
+
+            // Store user in sessionStorage
+            sessionStorage.setItem('user', JSON.stringify(response.data.data.user));
         } catch (err: any) {
             error.value = err.response?.data?.message || 'Failed to fetch user';
             user.value = null;
+
+            // Remove user from sessionStorage if fetch fails
+            sessionStorage.removeItem('user');
         } finally {
             loading.value = false;
         }

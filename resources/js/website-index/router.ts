@@ -103,7 +103,7 @@ const router = createRouter({
 });
 
 // Navigation guards
-router.beforeEach((to, _from, next) => {
+router.beforeEach(async (to, from, next) => {
     // Detect locale from route
     const routeLocale = to.meta.locale as 'ar' | 'en' || 'ar';
 
@@ -125,6 +125,26 @@ router.beforeEach((to, _from, next) => {
     // Update document title
     const title = to.meta.title || 'Pulse';
     document.title = `${title} - Pulse`;
+
+    // Authentication guards
+    const isAuthenticated = () => {
+        // Check if user is authenticated by checking session
+        // This is a simple check - you can make it more robust
+        const userDataStr = sessionStorage.getItem('user');
+        return !!userDataStr;
+    };
+
+    // Guest only routes (like login) - redirect to profile if authenticated
+    if (to.meta.guest && isAuthenticated()) {
+        const profilePath = routeLocale === 'en' ? '/en/profile' : '/profile';
+        return next(profilePath);
+    }
+
+    // Protected routes - redirect to login if not authenticated
+    if (to.meta.requiresAuth && !isAuthenticated()) {
+        const loginPath = routeLocale === 'en' ? '/en/login' : '/login';
+        return next(loginPath);
+    }
 
     next();
 });

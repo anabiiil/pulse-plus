@@ -357,7 +357,7 @@ import userVectorImg from '../../../images/website/user-vector.png';
 import Navigation from '../Navigation.vue';
 import Footer from '../Footer.vue';
 
-const { user: authUser, fetchUser } = useAuth();
+const { user: authUser, fetchUser, isAuthenticated } = useAuth();
 const toast = useToast();
 const appStore = useAppStore();
 
@@ -606,8 +606,10 @@ const resetForm = () => {
 };
 
 // Load user on mount
-onMounted(() => {
-    loadUser();
+onMounted(async () => {
+    // Try to load user data
+    // If it fails with 401, the loadUser function will handle redirect
+    await loadUser();
     fetchNationalities();
     fetchMaritalStatus();
 });

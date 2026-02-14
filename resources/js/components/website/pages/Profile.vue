@@ -230,6 +230,62 @@
                                 </div>
                             </div>
 
+                            <!-- Display Emergency Toggle -->
+                            <div class="p-2 text-[#123057] flex flex-col col-span-2 relative">
+                                <div class="bg-gray-50 border-0 shadow-xl rounded-[30px] p-6 my-2">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex-1">
+                                            <label class="font-bold text-lg cursor-pointer">{{ t.profile.form.displayEmergency }}</label>
+                                            <p class="text-sm text-gray-600 mt-1">{{ t.profile.form.displayEmergencyDesc }}</p>
+                                        </div>
+                                        <div class="flex-shrink-0 ml-4">
+                                            <label class="relative inline-flex items-center cursor-pointer">
+                                                <input
+                                                    type="checkbox"
+                                                    v-model="formData.display_emergency"
+                                                    class="sr-only peer"
+                                                >
+                                                <div class="w-14 h-7 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-teal-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-teal-500"></div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- View Emergency Profile Link -->
+                            <div v-if="authUser?.hash_url" class="p-2 text-[#123057] flex flex-col col-span-2 relative">
+                                <div class="bg-[#FF6760] border-0 shadow-xl rounded-[30px] p-6 my-2">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex-1 text-white">
+                                            <label class="font-bold text-lg">{{ t.profile.form.emergencyProfileLink }}</label>
+                                            <p class="text-sm text-white/90 mt-1">{{ t.profile.form.emergencyProfileLinkDesc }}</p>
+                                        </div>
+                                        <div class="flex-shrink-0 ml-4">
+                                            <a
+                                                :href="`/user/info/${authUser.hash_url}`"
+                                                target="_blank"
+                                                class="inline-flex items-center gap-2 bg-white text-[#FF6760] font-bold px-6 py-3 rounded-full hover:bg-gray-100 transition duration-150 shadow-lg"
+                                            >
+                                                <i class="pi pi-external-link"></i>
+                                                {{ t.profile.form.viewProfile }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="mt-4 pt-4 border-t border-white/20">
+                                        <div class="flex items-center gap-2 text-white/90 text-sm">
+                                            <i class="pi pi-link"></i>
+                                            <code class="bg-white/20 px-3 py-1 rounded-lg text-xs break-all">{{ window.location.origin }}/user/info/{{ authUser.hash_url }}</code>
+                                            <button
+                                                @click="copyProfileLink"
+                                                class="ml-auto bg-white/20 hover:bg-white/30 px-3 py-1 rounded-lg text-xs transition"
+                                            >
+                                                <i class="pi pi-copy"></i> {{ t.profile.form.copyLink }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
 
 
                             <!-- Address -->
@@ -385,6 +441,7 @@ const formData = reactive({
     email: '', // Read-only, not sent in update
     phone: '', // Read-only, not sent in update
     emergency_phone: '',
+    display_emergency: false,
     birthdate: '',
     gender: 'male',
     address: '',
@@ -451,6 +508,7 @@ const loadUser = async () => {
             formData.email = authUser.value.email || '';
             formData.phone = authUser.value.phone || '';
             formData.emergency_phone = authUser.value.emergency_phone || '';
+            formData.display_emergency = authUser.value.display_emergency || false;
             formData.birthdate = authUser.value.birthdate || '';
             formData.gender = authUser.value.gender || 'male';
             formData.address = authUser.value.address || '';
@@ -507,6 +565,9 @@ const handleUpdate = async () => {
         if (formData.emergency_phone) {
             formDataToSend.append('emergency_phone', formData.emergency_phone);
         }
+
+        // Add display_emergency as 1 or 0
+        formDataToSend.append('display_emergency', formData.display_emergency ? '1' : '0');
 
         if (formData.birthdate) {
             formDataToSend.append('birthdate', formData.birthdate);
@@ -581,6 +642,7 @@ const resetForm = () => {
         formData.email = authUser.value.email || '';
         formData.phone = authUser.value.phone || '';
         formData.emergency_phone = authUser.value.emergency_phone || '';
+        formData.display_emergency = authUser.value.display_emergency || false;
         formData.birthdate = authUser.value.birthdate || '';
         formData.gender = authUser.value.gender || 'male';
         formData.address = authUser.value.address || '';
@@ -598,6 +660,20 @@ const resetForm = () => {
         profileImageFile.value = null;
     }
     resetErrors();
+};
+
+// Copy profile link to clipboard
+const copyProfileLink = async () => {
+    if (authUser.value?.hash_url) {
+        const link = `${window.location.origin}/user/info/${authUser.value.hash_url}`;
+        try {
+            await navigator.clipboard.writeText(link);
+            toast.success(t.value.profile.form.linkCopied || 'Link copied to clipboard!');
+        } catch (err) {
+            console.error('Failed to copy:', err);
+            toast.error(t.value.profile.form.linkCopyFailed || 'Failed to copy link');
+        }
+    }
 };
 
 // Load user on mount

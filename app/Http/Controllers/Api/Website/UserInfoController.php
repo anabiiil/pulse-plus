@@ -41,6 +41,7 @@ class UserInfoController extends Controller
             'email' => $user->email,
             'phone' => $user->phone,
             'emergency_phone' => $user->emergency_phone,
+            'display_emergency' => $user->display_emergency,
             'address' => $user->address,
             'birthdate' => $user->birthdate,
             'gender' => $user->gender,

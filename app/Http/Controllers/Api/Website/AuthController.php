@@ -87,12 +87,14 @@ class AuthController extends Controller
                 'email' => $user->email,
                 'phone' => $user->phone,
                 'emergency_phone' => $user->emergency_phone,
+                'display_emergency' => $user->display_emergency,
                 'birthdate' => $user->birthdate,
                 'gender' => $user->gender,
                 'address' => $user->address,
                 'country_id' => $user->country_id,
                 'marital_status' => $user->marital_status,
                 'profile_image_url' => $user->profile_image_url,
+                'hash_url' => $user->hash_url,
             ]
         ]);
     }
@@ -111,6 +113,7 @@ class AuthController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'emergency_phone' => 'nullable|string|max:20',
+            'display_emergency' => 'nullable|boolean',
             'birthdate' => 'nullable|date',
             'gender' => 'nullable|in:male,female',
             'address' => 'nullable|string|max:255',
@@ -140,12 +143,14 @@ class AuthController extends Controller
                 'email' => $user->email,
                 'phone' => $user->phone,
                 'emergency_phone' => $user->emergency_phone,
+                'display_emergency' => $user->display_emergency,
                 'birthdate' => $user->birthdate,
                 'gender' => $user->gender,
                 'address' => $user->address,
                 'country_id' => $user->country_id,
                 'marital_status' => $user->marital_status,
                 'profile_image_url' => $user->profile_image_url,
+                'hash_url' => $user->hash_url,
             ],
             'message' => 'Profile updated successfully'
         ]);

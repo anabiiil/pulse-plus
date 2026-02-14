@@ -67,7 +67,7 @@
 
                         <!-- Emergency Call Button -->
                         <a
-                            v-if="user.emergency_phone"
+                            v-if="user.emergency_phone && user.display_emergency"
                             :href="`tel:${user.emergency_phone}`"
                             class="bg-[#FF6760] rounded-[28px] my-4 py-2.5 w-full flex justify-center items-center font-bold text-[18px] text-white shadow-[inset_0_4px_4px_0_rgba(0,0,0,0.25)] hover:bg-[#e55850] transition duration-150"
                         >
@@ -195,7 +195,7 @@
 
                     <!-- Emergency Call Button (Mobile) -->
                     <a
-                        v-if="user.emergency_phone"
+                        v-if="user.emergency_phone && user.display_emergency"
                         :href="`tel:${user.emergency_phone}`"
                         class="bg-[#FF6760] py-5 text-3xl font-bold text-center text-white rounded-2xl w-full shadow-xl flex items-center justify-center hover:bg-[#e55850] transition duration-150"
                     >

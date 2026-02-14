@@ -63,6 +63,14 @@ export interface TranslationSchema {
       phonePlaceholder: string;
       emergencyPhone: string;
       emergencyPhonePlaceholder: string;
+      displayEmergency: string;
+      displayEmergencyDesc: string;
+      emergencyProfileLink: string;
+      emergencyProfileLinkDesc: string;
+      viewProfile: string;
+      copyLink: string;
+      linkCopied: string;
+      linkCopyFailed: string;
       address: string;
       addressPlaceholder: string;
       email: string;

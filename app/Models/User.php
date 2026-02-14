@@ -29,6 +29,7 @@ class User extends Authenticatable
         'address',
         'phone',
         'emergency_phone',
+        'display_emergency',
         'birthdate',
         'gender',
         'country_id',

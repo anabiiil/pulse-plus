@@ -117,8 +117,10 @@ const loadNationality = async () => {
     try {
         loading.value = true;
         await fetchNationality(nationalityId.value);
-        formData.name  = nationality.value.name;
-        formData.status  = nationality.value.status === 1;
+        // Copy values instead of assigning by reference
+        formData.name.en = nationality.value.name?.en || '';
+        formData.name.ar = nationality.value.name?.ar || '';
+        formData.status = nationality.value.status === 1 || nationality.value.status === 'active';
     } catch (error: any) {
         console.error('Failed to load nationality');
         await router.push('/dash/nationality');
@@ -131,12 +133,12 @@ const loadNationality = async () => {
  * Watch nationality and update form data when it changes
  */
 watch(
-    () => nationality,
+    () => nationality.value,
     (newNationality) => {
         if (newNationality) {
             formData.name.en = newNationality.name?.en || '';
             formData.name.ar = newNationality.name?.ar || '';
-            formData.status = newNationality.status === 'active' || newNationality.status === true;
+            formData.status = newNationality.status === 'active' || newNationality.status === 1 || newNationality.status === true;
         }
     },
     { deep: true }

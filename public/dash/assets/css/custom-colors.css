@@ -1,0 +1,72 @@
+/* Custom Dashboard Colors - Pulse Logo Theme */
+:root {
+    /* Primary Color - Teal/Cyan to match logo */
+    --primary-rgb: 27, 178, 177;
+    --primary: rgb(27, 178, 177);
+    --primary-hover: rgb(20, 160, 159);
+    --primary-border: rgb(27, 178, 177);
+    --primary-focus: rgba(27, 178, 177, 0.25);
+
+    /* Variants */
+    --primary01: rgba(27, 178, 177, 0.1);
+    --primary02: rgba(27, 178, 177, 0.2);
+    --primary03: rgba(27, 178, 177, 0.3);
+    --primary05: rgba(27, 178, 177, 0.5);
+
+    /* Text on primary */
+    --primary-text: #ffffff;
+}
+
+/* Override primary background color */
+.bg-primary,
+.btn-primary,
+.badge-primary {
+    background-color: rgb(27, 178, 177) !important;
+    border-color: rgb(27, 178, 177) !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: rgb(20, 160, 159) !important;
+    border-color: rgb(20, 160, 159) !important;
+}
+
+/* Primary text color */
+.text-primary {
+    color: rgb(27, 178, 177) !important;
+}
+
+/* Primary border color */
+.border-primary {
+    border-color: rgb(27, 178, 177) !important;
+}
+
+/* Active menu items */
+.side-menu__item.active,
+.side-menu__item:hover {
+    background-color: rgba(27, 178, 177, 0.1) !important;
+    color: rgb(27, 178, 177) !important;
+}
+
+/* Header profile dropdown */
+.main-header-profile.bg-primary {
+    background-color: rgb(27, 178, 177) !important;
+}
+
+/* Form controls focus */
+.form-control:focus,
+.form-select:focus {
+    border-color: rgb(27, 178, 177) !important;
+    box-shadow: 0 0 0 0.25rem rgba(27, 178, 177, 0.25) !important;
+}
+
+/* Links */
+a.text-primary:hover {
+    color: rgb(20, 160, 159) !important;
+}
+
+/* Sidebar logo styling */
+.main-sidebar-header .header-logo img {
+    object-fit: contain;
+}
+

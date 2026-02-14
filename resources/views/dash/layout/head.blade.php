@@ -27,6 +27,9 @@
     <!-- Style Css -->
     <link href="{{ asset('dash/assets') }}/css/styles.min.css" rel="stylesheet" >
 
+    <!-- Custom Colors - Pulse Theme -->
+    <link href="{{ asset('dash/assets') }}/css/custom-colors.css" rel="stylesheet" >
+
     <!-- Icons Css -->
     <link href="{{ asset('dash/assets') }}/css/icons.css" rel="stylesheet" >
 

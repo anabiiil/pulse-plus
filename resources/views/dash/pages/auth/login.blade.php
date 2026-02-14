@@ -27,6 +27,9 @@
     <!-- Style Css -->
     <link href="{{ asset('dash/assets') }}/css/styles.min.css" rel="stylesheet">
 
+    <!-- Custom Colors - Pulse Theme -->
+    <link href="{{ asset('dash/assets') }}/css/custom-colors.css" rel="stylesheet">
+
     <!-- Icons Css -->
     <link href="{{ asset('dash/assets') }}/css/icons.min.css" rel="stylesheet">
 
@@ -525,12 +528,10 @@
                     <div class="row">
                         <div class="col-md-10 col-lg-10 col-xl-9 mx-auto">
                             <div class="card-sigin">
-                                <div class="mb-5 d-flex">
-                                    <a href="{{ url('admin/login') }}" class="header-logo"><img
-                                            src="{{ asset('assets/images/custom/logo.svg') }}"
-                                            class="desktop-logo ht-40" alt="logo">
-                                        <img src="{{ asset('assets/images/custom/logo.svg') }}"
-                                             class="desktop-white ht-40" alt="logo">
+                                <div class="mb-5 d-flex justify-content-center">
+                                    <a href="{{ url('admin/login') }}" class="header-logo">
+                                        <img src="{{ asset('dash/assets/images/website/logo.png') }}"
+                                            class="desktop-logo" style="height: 60px;" alt="Pulse Logo">
                                     </a>
 
                                 </div>

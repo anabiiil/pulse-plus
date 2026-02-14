@@ -474,7 +474,7 @@ const loadUser = async () => {
         if (error.response?.status === 401) {
             toast.error(currentLocale.value === 'ar' ? 'يجب تسجيل الدخول أولاً' : 'Please login first');
             // Redirect to login page
-            window.location.href = `/${currentLocale.value === 'ar' ? '' : 'en/'}login`;
+            window.location.href = `/${currentLocale.value === 'ar' ? 'ar' : 'en'}/login`;
         } else {
             toast.error(t.value.profile.messages.errorLoad);
         }
@@ -561,7 +561,7 @@ const handleUpdate = async () => {
         if (error.response?.status === 401) {
             // Unauthenticated
             toast.error(currentLocale.value === 'ar' ? 'يجب تسجيل الدخول أولاً' : 'Please login first');
-            window.location.href = `/${currentLocale.value === 'ar' ? '' : 'en/'}login`;
+            window.location.href = `/${currentLocale.value === 'ar' ? 'ar' : 'en'}/login`;
         } else if (error.response?.status === 422) {
             const responseErrors = error.response.data.errors || {};
             Object.keys(responseErrors).forEach(key => {

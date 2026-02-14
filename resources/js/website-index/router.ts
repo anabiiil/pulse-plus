@@ -2,12 +2,18 @@ import { createRouter, createWebHistory } from 'vue-router';
 import { useAppStore } from '../stores/website-index/appStore';
 import { useWebsiteStore } from '../stores/websiteStore';
 
-// Define routes without locale prefix
+// Define routes with locale prefixes
 const routes = [
-    // Arabic routes (default, no prefix)
+    // Root redirect to Arabic
     {
         path: '/',
-        name: 'index',
+        redirect: '/ar'
+    },
+
+    // Arabic routes (with /ar prefix)
+    {
+        path: '/ar',
+        name: 'index-ar',
         component: () => import('../components/website-index/pages/Index.vue'),
         meta: {
             title: 'الرئيسية',
@@ -15,8 +21,8 @@ const routes = [
         }
     },
     {
-        path: '/login',
-        name: 'login',
+        path: '/ar/login',
+        name: 'login-ar',
         component: () => import('../components/website/pages/Login.vue'),
         meta: {
             title: 'تسجيل الدخول',
@@ -25,8 +31,8 @@ const routes = [
         }
     },
     {
-        path: '/profile',
-        name: 'profile',
+        path: '/ar/profile',
+        name: 'profile-ar',
         component: () => import('../components/website/pages/Profile.vue'),
         meta: {
             title: 'الملف الشخصي',
@@ -35,8 +41,8 @@ const routes = [
         }
     },
     {
-        path: '/contact',
-        name: 'contact',
+        path: '/ar/contact',
+        name: 'contact-ar',
         component: () => import('../components/website/pages/Contact.vue'),
         meta: {
             title: 'اتصل بنا',
@@ -129,20 +135,19 @@ router.beforeEach(async (to, from, next) => {
     // Authentication guards
     const isAuthenticated = () => {
         // Check if user is authenticated by checking session
-        // This is a simple check - you can make it more robust
         const userDataStr = sessionStorage.getItem('user');
         return !!userDataStr;
     };
 
     // Guest only routes (like login) - redirect to profile if authenticated
     if (to.meta.guest && isAuthenticated()) {
-        const profilePath = routeLocale === 'en' ? '/en/profile' : '/profile';
+        const profilePath = routeLocale === 'en' ? '/en/profile' : '/ar/profile';
         return next(profilePath);
     }
 
     // Protected routes - redirect to login if not authenticated
     if (to.meta.requiresAuth && !isAuthenticated()) {
-        const loginPath = routeLocale === 'en' ? '/en/login' : '/login';
+        const loginPath = routeLocale === 'en' ? '/en/login' : '/ar/login';
         return next(loginPath);
     }
 

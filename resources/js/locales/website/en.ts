@@ -7,6 +7,7 @@ export default {
     contact: 'Contact Us',
     login: 'Login',
     profile: 'Profile',
+    logout: 'Logout',
     darkMode: 'Dark Mode',
     language: 'العربية',
   },

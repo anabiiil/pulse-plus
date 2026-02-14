@@ -13,6 +13,7 @@ export interface TranslationSchema {
     contact: string;
     login: string;
     profile: string;
+    logout: string;
     darkMode: string;
     language: string;
   };

@@ -7,6 +7,7 @@ export default {
     contact: 'اتصل بنا',
     login: 'تسجيل الدخول',
     profile: 'الملف الشخصي',
+    logout: 'تسجيل الخروج',
     darkMode: 'الوضع الليلي',
     language: 'EN',
   },

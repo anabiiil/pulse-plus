@@ -120,7 +120,7 @@ const handleSubmit = async () => {
         // Redirect to profile after successful login with page reload
         setTimeout(() => {
             const currentLocale = websiteStore.locale || 'ar';
-            const profilePath = currentLocale === 'en' ? '/en/profile' : '/profile';
+            const profilePath = currentLocale === 'en' ? '/en/profile' : '/ar/profile';
             window.location.href = profilePath;
         }, 500);
     } catch (error: any) {

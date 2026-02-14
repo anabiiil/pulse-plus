@@ -8,11 +8,11 @@
     <!-- Navigation Desktop -->
     <nav class="hidden lg:flex py-4 px-20 bg-white/90 shadow-md justify-between items-center">
         <div class="flex items-center gap-4">
-            <router-link to="/" class="text-2xl font-bold text-gray-800">
+            <router-link :to="homePath" class="text-2xl font-bold text-gray-800">
                 <img :src="logoImg" class="w-[120px]" alt="Pulse Logo">
             </router-link>
             <div>
-                <router-link to="/" class="mx-4 transition duration-150 font-semibold" :class="$route.path === '/' || $route.path === '/en' ? 'text-teal-500 before:w-full before:h-0.5 before:bg-teal-500 before:absolute before:-bottom-2 before:left-0 relative' : 'hover:text-teal-500'">{{ t.nav.home }}</router-link>
+                <router-link :to="homePath" class="mx-4 transition duration-150 font-semibold" :class="$route.path === '/ar' || $route.path === '/en' ? 'text-teal-500 before:w-full before:h-0.5 before:bg-teal-500 before:absolute before:-bottom-2 before:left-0 relative' : 'hover:text-teal-500'">{{ t.nav.home }}</router-link>
                 <button @click="scrollToSection('products')" class="relative transition duration-150 font-semibold mx-4 hover:text-teal-500 cursor-pointer">{{ t.nav.store }}</button>
                 <button @click="scrollToSection('features')" class="hover:text-teal-500 transition duration-150 font-semibold mx-4 cursor-pointer">{{ t.nav.services }}</button>
                 <button @click="scrollToSection('about')" class="hover:text-teal-500 transition duration-150 font-semibold mx-4 cursor-pointer">{{ t.nav.about }}</button>
@@ -27,16 +27,16 @@
                 {{ t.nav.language }}
             </button>
             <!-- Login button when not authenticated -->
-            <router-link v-if="!isAuthenticated" to="/login" class="bg-teal-500 text-white px-5 py-2 rounded-[30px] shadow-lg font-semibold hover:bg-teal-600 transition duration-150">
+            <router-link v-if="!isAuthenticated" :to="loginPath" class="bg-teal-500 text-white px-5 py-2 rounded-[30px] shadow-lg font-semibold hover:bg-teal-600 transition duration-150">
                 {{ t.nav.login }}
             </router-link>
             <!-- Profile and Logout buttons when authenticated -->
             <template v-else>
-                <router-link to="/profile" class="bg-blue-500 text-white px-5 py-2 rounded-[30px] shadow-lg font-semibold hover:bg-blue-600 transition duration-150">
+                <router-link :to="profilePath" class="bg-blue-500 text-white px-5 py-2 rounded-[30px] shadow-lg font-semibold hover:bg-blue-600 transition duration-150">
                     {{ t.nav.profile }}
                 </router-link>
                 <button @click="handleLogout" :disabled="loggingOut" class="bg-red-500 text-white px-5 py-2 rounded-[30px] shadow-lg font-semibold hover:bg-red-600 transition duration-150 disabled:opacity-50">
-                    <span v-if="!loggingOut">{{ t.nav.logout || 'تسجيل الخروج' }}</span>
+                    <span v-if="!loggingOut">{{ t.nav.logout }}</span>
                     <span v-else>...</span>
                 </button>
             </template>
@@ -46,12 +46,12 @@
     <!-- Navigation Mobile -->
     <nav class="lg:hidden block w-full bg-white shadow-md px-6 py-4 flex items-center justify-between relative">
         <div>
-            <router-link to="/">
+            <router-link :to="homePath">
                 <img :src="logoImg" class="w-[100px]" alt="Pulse Logo">
             </router-link>
         </div>
         <div class="flex items-center justify-center gap-4">
-            <router-link v-if="isAuthenticated" to="/profile" class="w-9 h-9 rounded-full flex items-center justify-center bg-[#1BB2B1] cursor-pointer text-white shadow-xl">
+            <router-link v-if="isAuthenticated" :to="profilePath" class="w-9 h-9 rounded-full flex items-center justify-center bg-[#1BB2B1] cursor-pointer text-white shadow-xl">
                 <i class="pi pi-user"></i>
             </router-link>
             <button @click="toggleMenu" class="w-9 h-9 rounded-full flex items-center justify-center bg-[#FF6760] cursor-pointer text-white shadow-xl">
@@ -67,20 +67,20 @@
             </div>
             <div>
                 <ul class="p-2 flex flex-col gap-2 text-center" >
-                    <li><router-link to="/" @click="toggleMenu" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all">{{ t.nav.home }}</router-link></li>
-                    <li><a  @click="scrollToSection('products')" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all"> {{ t.nav.store }}</a></li>
-                    <li><a @click="scrollToSection('features')" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all" >{{ t.nav.services }}</a></li>
-                    <li><a @click="scrollToSection('about')" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all" >{{ t.nav.about }}</a></li>
-                    <li><a @click="scrollToSection('contact')" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all" >{{ t.nav.contact }}</a></li>
+                    <li><router-link :to="homePath" @click="toggleMenu" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all">{{ t.nav.home }}</router-link></li>
+                    <li><button @click="scrollToSection('products')" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all w-full cursor-pointer">{{ t.nav.store }}</button></li>
+                    <li><button @click="scrollToSection('features')" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all w-full cursor-pointer">{{ t.nav.services }}</button></li>
+                    <li><button @click="scrollToSection('about')" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all w-full cursor-pointer">{{ t.nav.about }}</button></li>
+                    <li><button @click="scrollToSection('contact')" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all w-full cursor-pointer">{{ t.nav.contact }}</button></li>
                     <!-- Logout button for mobile when authenticated -->
                     <li v-if="isAuthenticated">
-                        <button @click="handleLogout" :disabled="loggingOut" class="block py-2 px-3 rounded bg-red-500 text-white hover:bg-red-600 transition-all font-semibold disabled:opacity-50" >
-                            <span v-if="!loggingOut">{{ t.nav.logout || 'تسجيل الخروج' }}</span>
+                        <button @click="handleLogout" :disabled="loggingOut" class="block py-2 px-3 rounded bg-red-500 text-white hover:bg-red-600 transition-all font-semibold disabled:opacity-50 w-full">
+                            <span v-if="!loggingOut">{{ t.nav.logout }}</span>
                             <span v-else>...</span>
                         </button>
                     </li>
                     <li v-else>
-                        <router-link to="/login" @click="toggleMenu" class="block py-2 px-3 rounded bg-teal-500 text-white hover:bg-teal-600 transition-all font-semibold text-center">{{ t.nav.login }}</router-link>
+                        <router-link :to="loginPath" @click="toggleMenu" class="block py-2 px-3 rounded bg-teal-500 text-white hover:bg-teal-600 transition-all font-semibold text-center">{{ t.nav.login }}</router-link>
                     </li>
                 </ul>
             </div>
@@ -106,6 +106,12 @@ const loggingOut = ref(false);
 
 const t = computed(() => websiteStore.t);
 const isRTL = computed(() => websiteStore.isRTL);
+
+// Computed paths based on current locale
+const currentLocale = computed(() => websiteStore.locale || 'ar');
+const homePath = computed(() => currentLocale.value === 'en' ? '/en' : '/ar');
+const loginPath = computed(() => currentLocale.value === 'en' ? '/en/login' : '/ar/login');
+const profilePath = computed(() => currentLocale.value === 'en' ? '/en/profile' : '/ar/profile');
 
 const toggleMenu = () => {
     menuOpen.value = !menuOpen.value;

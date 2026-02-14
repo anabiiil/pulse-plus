@@ -17,6 +17,10 @@ export default {
     contactUs: 'Contact Us',
     copyright: '© 2024 Pulse+ All Rights Reserved',
   },
+  products: {
+    title: 'Choose the Security That Suits You',
+    currency: 'EGP',
+  },
   profile: {
     title: 'Profile',
     profileCompletion: 'Profile Completion',

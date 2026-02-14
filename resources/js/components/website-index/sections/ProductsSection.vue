@@ -1,7 +1,7 @@
 <template>
   <section id="products" class="py-16">
     <div class="max-w-6xl mx-auto text-center mb-12">
-      <h2 class="text-3xl font-bold text-gray-800">اختر الأمان الذي يناسبك</h2>
+      <h2 class="text-3xl font-bold text-gray-800">{{ t.products.title }}</h2>
     </div>
     <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-8 px-4">
       <div
@@ -17,7 +17,7 @@
             {{ product.name }}
           </h3>
           <p v-if="product.price" class="text-teal-600 font-bold text-lg mt-2">
-            {{ product.price }} جنيه
+            {{ product.price }} {{ t.products.currency }}
           </p>
           <p v-if="product.description" class="text-gray-600 mt-2 text-sm" v-html="product.description"></p>
         </div>
@@ -29,6 +29,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useDataStore } from '../../../stores/website-index/dataStore';
+import { useAppStore } from '../../../stores/website-index/appStore';
 import product1 from '../../../images/website/product-1.png';
 import product2 from '../../../images/website/product-2.png';
 
@@ -42,6 +43,10 @@ interface Product {
 }
 
 const dataStore = useDataStore();
+const appStore = useAppStore();
+
+// Get translations
+const t = computed(() => appStore.t);
 
 // Fallback products if no data from API
 const fallbackProducts: Product[] = [

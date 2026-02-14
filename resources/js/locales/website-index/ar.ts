@@ -17,6 +17,10 @@ export default {
     contactUs: 'تواصل معنا',
     copyright: '© 2024 Pulse+ جميع الحقوق محفوظة',
   },
+  products: {
+    title: 'اختر الأمان الذي يناسبك',
+    currency: 'جنيه',
+  },
   profile: {
     title: 'الملف الشخصي',
     profileCompletion: 'اكتمال الملف',

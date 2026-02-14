@@ -11,6 +11,46 @@ export const useDataStore = defineStore('website-index-data', () => {
     const isDataLoading = ref(false);
 
     // Actions
+    /**
+     * Fetch all home page data in a single API call
+     * This is more efficient than calling each endpoint separately
+     */
+    async function fetchHomeData() {
+        try {
+            isDataLoading.value = true;
+            console.log('🔄 Fetching home data...');
+
+            const response = await axios.get('/api/website/home', {
+                params: {
+                    slider_limit: 5,
+                    product_limit: 6,
+                    service_limit: 6
+                }
+            });
+
+            const data = response.data.data;
+            console.log('✅ Home data received:', data);
+
+            sliders.value = data.sliders || [];
+            products.value = data.products || [];
+            services.value = data.services || [];
+
+            console.log('📊 Data updated:', {
+                sliders: sliders.value.length,
+                products: products.value.length,
+                services: services.value.length
+            });
+        } catch (error) {
+            console.error('❌ Error fetching home data:', error);
+            sliders.value = [];
+            products.value = [];
+            services.value = [];
+        } finally {
+            isDataLoading.value = false;
+        }
+    }
+
+    // Keep individual fetch methods for backward compatibility
     async function fetchSliders() {
         try {
             isDataLoading.value = true;
@@ -73,11 +113,13 @@ export const useDataStore = defineStore('website-index-data', () => {
         }
     }
 
+    /**
+     * Initialize all data for the home page
+     * Uses the new home API endpoint for sliders, products, and services
+     */
     async function initData() {
         await Promise.all([
-            fetchSliders(),
-            fetchProducts(),
-            fetchServices(),
+            fetchHomeData(),  // Single API call for sliders, products, and services
             fetchSettings(),
         ]);
     }
@@ -90,6 +132,7 @@ export const useDataStore = defineStore('website-index-data', () => {
         settings,
         isDataLoading,
         // Actions
+        fetchHomeData,
         fetchSliders,
         fetchProducts,
         fetchServices,

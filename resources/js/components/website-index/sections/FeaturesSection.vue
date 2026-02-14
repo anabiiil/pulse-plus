@@ -6,27 +6,40 @@
 
     <div class="max-w-6xl mx-auto grid lg:grid-cols-3 grid-cols-1 gap-8 px-4">
       <div
-        v-for="(feature, index) in features"
-        :key="index"
+        v-for="(feature, index) in displayFeatures"
+        :key="feature.id || index"
         class="bg-white text-center p-6 rounded-3xl shadow-xl transform transition duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer relative overflow-hidden"
       >
         <div class="flex items-center justify-center">
-          <img :src="feature.icon" class="w-[60px] m-4" :alt="feature.title">
+          <img :src="feature.image_url || feature.icon" class="w-[60px] m-4" :alt="feature.name || feature.title">
         </div>
-        <h3 class="text-xl px-10 font-bold mb-2">{{ feature.title }}</h3>
-        <p class="text-gray-600 text-[14px] font-semibold px-10">{{ feature.description }}</p>
+        <h3 class="text-xl px-10 font-bold mb-2">{{ feature.name || feature.title }}</h3>
+        <p class="text-gray-600 text-[14px] font-semibold px-10" v-html="feature.description"></p>
       </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed } from 'vue';
+import { useDataStore } from '../../../stores/website-index/dataStore';
 import vector1 from '../../../images/website/vector-1.png';
 import vector2 from '../../../images/website/vector-2.png';
 import vector3 from '../../../images/website/vector-3.png';
 
-const features = ref([
+interface Feature {
+  id?: number;
+  name?: string;
+  title?: string;
+  description: string;
+  icon?: string;
+  image_url?: string;
+}
+
+const dataStore = useDataStore();
+
+// Fallback features if no data from API
+const fallbackFeatures: Feature[] = [
   {
     icon: vector1,
     title: 'أمان وخصوصية',
@@ -42,7 +55,12 @@ const features = ref([
     title: 'تقنية NFC و QR',
     description: 'وصول فوري للملف الطبي من خلال لمس السوار بالهاتف أو مسح الرمز'
   }
-]);
+];
+
+// Use services from store as features, or fallback to static features
+const displayFeatures = computed(() => {
+  return dataStore.services.length > 0 ? dataStore.services : fallbackFeatures;
+});
 </script>
 
 

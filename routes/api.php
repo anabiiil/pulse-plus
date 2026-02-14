@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Website\AuthController;
 use App\Http\Controllers\Api\Website\ContactController;
 use App\Http\Controllers\Api\Website\EnumController;
+use App\Http\Controllers\Api\Website\HomeController;
 use App\Http\Controllers\Api\Website\NationalityController;
 use App\Http\Controllers\Api\Website\ProductController;
 use App\Http\Controllers\Api\Website\ServiceController;
@@ -26,6 +27,9 @@ Route::get('/', function (Request $request) {
 
 // Website Public API Routes
 Route::prefix('website')->group(function () {
+
+    // Home Page Data (Sliders, Products, Services)
+    Route::get('/home', [HomeController::class, 'index']);
 
     // Authentication (Guest)
     Route::post('/auth/login', [AuthController::class, 'login']);

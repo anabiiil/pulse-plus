@@ -1,5 +1,5 @@
 <template>
-  <section class="w-full h-[70vh]">
+  <section v-if="slides.length > 0" class="w-full h-[70vh]">
     <div class="swiper mySwiper w-full h-full">
       <div class="swiper-wrapper">
         <div
@@ -8,7 +8,7 @@
           class="swiper-slide relative"
         >
           <img
-            :src="slide.image"
+            :src="slide.image_url || slide.image"
             class="w-full h-full object-cover"
             :alt="slide.title"
           />
@@ -30,12 +30,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue';
+import { useDataStore } from '../../../stores/website-index/dataStore';
 import Swiper from 'swiper';
 import { Pagination, Autoplay } from 'swiper/modules';
 import slideImg from '../../../images/website/slide.png';
 
-const slides = ref([
+const dataStore = useDataStore();
+
+// Fallback slides if no data from API
+const fallbackSlides = [
   {
     image: slideImg,
     title: 'NFC WRISTBAND',
@@ -51,24 +55,46 @@ const slides = ref([
     title: 'NFC WRISTBAND',
     description: 'Your digital business card, on your wrist with the latest NFC technology'
   }
-]);
+];
+
+// Use sliders from store, or fallback to static slides
+const slides = computed(() => {
+  return dataStore.sliders.length > 0 ? dataStore.sliders : fallbackSlides;
+});
 
 let swiper: Swiper | null = null;
 
-onMounted(() => {
-  swiper = new Swiper('.mySwiper', {
-    modules: [Pagination, Autoplay],
-    pagination: {
-      el: '.swiper-pagination',
-      clickable: true,
-    },
-    autoplay: {
-      delay: 5000,
-      disableOnInteraction: false,
-    },
-    loop: true,
+const initSwiper = () => {
+  nextTick(() => {
+    if (swiper) {
+      swiper.destroy(true, true);
+    }
+
+    swiper = new Swiper('.mySwiper', {
+      modules: [Pagination, Autoplay],
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      autoplay: slides.value.length > 1 ? {
+        delay: 5000,
+        disableOnInteraction: false,
+      } : false,
+      loop: slides.value.length > 1,
+    });
   });
+};
+
+onMounted(() => {
+  initSwiper();
 });
+
+// Reinitialize swiper when slides change
+watch(() => dataStore.sliders, () => {
+  if (dataStore.sliders.length > 0) {
+    initSwiper();
+  }
+}, { deep: true });
 
 onUnmounted(() => {
   if (swiper) {

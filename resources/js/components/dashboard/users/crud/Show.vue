@@ -201,7 +201,7 @@ const copied = ref(false);
  */
 const getUserLink = () => {
     if (!user.value?.hash_url) return '';
-    return `https://pulse.test/user/info/${user.value.hash_url}`;
+    return `https://pulse-plus.com/user/info/${user.value.hash_url}`;
 };
 
 /**

@@ -104,6 +104,14 @@ const routes = [
             return `/${DEFAULT_LOCALE}`;
         }
     },
+    // Special route for user info without locale (for QR code compatibility)
+    {
+        path: '/user/info/:uuid',
+        redirect: (to) => {
+            const savedLocale = localStorage.getItem('locale') || DEFAULT_LOCALE;
+            return `/${savedLocale}/user/info/${to.params.uuid}`;
+        }
+    },
     // Add all localized routes
     ...generateLocalizedRoutes(),
     // Catch-all for unmatched routes - redirect to default locale

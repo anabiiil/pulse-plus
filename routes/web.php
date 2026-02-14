@@ -55,6 +55,11 @@ Route::prefix('user')->group(function () {
     });
 });
 
+// Public user info route (for QR codes) - must be outside the auth middleware
+Route::get('/user/info/{uuid}', static function () {
+    return view('website.index');
+});
+
 // Website routes (Vue SPA)
 Route::get('/{any?}', static function () {
     return view('website.index');

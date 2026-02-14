@@ -138,19 +138,29 @@ export interface TranslationSchema {
     errorLoading: string;
     invalidLink: string;
     backToHome: string;
+    emergencyProfile: string;
     personalInfo: string;
     medicalInfo: string;
+    fullName: string;
     birthdate: string;
     gender: string;
     maritalStatus: string;
     address: string;
+    phoneNumber: string;
+    email: string;
+    nationality: string;
     emergencyPhone: string;
     bloodType: string;
     allergies: string;
     medications: string;
     medicalNotes: string;
     diseases: string;
+    chronicDiseasesAllergies: string;
+    otherMedicalNotes: string;
+    callEmergency: string;
+    callEmergencyNumber: string;
     emergencyNotice: string;
+    disclaimer: string;
   };
 }
 

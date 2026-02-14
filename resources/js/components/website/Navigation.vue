@@ -60,7 +60,7 @@
         </div>
 
         <!-- Mobile Menu -->
-        <div v-if="menuOpen" class="absolute flex-col z-50 p-6 bg-white/80 top-[100%] left-0 backdrop-blur-md shadow-lg">
+        <div v-if="menuOpen" class="absolute flex-col z-50 p-6 bg-white/80 top-[100%] backdrop-blur-md shadow-lg" :class="isRTL ? 'left-0' : 'right-0'">
             <div class="mb-4 flex gap-2">
                 <button @click="toggleLanguage" class="bg-[#123057] rounded-4xl py-3 px-7 mx-auto text-white cursor-pointer font-semibold">{{ t.nav.language }}</button>
 <!--                <button @click="toggleDarkMode" class="bg-[#123057] rounded-4xl py-3 px-7 text-white cursor-pointer font-semibold"><i class="pi pi-moon"></i></button>-->

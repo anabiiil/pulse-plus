@@ -67,6 +67,9 @@ Route::prefix('website')->group(function () {
     Route::post('/contact-messages', [ContactMessageController::class, 'store']);
     Route::get('/contact-info', [ContactMessageController::class, 'getContactInfo']);
 
+    // User Info by UUID (Public - No Auth Required)
+    Route::get('/user/info/{uuid}', [\App\Http\Controllers\Api\Website\UserInfoController::class, 'show']);
+
     // Contact Form (Old endpoint for backward compatibility)
     Route::post('/contact', [ContactController::class, 'store']);
 });

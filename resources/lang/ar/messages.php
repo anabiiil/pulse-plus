@@ -7,5 +7,6 @@ return [
     'contact_message_not_found' => 'رسالة الاتصال غير موجودة',
     'contact_message_marked_as_read' => 'تم وضع علامة مقروءة على الرسالة',
     'contact_message_deleted' => 'تم حذف رسالة الاتصال بنجاح',
+    'user_not_found' => 'المستخدم غير موجود',
 ];
 

@@ -129,6 +129,28 @@ export default {
   },
   common: {
     loading: 'Loading...',
+  },
+  userInfo: {
+    title: 'User Information',
+    loading: 'Loading data...',
+    error: 'Error',
+    userNotFound: 'User not found',
+    errorLoading: 'Failed to load user data',
+    invalidLink: 'Invalid link',
+    backToHome: 'Back to Home',
+    personalInfo: 'Personal Information',
+    medicalInfo: 'Medical Information',
+    birthdate: 'Birthdate',
+    gender: 'Gender',
+    maritalStatus: 'Marital Status',
+    address: 'Address',
+    emergencyPhone: 'Emergency Phone',
+    bloodType: 'Blood Type',
+    allergies: 'Allergies',
+    medications: 'Medications',
+    medicalNotes: 'Medical Notes',
+    diseases: 'Diseases',
+    emergencyNotice: 'In case of emergency, please contact',
   }
 };
 

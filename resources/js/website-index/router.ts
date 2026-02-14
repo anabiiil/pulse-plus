@@ -54,6 +54,17 @@ const baseRoutes = [
             }
         }
     },
+    {
+        path: 'user/info/:uuid',
+        name: 'user-info',
+        component: () => import('../components/website/pages/UserInfo.vue'),
+        meta: {
+            title: {
+                ar: 'معلومات المستخدم',
+                en: 'User Information'
+            }
+        }
+    },
 ];
 
 // Generate localized routes

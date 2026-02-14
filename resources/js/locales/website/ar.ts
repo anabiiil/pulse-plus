@@ -129,6 +129,28 @@ export default {
   },
   common: {
     loading: 'جاري التحميل...',
+  },
+  userInfo: {
+    title: 'معلومات المستخدم',
+    loading: 'جاري تحميل البيانات...',
+    error: 'خطأ',
+    userNotFound: 'المستخدم غير موجود',
+    errorLoading: 'فشل تحميل بيانات المستخدم',
+    invalidLink: 'رابط غير صالح',
+    backToHome: 'العودة للرئيسية',
+    personalInfo: 'المعلومات الشخصية',
+    medicalInfo: 'المعلومات الطبية',
+    birthdate: 'تاريخ الميلاد',
+    gender: 'الجنس',
+    maritalStatus: 'الحالة الاجتماعية',
+    address: 'العنوان',
+    emergencyPhone: 'هاتف الطوارئ',
+    bloodType: 'فصيلة الدم',
+    allergies: 'الحساسية',
+    medications: 'الأدوية',
+    medicalNotes: 'ملاحظات طبية',
+    diseases: 'الأمراض',
+    emergencyNotice: 'في حالة الطوارئ، يرجى الاتصال بالرقم التالي',
   }
 };
 

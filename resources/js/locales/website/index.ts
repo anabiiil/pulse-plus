@@ -130,6 +130,28 @@ export interface TranslationSchema {
   common: {
     loading: string;
   };
+  userInfo: {
+    title: string;
+    loading: string;
+    error: string;
+    userNotFound: string;
+    errorLoading: string;
+    invalidLink: string;
+    backToHome: string;
+    personalInfo: string;
+    medicalInfo: string;
+    birthdate: string;
+    gender: string;
+    maritalStatus: string;
+    address: string;
+    emergencyPhone: string;
+    bloodType: string;
+    allergies: string;
+    medications: string;
+    medicalNotes: string;
+    diseases: string;
+    emergencyNotice: string;
+  };
 }
 
 const translations: Record<Locale, TranslationSchema> = {

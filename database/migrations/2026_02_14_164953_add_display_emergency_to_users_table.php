@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            //
+            $table->boolean('display_emergency')->default(false)->after('emergency_phone')->comment('Whether to display emergency phone on profile');
         });
     }
 

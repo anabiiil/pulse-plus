@@ -1,0 +1,1 @@
+const a={ACTIVE:{label:"Active",class:"bg-success",value:1},INACTIVE:{label:"Inactive",class:"bg-danger",value:0},getLabel(s){return s==this.ACTIVE.value?this.ACTIVE.label:this.INACTIVE.label},getClass(s){return s==this.ACTIVE.value?this.ACTIVE.class:this.INACTIVE.class}};export{a as S};

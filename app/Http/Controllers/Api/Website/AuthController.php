@@ -87,7 +87,7 @@ class AuthController extends Controller
                 'email' => $user->email,
                 'phone' => $user->phone,
                 'emergency_phone' => $user->emergency_phone,
-                'display_emergency' => $user->display_emergency,
+                'display_emergency' => (bool) $user->display_emergency,
                 'birthdate' => $user->birthdate,
                 'gender' => $user->gender,
                 'address' => $user->address,
@@ -110,7 +110,17 @@ class AuthController extends Controller
             return $this->responseError(['message' => 'Unauthenticated'], code: 401);
         }
 
-        $validated = $request->validate([
+        // Convert empty strings to null for nullable fields
+        $data = $request->all();
+        $nullableFields = ['emergency_phone', 'birthdate', 'gender', 'address', 'country_id', 'marital_status'];
+
+        foreach ($nullableFields as $field) {
+            if (isset($data[$field]) && $data[$field] === '') {
+                $data[$field] = null;
+            }
+        }
+
+        $validated = validator($data, [
             'name' => 'required|string|max:255',
             'emergency_phone' => 'nullable|string|max:20',
             'display_emergency' => 'nullable|boolean',
@@ -120,7 +130,7 @@ class AuthController extends Controller
             'country_id' => 'nullable|exists:countries,id',
             'marital_status' => 'nullable|string|max:50',
             'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // 2MB max
-        ]);
+        ])->validate();
 
         // Handle profile image upload
         if ($request->hasFile('profile_image')) {
@@ -134,6 +144,11 @@ class AuthController extends Controller
             $validated['profile_image'] = $path;
         }
 
+        // Remove profile_image from validated if not uploaded to avoid overwriting
+        if (!$request->hasFile('profile_image')) {
+            unset($validated['profile_image']);
+        }
+
         $user->update($validated);
 
         return $this->responseData([
@@ -143,7 +158,7 @@ class AuthController extends Controller
                 'email' => $user->email,
                 'phone' => $user->phone,
                 'emergency_phone' => $user->emergency_phone,
-                'display_emergency' => $user->display_emergency,
+                'display_emergency' => (bool) $user->display_emergency,
                 'birthdate' => $user->birthdate,
                 'gender' => $user->gender,
                 'address' => $user->address,

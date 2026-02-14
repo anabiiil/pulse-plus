@@ -8,12 +8,14 @@ interface User {
     email: string;
     phone?: string | null;
     emergency_phone?: string | null;
+    display_emergency?: boolean;
     birthdate?: string | null;
     gender?: string | null;
     address?: string | null;
     country_id?: number | null;
     marital_status?: string | null;
     profile_image_url?: string | null;
+    hash_url?: string | null;
 }
 
 interface LoginCredentials {

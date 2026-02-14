@@ -23,6 +23,13 @@ export interface TranslationSchema {
     contactUs: string;
     copyright: string;
   };
+  products: {
+    title: string;
+    currency: string;
+  };
+  features: {
+    title: string;
+  };
   profile: {
     title: string;
     profileCompletion: string;

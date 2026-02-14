@@ -1,7 +1,7 @@
 <template>
   <section id="features" class="py-16 bg-gray-50">
     <div class="max-w-6xl mx-auto text-center mb-12">
-      <h2 class="text-3xl font-bold text-gray-800">لماذا تختار Pulse+ ؟</h2>
+      <h2 class="text-3xl font-bold text-gray-800">{{ t.features.title }}</h2>
     </div>
 
     <div class="max-w-6xl mx-auto grid lg:grid-cols-3 grid-cols-1 gap-8 px-4">
@@ -23,6 +23,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useDataStore } from '../../../stores/website-index/dataStore';
+import { useAppStore } from '../../../stores/website-index/appStore';
 import vector1 from '../../../images/website/vector-1.png';
 import vector2 from '../../../images/website/vector-2.png';
 import vector3 from '../../../images/website/vector-3.png';
@@ -37,6 +38,10 @@ interface Feature {
 }
 
 const dataStore = useDataStore();
+const appStore = useAppStore();
+
+// Get translations
+const t = computed(() => appStore.t);
 
 // Fallback features if no data from API
 const fallbackFeatures: Feature[] = [

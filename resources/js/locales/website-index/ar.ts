@@ -21,6 +21,9 @@ export default {
     title: 'اختر الأمان الذي يناسبك',
     currency: 'جنيه',
   },
+  features: {
+    title: 'لماذا تختار Pulse+ ؟',
+  },
   profile: {
     title: 'الملف الشخصي',
     profileCompletion: 'اكتمال الملف',

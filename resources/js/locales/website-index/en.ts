@@ -21,6 +21,9 @@ export default {
     title: 'Choose the Security That Suits You',
     currency: 'EGP',
   },
+  features: {
+    title: 'Why Choose Pulse+?',
+  },
   profile: {
     title: 'Profile',
     profileCompletion: 'Profile Completion',

@@ -9,7 +9,7 @@ export default {
     profile: 'Profile',
     logout: 'Logout',
     darkMode: 'Dark Mode',
-    language: 'العربية',
+    language: 'ع',
   },
   footer: {
     description: 'We believe that technology should serve humanity, especially in moments of weakness and strength',

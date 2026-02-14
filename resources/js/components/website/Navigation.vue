@@ -107,8 +107,8 @@ const toast = useToast();
 const menuOpen = ref(false);
 const loggingOut = ref(false);
 const contactInfo = ref({
-    phone: '+2 01022335566',
-    email: 'info@pulse-plus.com',
+    phone: '',
+    email: '',
     address: websiteStore.locale === 'ar' ? 'القاهرة، جمهورية مصر العربية' : 'Cairo, Arab Republic of Egypt'
 });
 

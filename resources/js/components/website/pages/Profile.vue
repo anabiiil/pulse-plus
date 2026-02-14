@@ -183,6 +183,22 @@
                                 </div>
                             </div>
 
+                            <!-- Email (Read-only) -->
+                            <div class="p-2 text-[#123057] flex flex-col  col-span-2 lg:col-span-1  relative">
+                                <label class="font-bold">{{ t.profile.form.email }}</label>
+                                <div class="relative">
+                                    <input
+                                        v-model="formData.email"
+                                        type="email"
+                                        :placeholder="t.profile.form.emailPlaceholder"
+                                        dir="ltr"
+                                        readonly
+                                        class="focus:ring-0 focus:border-transparent bg-gray-200 border-0 shadow-xl transition-shadow duration-300 ease-in-out cursor-not-allowed font-semibold rounded-[30px] w-full p-4 my-2 pr-12"
+                                    >
+                                    <i class="pi pi-envelope absolute top-1/2 text-gray-400 right-5 text-[18px] -translate-y-1/2"></i>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-1">{{ currentLocale === 'ar' ? 'لا يمكن تعديل البريد الإلكتروني' : 'Email address cannot be changed' }}</p>
+                            </div>
                             <!-- Phone (Read-only) -->
                             <div class="p-2 text-[#123057] flex flex-col col-span-2 lg:col-span-1 relative">
                                 <label class="font-bold">{{ t.profile.form.phone }}</label>
@@ -200,6 +216,8 @@
                                 <p class="text-xs text-gray-500 mt-1">{{ currentLocale === 'ar' ? 'لا يمكن تعديل رقم الهاتف' : 'Phone number cannot be changed' }}</p>
                             </div>
 
+
+
                             <!-- Emergency Phone -->
                             <div class="p-2 text-[#123057] flex flex-col col-span-2 lg:col-span-1 relative">
                                 <label class="font-bold">{{ t.profile.form.emergencyPhone }}</label>
@@ -215,6 +233,8 @@
                                 </div>
                             </div>
 
+
+
                             <!-- Address -->
                             <div class="p-2 text-[#123057] flex flex-col col-span-2 lg:col-span-1 relative">
                                 <label class="font-bold">{{ t.profile.form.address }}</label>
@@ -229,22 +249,7 @@
                                 </div>
                             </div>
 
-                            <!-- Email (Read-only) -->
-                            <div class="p-2 text-[#123057] flex flex-col col-span-2 relative">
-                                <label class="font-bold">{{ t.profile.form.email }}</label>
-                                <div class="relative">
-                                    <input
-                                        v-model="formData.email"
-                                        type="email"
-                                        :placeholder="t.profile.form.emailPlaceholder"
-                                        dir="ltr"
-                                        readonly
-                                        class="focus:ring-0 focus:border-transparent bg-gray-200 border-0 shadow-xl transition-shadow duration-300 ease-in-out cursor-not-allowed font-semibold rounded-[30px] w-full p-4 my-2 pr-12"
-                                    >
-                                    <i class="pi pi-envelope absolute top-1/2 text-gray-400 right-5 text-[18px] -translate-y-1/2"></i>
-                                </div>
-                                <p class="text-xs text-gray-500 mt-1">{{ currentLocale === 'ar' ? 'لا يمكن تعديل البريد الإلكتروني' : 'Email address cannot be changed' }}</p>
-                            </div>
+
 
                             <!-- Nationality -->
                             <div class="p-2 text-[#123057] flex flex-col col-span-2 lg:col-span-1 relative">
@@ -462,9 +467,17 @@ const loadUser = async () => {
                 profileImage.value = authUser.value.profile_image_url;
             }
         }
-    } catch (error) {
+    } catch (error: any) {
         console.error('Error loading user:', error);
-        toast.error(t.value.profile.messages.errorLoad);
+
+        // If 401 Unauthenticated, redirect to login
+        if (error.response?.status === 401) {
+            toast.error(currentLocale.value === 'ar' ? 'يجب تسجيل الدخول أولاً' : 'Please login first');
+            // Redirect to login page
+            window.location.href = `/${currentLocale.value === 'ar' ? '' : 'en/'}login`;
+        } else {
+            toast.error(t.value.profile.messages.errorLoad);
+        }
     }
 };
 
@@ -545,7 +558,11 @@ const handleUpdate = async () => {
         // Reload user data
         await loadUser();
     } catch (error: any) {
-        if (error.response?.status === 422) {
+        if (error.response?.status === 401) {
+            // Unauthenticated
+            toast.error(currentLocale.value === 'ar' ? 'يجب تسجيل الدخول أولاً' : 'Please login first');
+            window.location.href = `/${currentLocale.value === 'ar' ? '' : 'en/'}login`;
+        } else if (error.response?.status === 422) {
             const responseErrors = error.response.data.errors || {};
             Object.keys(responseErrors).forEach(key => {
                 if (key in errors) {

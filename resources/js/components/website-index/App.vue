@@ -4,9 +4,9 @@
     <Loader />
 
     <!-- Router View -->
-    <router-view v-slot="{ Component }">
+    <router-view v-slot="{ Component, route }">
       <transition name="fade" mode="out-in">
-        <component :is="Component" :key="appStore.locale" />
+        <component :is="Component" :key="route.path" />
       </transition>
     </router-view>
   </div>
@@ -15,22 +15,38 @@
 <script setup lang="ts">
 import { onMounted, watch } from 'vue';
 import { useAppStore } from '../../stores/website-index/appStore';
+import { useWebsiteStore } from '../../stores/websiteStore';
 import { useDataStore } from '../../stores/website-index/dataStore';
 import Loader from './Loader.vue';
 
 const appStore = useAppStore();
+const websiteStore = useWebsiteStore();
 const dataStore = useDataStore();
 
 onMounted(() => {
   // Initialize app
   appStore.init();
+  websiteStore.init();
   dataStore.initData();
 });
 
-// Watch for locale changes
-watch(() => appStore.locale, () => {
-  // You can add any additional logic when locale changes
-  console.log('Locale changed to:', appStore.locale);
+// Watch for locale changes in both stores and keep them synchronized
+watch(() => appStore.locale, (newLocale) => {
+  console.log('appStore locale changed to:', newLocale);
+  // Sync websiteStore if different
+  if (websiteStore.locale !== newLocale) {
+    websiteStore.setLocale(newLocale);
+  }
+});
+
+watch(() => websiteStore.locale, (newLocale) => {
+  console.log('websiteStore locale changed to:', newLocale);
+  // Sync appStore if different
+  if (appStore.locale !== newLocale) {
+    appStore.locale = newLocale;
+    appStore.updateHtmlAttributes();
+    localStorage.setItem('locale', newLocale);
+  }
 });
 </script>
 

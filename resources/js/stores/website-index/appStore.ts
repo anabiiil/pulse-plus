@@ -104,16 +104,13 @@ export const useAppStore = defineStore('website-index-app', () => {
             isDarkMode.value = savedDarkMode === 'true';
         }
 
-        // Get locale from route path or localStorage
+        // Get locale from route path first (more reliable)
         const currentPath = window.location.pathname;
         const routeLocale = currentPath.startsWith('/en') ? 'en' : 'ar';
 
-        const savedLocale = localStorage.getItem('locale');
-        if (savedLocale && (savedLocale === 'ar' || savedLocale === 'en')) {
-            locale.value = savedLocale as Locale;
-        } else {
-            locale.value = routeLocale;
-        }
+        // Always use route locale (prioritize route over localStorage)
+        locale.value = routeLocale;
+        localStorage.setItem('locale', routeLocale);
 
         // Update HTML attributes on init
         updateHtmlAttributes();

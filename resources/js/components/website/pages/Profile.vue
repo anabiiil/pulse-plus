@@ -346,10 +346,11 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import { useHead } from '@vueuse/head';
 import { useAuth } from '../../../composables/useAuth';
 import { useToast } from 'vue-toastification';
-import { useAppStore } from '../../../stores/website-index/appStore';
+import { useWebsiteStore } from '../../../stores/websiteStore';
 import axios from 'axios';
 import userVectorImg from '../../../images/website/user-vector.png';
 
@@ -357,14 +358,15 @@ import userVectorImg from '../../../images/website/user-vector.png';
 import Navigation from '../Navigation.vue';
 import Footer from '../Footer.vue';
 
-const { user: authUser, fetchUser, isAuthenticated } = useAuth();
+const router = useRouter();
+const { user: authUser, fetchUser } = useAuth();
 const toast = useToast();
-const appStore = useAppStore();
+const websiteStore = useWebsiteStore();
 
 // Get translations
-const t = computed(() => appStore.t);
-const currentLocale = computed(() => appStore.locale);
-const isRTL = computed(() => appStore.isRTL);
+const t = computed(() => websiteStore.t);
+const currentLocale = computed(() => websiteStore.locale);
+const isRTL = computed(() => websiteStore.isRTL);
 
 useHead({
     title: computed(() => `${t.value.profile.title} - Pulse`),
@@ -607,6 +609,9 @@ const resetForm = () => {
 
 // Load user on mount
 onMounted(async () => {
+    // Initialize websiteStore and set router
+    websiteStore.setRouter(router);
+
     // Try to load user data
     // If it fails with 401, the loadUser function will handle redirect
     await loadUser();

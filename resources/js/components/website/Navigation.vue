@@ -149,10 +149,10 @@ const handleLogout = async () => {
 };
 
 onMounted(() => {
-    // Initialize store if not already initialized
-    if (!websiteStore.isLoading) {
-        websiteStore.init();
-    }
+    // Always ensure websiteStore is initialized
+    // The init() function will handle checking localStorage and route
+    websiteStore.init();
+
     // Inject router into store for navigation
     websiteStore.setRouter(router);
 });

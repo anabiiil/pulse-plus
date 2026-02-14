@@ -71,7 +71,7 @@
                             :href="`tel:${user.emergency_phone}`"
                             class="bg-[#FF6760] rounded-[28px] my-4 py-2.5 w-full flex justify-center items-center font-bold text-[18px] text-white shadow-[inset_0_4px_4px_0_rgba(0,0,0,0.25)] hover:bg-[#e55850] transition duration-150"
                         >
-                            <div class="bg-white p-4.5 py-3.5 rounded-[18px] shadow-[inset_0_4px_4px_0_#00000040] font-bold text-[22px] text-[#FF6760] mx-4">
+                            <div class="bg-white p-4 py-3 rounded-[18px] shadow-[inset_0_4px_4px_0_#00000040] font-bold text-[22px] text-[#FF6760] mx-4">
                                 <i class="pi pi-phone"></i>
                             </div>
                             {{ t.userInfo.callEmergency }}

@@ -1,101 +1,94 @@
 {
-  "_Footer.vue_vue_type_script_setup_true_lang-C_SkHSz9.js": {
-    "file": "assets/Footer.vue_vue_type_script_setup_true_lang-C_SkHSz9.js",
+  "_Footer.vue_vue_type_script_setup_true_lang-COvR1pLm.js": {
+    "file": "assets/Footer.vue_vue_type_script_setup_true_lang-COvR1pLm.js",
     "name": "Footer.vue_vue_type_script_setup_true_lang",
     "imports": [
-      "_pinia-BKjEVkHC.js",
+      "_pinia-xDMDoLs3.js",
       "resources/js/website-index.js",
-      "_footer-logo-BYibEjG3.js"
+      "_footer-logo-DNnZnx5v.js"
     ]
   },
   "_StatusEnum-C57FGDSg.js": {
     "file": "assets/StatusEnum-C57FGDSg.js",
     "name": "StatusEnum"
   },
-  "_TiptapMenuBar-B5uFJ3CK.js": {
-    "file": "assets/TiptapMenuBar-B5uFJ3CK.js",
+  "_TiptapMenuBar-BKPKH4vJ.css": {
+    "file": "assets/TiptapMenuBar-BKPKH4vJ.css",
+    "src": "_TiptapMenuBar-BKPKH4vJ.css"
+  },
+  "_TiptapMenuBar-DtjeyJ6R.js": {
+    "file": "assets/TiptapMenuBar-DtjeyJ6R.js",
     "name": "TiptapMenuBar",
     "imports": [
-      "_pinia-BKjEVkHC.js"
+      "_pinia-xDMDoLs3.js"
     ],
     "css": [
       "assets/TiptapMenuBar-BKPKH4vJ.css"
     ]
   },
-  "_TiptapMenuBar-BKPKH4vJ.css": {
-    "file": "assets/TiptapMenuBar-BKPKH4vJ.css",
-    "src": "_TiptapMenuBar-BKPKH4vJ.css"
-  },
-  "_footer-logo-BYibEjG3.js": {
-    "file": "assets/footer-logo-BYibEjG3.js",
+  "_footer-logo-DNnZnx5v.js": {
+    "file": "assets/footer-logo-DNnZnx5v.js",
     "name": "footer-logo",
     "imports": [
-      "_pinia-BKjEVkHC.js",
-      "resources/js/website-index.js",
-      "_logo-DZSYQBqI.js"
+      "_pinia-xDMDoLs3.js",
+      "resources/js/website-index.js"
     ],
     "assets": [
+      "assets/logo-W2YW1ae-.png",
       "assets/footer-logo-UzyU-Rdz.png"
-    ]
-  },
-  "_logo-DZSYQBqI.js": {
-    "file": "assets/logo-DZSYQBqI.js",
-    "name": "logo",
-    "assets": [
-      "assets/logo-W2YW1ae-.png"
-    ]
-  },
-  "_pinia-BKjEVkHC.js": {
-    "file": "assets/pinia-BKjEVkHC.js",
-    "name": "pinia",
-    "css": [
-      "assets/pinia-CewofDUB.css"
     ]
   },
   "_pinia-CewofDUB.css": {
     "file": "assets/pinia-CewofDUB.css",
     "src": "_pinia-CewofDUB.css"
   },
-  "_useNationalities-m5hckotS.js": {
-    "file": "assets/useNationalities-m5hckotS.js",
+  "_pinia-xDMDoLs3.js": {
+    "file": "assets/pinia-xDMDoLs3.js",
+    "name": "pinia",
+    "css": [
+      "assets/pinia-CewofDUB.css"
+    ]
+  },
+  "_useNationalities-KlC0XxAs.js": {
+    "file": "assets/useNationalities-KlC0XxAs.js",
     "name": "useNationalities",
     "imports": [
-      "_pinia-BKjEVkHC.js"
+      "_pinia-xDMDoLs3.js"
     ]
   },
-  "_useProducts-Def6hG6A.js": {
-    "file": "assets/useProducts-Def6hG6A.js",
+  "_useProducts-DyAMlIhv.js": {
+    "file": "assets/useProducts-DyAMlIhv.js",
     "name": "useProducts",
     "imports": [
-      "_pinia-BKjEVkHC.js"
+      "_pinia-xDMDoLs3.js"
     ]
   },
-  "_useServices-C9Svc-ls.js": {
-    "file": "assets/useServices-C9Svc-ls.js",
+  "_useServices-B4Psxb38.js": {
+    "file": "assets/useServices-B4Psxb38.js",
     "name": "useServices",
     "imports": [
-      "_pinia-BKjEVkHC.js"
+      "_pinia-xDMDoLs3.js"
     ]
   },
-  "_useSettings-CkeITutp.js": {
-    "file": "assets/useSettings-CkeITutp.js",
+  "_useSettings-9Hn8UiIp.js": {
+    "file": "assets/useSettings-9Hn8UiIp.js",
     "name": "useSettings",
     "imports": [
-      "_pinia-BKjEVkHC.js"
+      "_pinia-xDMDoLs3.js"
     ]
   },
-  "_useSliders-D-UY_dm_.js": {
-    "file": "assets/useSliders-D-UY_dm_.js",
+  "_useSliders-D6UWpKtc.js": {
+    "file": "assets/useSliders-D6UWpKtc.js",
     "name": "useSliders",
     "imports": [
-      "_pinia-BKjEVkHC.js"
+      "_pinia-xDMDoLs3.js"
     ]
   },
-  "_useUsers-Caq9V0lK.js": {
-    "file": "assets/useUsers-Caq9V0lK.js",
+  "_useUsers-CR5fsHSK.js": {
+    "file": "assets/useUsers-CR5fsHSK.js",
     "name": "useUsers",
     "imports": [
-      "_pinia-BKjEVkHC.js"
+      "_pinia-xDMDoLs3.js"
     ]
   },
   "node_modules/primeicons/fonts/primeicons.eot": {
@@ -137,13 +130,12 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-viBYkoMG.js",
+    "file": "assets/app-Cu2Xr-aN.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js",
-      "_logo-DZSYQBqI.js"
+      "_pinia-xDMDoLs3.js"
     ],
     "dynamicImports": [
       "resources/js/components/dashboard/Dashboard.vue",
@@ -177,352 +169,347 @@
       "resources/js/components/admin/pages/ContactMessages/List.vue"
     ],
     "css": [
-      "assets/app-CQAnyU2E.css"
+      "assets/app-BPrAIszZ.css"
     ]
   },
   "resources/js/components/admin/pages/ContactMessages/List.vue": {
-    "file": "assets/List-BCXKfUG9.js",
+    "file": "assets/List-Dkje0QsS.js",
     "name": "List",
     "src": "resources/js/components/admin/pages/ContactMessages/List.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js"
+      "_pinia-xDMDoLs3.js"
     ],
     "css": [
       "assets/List-tn0RQdqM.css"
     ]
   },
   "resources/js/components/dashboard/Dashboard.vue": {
-    "file": "assets/Dashboard-26-LDz0G.js",
+    "file": "assets/Dashboard-Bif9Dx6t.js",
     "name": "Dashboard",
     "src": "resources/js/components/dashboard/Dashboard.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js"
+      "_pinia-xDMDoLs3.js"
     ],
     "css": [
       "assets/Dashboard-BJ2AFtC7.css"
     ]
   },
   "resources/js/components/dashboard/nationality/List.vue": {
-    "file": "assets/List-X6jqF9RF.js",
+    "file": "assets/List-DdW040ar.js",
     "name": "List",
     "src": "resources/js/components/dashboard/nationality/List.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js",
+      "_pinia-xDMDoLs3.js",
       "_StatusEnum-C57FGDSg.js",
-      "_useNationalities-m5hckotS.js"
+      "_useNationalities-KlC0XxAs.js"
     ]
   },
   "resources/js/components/dashboard/nationality/crud/Create.vue": {
-    "file": "assets/Create-rFmPQeuA.js",
+    "file": "assets/Create-CNo1bKaF.js",
     "name": "Create",
     "src": "resources/js/components/dashboard/nationality/crud/Create.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js",
-      "_useNationalities-m5hckotS.js"
+      "_pinia-xDMDoLs3.js",
+      "_useNationalities-KlC0XxAs.js"
     ]
   },
   "resources/js/components/dashboard/nationality/crud/Delete.vue": {
-    "file": "assets/Delete--fkknVbi.js",
+    "file": "assets/Delete-CTTI2Qt-.js",
     "name": "Delete",
     "src": "resources/js/components/dashboard/nationality/crud/Delete.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js",
-      "_useNationalities-m5hckotS.js"
+      "_pinia-xDMDoLs3.js",
+      "_useNationalities-KlC0XxAs.js"
     ]
   },
   "resources/js/components/dashboard/nationality/crud/Update.vue": {
-    "file": "assets/Update-rVcMsBYt.js",
+    "file": "assets/Update-DpiMycWS.js",
     "name": "Update",
     "src": "resources/js/components/dashboard/nationality/crud/Update.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js",
-      "_useNationalities-m5hckotS.js"
+      "_pinia-xDMDoLs3.js",
+      "_useNationalities-KlC0XxAs.js"
     ]
   },
   "resources/js/components/dashboard/products/List.vue": {
-    "file": "assets/List-C48mYVjY.js",
+    "file": "assets/List-Dd29Tm3R.js",
     "name": "List",
     "src": "resources/js/components/dashboard/products/List.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js",
+      "_pinia-xDMDoLs3.js",
       "_StatusEnum-C57FGDSg.js",
-      "_useProducts-Def6hG6A.js"
+      "_useProducts-DyAMlIhv.js"
     ]
   },
   "resources/js/components/dashboard/products/crud/Create.vue": {
-    "file": "assets/Create-D_2X6Mye.js",
+    "file": "assets/Create-CW3kFB-M.js",
     "name": "Create",
     "src": "resources/js/components/dashboard/products/crud/Create.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js",
-      "_useProducts-Def6hG6A.js",
-      "_TiptapMenuBar-B5uFJ3CK.js"
+      "_pinia-xDMDoLs3.js",
+      "_useProducts-DyAMlIhv.js",
+      "_TiptapMenuBar-DtjeyJ6R.js"
     ],
     "css": [
       "assets/Create-C7INXeZ1.css"
     ]
   },
   "resources/js/components/dashboard/products/crud/Delete.vue": {
-    "file": "assets/Delete-Bwf_oFKi.js",
+    "file": "assets/Delete-BG4eg6gI.js",
     "name": "Delete",
     "src": "resources/js/components/dashboard/products/crud/Delete.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js",
-      "_useProducts-Def6hG6A.js"
+      "_pinia-xDMDoLs3.js",
+      "_useProducts-DyAMlIhv.js"
     ]
   },
   "resources/js/components/dashboard/products/crud/Update.vue": {
-    "file": "assets/Update-BQzqOGp8.js",
+    "file": "assets/Update-CfOk1gqv.js",
     "name": "Update",
     "src": "resources/js/components/dashboard/products/crud/Update.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js",
-      "_useProducts-Def6hG6A.js",
-      "_TiptapMenuBar-B5uFJ3CK.js"
+      "_pinia-xDMDoLs3.js",
+      "_useProducts-DyAMlIhv.js",
+      "_TiptapMenuBar-DtjeyJ6R.js"
     ],
     "css": [
       "assets/Update-DYwsHfGk.css"
     ]
   },
   "resources/js/components/dashboard/services/List.vue": {
-    "file": "assets/List-BwLS-01F.js",
+    "file": "assets/List-BWiNSAi5.js",
     "name": "List",
     "src": "resources/js/components/dashboard/services/List.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js",
+      "_pinia-xDMDoLs3.js",
       "_StatusEnum-C57FGDSg.js",
-      "_useServices-C9Svc-ls.js"
+      "_useServices-B4Psxb38.js"
     ]
   },
   "resources/js/components/dashboard/services/crud/Create.vue": {
-    "file": "assets/Create-yw-NDPrS.js",
+    "file": "assets/Create-Br7gLjxT.js",
     "name": "Create",
     "src": "resources/js/components/dashboard/services/crud/Create.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js",
-      "_useServices-C9Svc-ls.js",
-      "_TiptapMenuBar-B5uFJ3CK.js"
+      "_pinia-xDMDoLs3.js",
+      "_useServices-B4Psxb38.js",
+      "_TiptapMenuBar-DtjeyJ6R.js"
     ],
     "css": [
       "assets/Create-DsDqUcOt.css"
     ]
   },
   "resources/js/components/dashboard/services/crud/Delete.vue": {
-    "file": "assets/Delete-BjV905pZ.js",
+    "file": "assets/Delete-CL1GrA4C.js",
     "name": "Delete",
     "src": "resources/js/components/dashboard/services/crud/Delete.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js",
-      "_useServices-C9Svc-ls.js"
+      "_pinia-xDMDoLs3.js",
+      "_useServices-B4Psxb38.js"
     ]
   },
   "resources/js/components/dashboard/services/crud/Update.vue": {
-    "file": "assets/Update-CaQGIYIK.js",
+    "file": "assets/Update-CpyrQ151.js",
     "name": "Update",
     "src": "resources/js/components/dashboard/services/crud/Update.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js",
-      "_useServices-C9Svc-ls.js",
-      "_TiptapMenuBar-B5uFJ3CK.js"
+      "_pinia-xDMDoLs3.js",
+      "_useServices-B4Psxb38.js",
+      "_TiptapMenuBar-DtjeyJ6R.js"
     ],
     "css": [
       "assets/Update-CPxTdq6G.css"
     ]
   },
   "resources/js/components/dashboard/settings/List.vue": {
-    "file": "assets/List-DdQP26F0.js",
+    "file": "assets/List-Cd4vlP1c.js",
     "name": "List",
     "src": "resources/js/components/dashboard/settings/List.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js",
-      "_useSettings-CkeITutp.js"
+      "_pinia-xDMDoLs3.js",
+      "_useSettings-9Hn8UiIp.js"
     ],
     "css": [
       "assets/List-fGpyQUt9.css"
     ]
   },
   "resources/js/components/dashboard/settings/crud/Update.vue": {
-    "file": "assets/Update-c7uX5jAb.js",
+    "file": "assets/Update-CdVBeovF.js",
     "name": "Update",
     "src": "resources/js/components/dashboard/settings/crud/Update.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js",
-      "_useSettings-CkeITutp.js"
+      "_pinia-xDMDoLs3.js",
+      "_useSettings-9Hn8UiIp.js"
     ],
     "css": [
       "assets/Update-0CgLS6mC.css"
     ]
   },
   "resources/js/components/dashboard/slider/List.vue": {
-    "file": "assets/List-CtSxqPiz.js",
+    "file": "assets/List-DQZo6I47.js",
     "name": "List",
     "src": "resources/js/components/dashboard/slider/List.vue",
     "isDynamicEntry": true,
     "imports": [
       "_StatusEnum-C57FGDSg.js",
-      "_pinia-BKjEVkHC.js"
+      "_pinia-xDMDoLs3.js"
     ]
   },
   "resources/js/components/dashboard/slider/crud/Create.vue": {
-    "file": "assets/Create-kgySjbdc.js",
+    "file": "assets/Create-XIQ2fpoV.js",
     "name": "Create",
     "src": "resources/js/components/dashboard/slider/crud/Create.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js"
+      "_pinia-xDMDoLs3.js"
     ],
     "css": [
       "assets/Create-4GOSumnf.css"
     ]
   },
   "resources/js/components/dashboard/slider/crud/Delete.vue": {
-    "file": "assets/Delete-BzcTOnz5.js",
+    "file": "assets/Delete-BWIwfK25.js",
     "name": "Delete",
     "src": "resources/js/components/dashboard/slider/crud/Delete.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js"
+      "_pinia-xDMDoLs3.js"
     ]
   },
   "resources/js/components/dashboard/slider/crud/Update.vue": {
-    "file": "assets/Update-BCDaPkEr.js",
+    "file": "assets/Update-B6mv2cwl.js",
     "name": "Update",
     "src": "resources/js/components/dashboard/slider/crud/Update.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js",
-      "resources/js/app.js",
-      "_logo-DZSYQBqI.js"
+      "_pinia-xDMDoLs3.js",
+      "resources/js/app.js"
     ]
   },
   "resources/js/components/dashboard/sliders/List.vue": {
-    "file": "assets/List-DCYGLTCv.js",
+    "file": "assets/List-DzRwAlz6.js",
     "name": "List",
     "src": "resources/js/components/dashboard/sliders/List.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js",
+      "_pinia-xDMDoLs3.js",
       "_StatusEnum-C57FGDSg.js",
-      "_useSliders-D-UY_dm_.js",
-      "resources/js/app.js",
-      "_logo-DZSYQBqI.js"
+      "_useSliders-D6UWpKtc.js",
+      "resources/js/app.js"
     ]
   },
   "resources/js/components/dashboard/sliders/crud/Create.vue": {
-    "file": "assets/Create-D8NYbNyS.js",
+    "file": "assets/Create-7Jxi92iJ.js",
     "name": "Create",
     "src": "resources/js/components/dashboard/sliders/crud/Create.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js",
-      "_useSliders-D-UY_dm_.js"
+      "_pinia-xDMDoLs3.js",
+      "_useSliders-D6UWpKtc.js"
     ]
   },
   "resources/js/components/dashboard/sliders/crud/Delete.vue": {
-    "file": "assets/Delete-CX1x1_2z.js",
+    "file": "assets/Delete-41uIM7fS.js",
     "name": "Delete",
     "src": "resources/js/components/dashboard/sliders/crud/Delete.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js",
-      "_useSliders-D-UY_dm_.js"
+      "_pinia-xDMDoLs3.js",
+      "_useSliders-D6UWpKtc.js"
     ]
   },
   "resources/js/components/dashboard/sliders/crud/Update.vue": {
-    "file": "assets/Update-D5ZtXMRu.js",
+    "file": "assets/Update-vI9DKOvj.js",
     "name": "Update",
     "src": "resources/js/components/dashboard/sliders/crud/Update.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js",
-      "_useSliders-D-UY_dm_.js"
+      "_pinia-xDMDoLs3.js",
+      "_useSliders-D6UWpKtc.js"
     ]
   },
   "resources/js/components/dashboard/users/List.vue": {
-    "file": "assets/List-BSNh40-9.js",
+    "file": "assets/List-iWrhhlTn.js",
     "name": "List",
     "src": "resources/js/components/dashboard/users/List.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js",
+      "_pinia-xDMDoLs3.js",
       "_StatusEnum-C57FGDSg.js",
-      "_useUsers-Caq9V0lK.js",
-      "resources/js/app.js",
-      "_logo-DZSYQBqI.js"
+      "_useUsers-CR5fsHSK.js",
+      "resources/js/app.js"
     ]
   },
   "resources/js/components/dashboard/users/crud/Create.vue": {
-    "file": "assets/Create-C8xt9K2J.js",
+    "file": "assets/Create-BW-xAN9W.js",
     "name": "Create",
     "src": "resources/js/components/dashboard/users/crud/Create.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js",
-      "_useUsers-Caq9V0lK.js"
+      "_pinia-xDMDoLs3.js",
+      "_useUsers-CR5fsHSK.js"
     ]
   },
   "resources/js/components/dashboard/users/crud/Delete.vue": {
-    "file": "assets/Delete-CHRxM2Dv.js",
+    "file": "assets/Delete-CEcV6-iE.js",
     "name": "Delete",
     "src": "resources/js/components/dashboard/users/crud/Delete.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js",
-      "_useUsers-Caq9V0lK.js"
+      "_pinia-xDMDoLs3.js",
+      "_useUsers-CR5fsHSK.js"
     ]
   },
   "resources/js/components/dashboard/users/crud/Show.vue": {
-    "file": "assets/Show-DWvnTSKp.js",
+    "file": "assets/Show-BNTfoFvt.js",
     "name": "Show",
     "src": "resources/js/components/dashboard/users/crud/Show.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js",
-      "_useUsers-Caq9V0lK.js",
+      "_pinia-xDMDoLs3.js",
+      "_useUsers-CR5fsHSK.js",
       "resources/js/app.js",
-      "_StatusEnum-C57FGDSg.js",
-      "_logo-DZSYQBqI.js"
+      "_StatusEnum-C57FGDSg.js"
     ],
     "css": [
       "assets/Show-BnWVhjaU.css"
     ]
   },
   "resources/js/components/dashboard/users/crud/Update.vue": {
-    "file": "assets/Update-BRC1i4Oq.js",
+    "file": "assets/Update-C3jwxiH3.js",
     "name": "Update",
     "src": "resources/js/components/dashboard/users/crud/Update.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js",
-      "_useUsers-Caq9V0lK.js"
+      "_pinia-xDMDoLs3.js",
+      "_useUsers-CR5fsHSK.js"
     ]
   },
   "resources/js/components/website-index/pages/Index.vue": {
-    "file": "assets/Index-CCSMvw1B.js",
+    "file": "assets/Index-C6hnOfTx.js",
     "name": "Index",
     "src": "resources/js/components/website-index/pages/Index.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js",
+      "_pinia-xDMDoLs3.js",
       "resources/js/website-index.js",
-      "_footer-logo-BYibEjG3.js",
-      "_logo-DZSYQBqI.js"
+      "_footer-logo-DNnZnx5v.js"
     ],
     "css": [
       "assets/Index-D8f91Mzp.css",
@@ -538,16 +525,15 @@
     ]
   },
   "resources/js/components/website/pages/Contact.vue": {
-    "file": "assets/Contact-16fONUw0.js",
+    "file": "assets/Contact-PKnQZKOo.js",
     "name": "Contact",
     "src": "resources/js/components/website/pages/Contact.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js",
+      "_pinia-xDMDoLs3.js",
       "resources/js/website-index.js",
-      "_footer-logo-BYibEjG3.js",
-      "_Footer.vue_vue_type_script_setup_true_lang-C_SkHSz9.js",
-      "_logo-DZSYQBqI.js"
+      "_footer-logo-DNnZnx5v.js",
+      "_Footer.vue_vue_type_script_setup_true_lang-COvR1pLm.js"
     ],
     "css": [
       "assets/Contact-Cuj9dmrw.css",
@@ -555,16 +541,15 @@
     ]
   },
   "resources/js/components/website/pages/Login.vue": {
-    "file": "assets/Login-CjpFVQi4.js",
+    "file": "assets/Login-BAcDrNRN.js",
     "name": "Login",
     "src": "resources/js/components/website/pages/Login.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js",
+      "_pinia-xDMDoLs3.js",
       "resources/js/website-index.js",
-      "_footer-logo-BYibEjG3.js",
-      "_Footer.vue_vue_type_script_setup_true_lang-C_SkHSz9.js",
-      "_logo-DZSYQBqI.js"
+      "_footer-logo-DNnZnx5v.js",
+      "_Footer.vue_vue_type_script_setup_true_lang-COvR1pLm.js"
     ],
     "css": [
       "assets/Login-DsTQI5V6.css",
@@ -575,16 +560,15 @@
     ]
   },
   "resources/js/components/website/pages/Profile.vue": {
-    "file": "assets/Profile-G396fRHk.js",
+    "file": "assets/Profile-BZF7Hbsd.js",
     "name": "Profile",
     "src": "resources/js/components/website/pages/Profile.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js",
-      "_footer-logo-BYibEjG3.js",
+      "_pinia-xDMDoLs3.js",
+      "_footer-logo-DNnZnx5v.js",
       "resources/js/website-index.js",
-      "_Footer.vue_vue_type_script_setup_true_lang-C_SkHSz9.js",
-      "_logo-DZSYQBqI.js"
+      "_Footer.vue_vue_type_script_setup_true_lang-COvR1pLm.js"
     ],
     "css": [
       "assets/website-HKwNIhK8.css"
@@ -594,12 +578,12 @@
     ]
   },
   "resources/js/components/website/pages/UserInfo.vue": {
-    "file": "assets/UserInfo-DdtbivEG.js",
+    "file": "assets/UserInfo-B7abCWVZ.js",
     "name": "UserInfo",
     "src": "resources/js/components/website/pages/UserInfo.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js",
+      "_pinia-xDMDoLs3.js",
       "resources/js/website-index.js"
     ],
     "css": [
@@ -648,12 +632,12 @@
     "src": "resources/js/images/website/vector-3.png"
   },
   "resources/js/website-index.js": {
-    "file": "assets/website-index-HF6gH4Ck.js",
+    "file": "assets/website-index-CRt7X805.js",
     "name": "website-index",
     "src": "resources/js/website-index.js",
     "isEntry": true,
     "imports": [
-      "_pinia-BKjEVkHC.js"
+      "_pinia-xDMDoLs3.js"
     ],
     "dynamicImports": [
       "resources/js/components/website-index/pages/Index.vue",

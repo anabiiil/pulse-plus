@@ -27,6 +27,7 @@
                     <h3 class="font-semibold mb-2">{{ t.footer.contactUs }}</h3>
                     <p class="text-sm [direction:ltr]">{{ contactInfo.email }}</p>
                     <p class="text-sm [direction:ltr]">{{ contactInfo.phone }}</p>
+                    <p class="text-sm mt-1">{{ contactInfo.address }}</p>
                 </div>
             </div>
         </div>
@@ -49,7 +50,8 @@ const isRTL = computed(() => websiteStore.isRTL);
 
 const contactInfo = ref({
     phone: '+2 01022335566',
-    email: 'info@pulse-plus.com'
+    email: 'info@pulse-plus.com',
+    address: websiteStore.locale === 'ar' ? 'القاهرة، جمهورية مصر العربية' : 'Cairo, Arab Republic of Egypt'
 });
 
 // Fetch contact information from API
@@ -65,6 +67,7 @@ const fetchContactInfo = async () => {
         if (response.data.success && response.data.data) {
             contactInfo.value.phone = response.data.data.phone;
             contactInfo.value.email = response.data.data.email;
+            contactInfo.value.address = response.data.data.address;
         }
     } catch (error) {
         console.error('Failed to load contact info:', error);

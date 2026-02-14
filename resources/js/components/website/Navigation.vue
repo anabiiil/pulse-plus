@@ -1,6 +1,6 @@
 <template>
     <!-- Top Contact Bar -->
-    <div class="flex items-center text-white font-bold justify-center p-4 gap-10 w-full bg-[#03315A]">
+    <div class="flex items-center text-white font-bold justify-center p-4 gap-4 lg:gap-10 w-full bg-[#03315A] flex-wrap">
         <p class="[direction:ltr] text-[12px] lg:text-base"><i class="pi pi-phone text-white mx-2 text-[14px] lg:text-[18px]"></i> {{ contactInfo.phone }}</p>
         <p class="[direction:ltr] text-[12px] lg:text-base"><i class="pi pi-envelope text-white mx-2 text-[14px] lg:text-[18px]"></i> {{ contactInfo.email }}</p>
     </div>
@@ -108,7 +108,8 @@ const menuOpen = ref(false);
 const loggingOut = ref(false);
 const contactInfo = ref({
     phone: '+2 01022335566',
-    email: 'info@pulse-plus.com'
+    email: 'info@pulse-plus.com',
+    address: websiteStore.locale === 'ar' ? 'القاهرة، جمهورية مصر العربية' : 'Cairo, Arab Republic of Egypt'
 });
 
 const t = computed(() => websiteStore.t);

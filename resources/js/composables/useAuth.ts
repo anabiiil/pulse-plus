@@ -98,8 +98,8 @@ export const useAuth = () => {
             // Remove user from sessionStorage
             sessionStorage.removeItem('user');
 
-            // Redirect to home
-            router.push('/');
+            // Redirect to home with page reload
+            window.location.href = '/';
         } catch (err: any) {
             error.value = err.response?.data?.message || 'Logout failed';
             console.error('Logout error:', err);

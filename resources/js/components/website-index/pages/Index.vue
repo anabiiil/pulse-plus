@@ -1,11 +1,7 @@
 <template>
   <div class="index-page">
-    <!-- Top Bar -->
-    <TopBar />
-
-    <!-- Navigation -->
-    <DesktopNav />
-    <MobileNav />
+    <!-- Navigation (unified with auth support) -->
+    <Navigation />
 
     <!-- Hero Slider Section -->
     <HeroSlider />
@@ -24,9 +20,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { useHead } from '@vueuse/head';
-import TopBar from '../TopBar.vue';
-import DesktopNav from '../DesktopNav.vue';
-import MobileNav from '../MobileNav.vue';
+import Navigation from '../../website/Navigation.vue';
 import HeroSlider from '../sections/HeroSlider.vue';
 import FeaturesSection from '../sections/FeaturesSection.vue';
 import ProductsSection from '../sections/ProductsSection.vue';

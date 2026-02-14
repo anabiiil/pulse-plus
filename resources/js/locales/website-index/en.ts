@@ -49,6 +49,8 @@ export default {
       female: 'Female',
       phone: 'Phone Number',
       phonePlaceholder: 'Phone number',
+      emergencyPhone: 'Emergency Phone',
+      emergencyPhonePlaceholder: 'Emergency phone number',
       address: 'Address',
       addressPlaceholder: 'Address',
       email: 'Email',

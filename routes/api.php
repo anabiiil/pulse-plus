@@ -34,6 +34,7 @@ Route::prefix('website')->group(function () {
         Route::post('/auth/logout', [AuthController::class, 'logout']);
         Route::get('/auth/me', [AuthController::class, 'me']);
         Route::put('/auth/profile', [AuthController::class, 'updateProfile']);
+        Route::post('/auth/profile', [AuthController::class, 'updateProfile']); // POST for FormData
         Route::post('/auth/change-password', [AuthController::class, 'changePassword']);
     });
 

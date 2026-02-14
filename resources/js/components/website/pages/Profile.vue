@@ -183,7 +183,7 @@
                                 </div>
                             </div>
 
-                            <!-- Phone -->
+                            <!-- Phone (Read-only) -->
                             <div class="p-2 text-[#123057] flex flex-col col-span-2 lg:col-span-1 relative">
                                 <label class="font-bold">{{ t.profile.form.phone }}</label>
                                 <div class="relative">
@@ -192,11 +192,27 @@
                                         type="text"
                                         :placeholder="t.profile.form.phonePlaceholder"
                                         dir="ltr"
+                                        readonly
+                                        class="focus:ring-0 focus:border-transparent bg-gray-200 border-0 shadow-xl transition-shadow duration-300 ease-in-out cursor-not-allowed font-semibold rounded-[30px] w-full p-4 my-2 pr-12"
+                                    >
+                                    <i class="pi pi-phone absolute top-1/2 text-gray-400 right-5 text-[18px] -translate-y-1/2"></i>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-1">{{ currentLocale === 'ar' ? 'لا يمكن تعديل رقم الهاتف' : 'Phone number cannot be changed' }}</p>
+                            </div>
+
+                            <!-- Emergency Phone -->
+                            <div class="p-2 text-[#123057] flex flex-col col-span-2 lg:col-span-1 relative">
+                                <label class="font-bold">{{ t.profile.form.emergencyPhone }}</label>
+                                <div class="relative">
+                                    <input
+                                        v-model="formData.emergency_phone"
+                                        type="text"
+                                        :placeholder="t.profile.form.emergencyPhonePlaceholder"
+                                        dir="ltr"
                                         class="focus:ring-0 focus:border-transparent bg-gray-50 border-0 shadow-xl transition-shadow duration-300 ease-in-out hover:shadow-2xl cursor-pointer font-semibold rounded-[30px] w-full p-4 my-2 pr-12"
                                     >
                                     <i class="pi pi-phone absolute top-1/2 text-gray-400 right-5 text-[18px] -translate-y-1/2"></i>
                                 </div>
-                                <p v-if="errors.phone" class="text-red-500 text-sm mt-1">{{ errors.phone }}</p>
                             </div>
 
                             <!-- Address -->
@@ -213,7 +229,7 @@
                                 </div>
                             </div>
 
-                            <!-- Email -->
+                            <!-- Email (Read-only) -->
                             <div class="p-2 text-[#123057] flex flex-col col-span-2 relative">
                                 <label class="font-bold">{{ t.profile.form.email }}</label>
                                 <div class="relative">
@@ -222,11 +238,12 @@
                                         type="email"
                                         :placeholder="t.profile.form.emailPlaceholder"
                                         dir="ltr"
-                                        class="focus:ring-0 focus:border-transparent bg-gray-50 border-0 shadow-xl transition-shadow duration-300 ease-in-out hover:shadow-2xl cursor-pointer font-semibold rounded-[30px] w-full p-4 my-2 pr-12"
+                                        readonly
+                                        class="focus:ring-0 focus:border-transparent bg-gray-200 border-0 shadow-xl transition-shadow duration-300 ease-in-out cursor-not-allowed font-semibold rounded-[30px] w-full p-4 my-2 pr-12"
                                     >
                                     <i class="pi pi-envelope absolute top-1/2 text-gray-400 right-5 text-[18px] -translate-y-1/2"></i>
                                 </div>
-                                <p v-if="errors.email" class="text-red-500 text-sm mt-1">{{ errors.email }}</p>
+                                <p class="text-xs text-gray-500 mt-1">{{ currentLocale === 'ar' ? 'لا يمكن تعديل البريد الإلكتروني' : 'Email address cannot be changed' }}</p>
                             </div>
 
                             <!-- Nationality -->
@@ -335,7 +352,7 @@ import userVectorImg from '../../../images/website/user-vector.png';
 import Navigation from '../Navigation.vue';
 import Footer from '../Footer.vue';
 
-const { user: authUser, fetchUser, updateProfile } = useAuth();
+const { user: authUser, fetchUser } = useAuth();
 const toast = useToast();
 const appStore = useAppStore();
 
@@ -353,6 +370,7 @@ const activeTab = ref('personal');
 
 // Profile image
 const profileImage = ref<string | null>(null);
+const profileImageFile = ref<File | null>(null);
 
 // Loading states
 const updating = ref(false);
@@ -364,8 +382,9 @@ const maritalStatusOptions = ref<Array<{value: string, label_ar: string, label_e
 // Form data
 const formData = reactive({
     name: '',
-    email: '',
-    phone: '',
+    email: '', // Read-only, not sent in update
+    phone: '', // Read-only, not sent in update
+    emergency_phone: '',
     birthdate: '',
     gender: 'male',
     address: '',
@@ -383,7 +402,7 @@ const errors = reactive<Record<string, string>>({
 // Profile completion calculation
 const profileCompletion = computed(() => {
     let completed = 0;
-    const fields = ['name', 'email', 'phone', 'birthdate', 'gender', 'address', 'nationality_id', 'marital_status'];
+    const fields = ['name', 'email', 'phone', 'emergency_phone', 'birthdate', 'gender', 'address', 'nationality_id', 'marital_status'];
 
     fields.forEach(field => {
         if (formData[field as keyof typeof formData]) {
@@ -431,6 +450,17 @@ const loadUser = async () => {
             formData.name = authUser.value.name || '';
             formData.email = authUser.value.email || '';
             formData.phone = authUser.value.phone || '';
+            formData.emergency_phone = authUser.value.emergency_phone || '';
+            formData.birthdate = authUser.value.birthdate || '';
+            formData.gender = authUser.value.gender || 'male';
+            formData.address = authUser.value.address || '';
+            formData.nationality_id = authUser.value.country_id || null;
+            formData.marital_status = authUser.value.marital_status || '';
+
+            // Set profile image if exists
+            if (authUser.value.profile_image_url) {
+                profileImage.value = authUser.value.profile_image_url;
+            }
         }
     } catch (error) {
         console.error('Error loading user:', error);
@@ -444,6 +474,10 @@ const handleImageUpload = (event: Event) => {
     const file = target.files?.[0];
 
     if (file) {
+        // Store the file for uploading
+        profileImageFile.value = file;
+
+        // Show preview
         const reader = new FileReader();
         reader.onload = (e) => {
             profileImage.value = e.target?.result as string;
@@ -458,13 +492,58 @@ const handleUpdate = async () => {
     updating.value = true;
 
     try {
-        await updateProfile({
-            name: formData.name,
-            email: formData.email,
-            phone: formData.phone,
+        // Create FormData for multipart/form-data request (to handle file upload)
+        const formDataToSend = new FormData();
+        formDataToSend.append('name', formData.name);
+
+        if (formData.emergency_phone) {
+            formDataToSend.append('emergency_phone', formData.emergency_phone);
+        }
+
+        if (formData.birthdate) {
+            formDataToSend.append('birthdate', formData.birthdate);
+        }
+
+        if (formData.gender) {
+            formDataToSend.append('gender', formData.gender);
+        }
+
+        if (formData.address) {
+            formDataToSend.append('address', formData.address);
+        }
+
+        if (formData.nationality_id) {
+            formDataToSend.append('country_id', formData.nationality_id.toString());
+        }
+
+        if (formData.marital_status) {
+            formDataToSend.append('marital_status', formData.marital_status);
+        }
+
+        // Add profile image if selected
+        if (profileImageFile.value) {
+            formDataToSend.append('profile_image', profileImageFile.value);
+        }
+
+        // Send to API
+        const response = await axios.post('/api/website/auth/profile', formDataToSend, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
         });
 
+        // Update user data
+        if (response.data.data?.user) {
+            const userData = response.data.data.user;
+            if (userData.profile_image_url) {
+                profileImage.value = userData.profile_image_url;
+            }
+        }
+
         toast.success(t.value.profile.messages.successUpdate);
+
+        // Reload user data
+        await loadUser();
     } catch (error: any) {
         if (error.response?.status === 422) {
             const responseErrors = error.response.data.errors || {};
@@ -489,6 +568,22 @@ const resetForm = () => {
         formData.name = authUser.value.name || '';
         formData.email = authUser.value.email || '';
         formData.phone = authUser.value.phone || '';
+        formData.emergency_phone = authUser.value.emergency_phone || '';
+        formData.birthdate = authUser.value.birthdate || '';
+        formData.gender = authUser.value.gender || 'male';
+        formData.address = authUser.value.address || '';
+        formData.nationality_id = authUser.value.country_id || null;
+        formData.marital_status = authUser.value.marital_status || '';
+
+        // Reset profile image to original
+        if (authUser.value.profile_image_url) {
+            profileImage.value = authUser.value.profile_image_url;
+        } else {
+            profileImage.value = null;
+        }
+
+        // Clear file input
+        profileImageFile.value = null;
     }
     resetErrors();
 };

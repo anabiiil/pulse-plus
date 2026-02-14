@@ -55,6 +55,8 @@ export interface TranslationSchema {
       female: string;
       phone: string;
       phonePlaceholder: string;
+      emergencyPhone: string;
+      emergencyPhonePlaceholder: string;
       address: string;
       addressPlaceholder: string;
       email: string;

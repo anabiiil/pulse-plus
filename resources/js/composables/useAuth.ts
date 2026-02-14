@@ -7,6 +7,13 @@ interface User {
     name: string;
     email: string;
     phone?: string | null;
+    emergency_phone?: string | null;
+    birthdate?: string | null;
+    gender?: string | null;
+    address?: string | null;
+    country_id?: number | null;
+    marital_status?: string | null;
+    profile_image_url?: string | null;
 }
 
 interface LoginCredentials {

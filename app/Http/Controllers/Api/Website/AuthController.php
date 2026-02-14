@@ -86,6 +86,13 @@ class AuthController extends Controller
                 'name' => $user->name,
                 'email' => $user->email,
                 'phone' => $user->phone,
+                'emergency_phone' => $user->emergency_phone,
+                'birthdate' => $user->birthdate,
+                'gender' => $user->gender,
+                'address' => $user->address,
+                'country_id' => $user->country_id,
+                'marital_status' => $user->marital_status,
+                'profile_image_url' => $user->profile_image_url,
             ]
         ]);
     }
@@ -103,9 +110,26 @@ class AuthController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'phone' => 'nullable|string|max:20',
+            'emergency_phone' => 'nullable|string|max:20',
+            'birthdate' => 'nullable|date',
+            'gender' => 'nullable|in:male,female',
+            'address' => 'nullable|string|max:255',
+            'country_id' => 'nullable|exists:countries,id',
+            'marital_status' => 'nullable|string|max:50',
+            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // 2MB max
         ]);
+
+        // Handle profile image upload
+        if ($request->hasFile('profile_image')) {
+            // Delete old image if exists
+            if ($user->profile_image && \Storage::disk('public')->exists($user->profile_image)) {
+                \Storage::disk('public')->delete($user->profile_image);
+            }
+
+            // Store new image
+            $path = $request->file('profile_image')->store('profile-images', 'public');
+            $validated['profile_image'] = $path;
+        }
 
         $user->update($validated);
 
@@ -115,6 +139,13 @@ class AuthController extends Controller
                 'name' => $user->name,
                 'email' => $user->email,
                 'phone' => $user->phone,
+                'emergency_phone' => $user->emergency_phone,
+                'birthdate' => $user->birthdate,
+                'gender' => $user->gender,
+                'address' => $user->address,
+                'country_id' => $user->country_id,
+                'marital_status' => $user->marital_status,
+                'profile_image_url' => $user->profile_image_url,
             ],
             'message' => 'Profile updated successfully'
         ]);

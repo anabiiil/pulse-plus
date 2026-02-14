@@ -28,6 +28,7 @@ class User extends Authenticatable
         'email',
         'address',
         'phone',
+        'emergency_phone',
         'birthdate',
         'gender',
         'country_id',
@@ -37,6 +38,7 @@ class User extends Authenticatable
         'type',
         'hash_url',
         'qr_code',
+        'profile_image',
     ];
 
     const IMAGE_PATH = 'images/user';
@@ -46,7 +48,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $appends = ['qr_code_path'];
+    protected $appends = ['qr_code_path', 'profile_image_url'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -108,6 +110,24 @@ class User extends Authenticatable
         }
 
         return asset(Storage::url('qr-codes/'.$this->hash_url.'.svg'));
+    }
+
+    /**
+     * Get the profile image URL.
+     */
+    public function getProfileImageUrlAttribute(): ?string
+    {
+        if (empty($this->profile_image)) {
+            return null;
+        }
+
+        // If it's a full URL (uploaded to external storage), return as is
+        if (filter_var($this->profile_image, FILTER_VALIDATE_URL)) {
+            return $this->profile_image;
+        }
+
+        // Otherwise, return the storage URL
+        return asset(Storage::url($this->profile_image));
     }
 
     /**

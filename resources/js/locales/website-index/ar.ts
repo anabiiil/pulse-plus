@@ -49,6 +49,8 @@ export default {
       female: 'أنثى',
       phone: 'رقم الهاتف',
       phonePlaceholder: 'رقم الهاتف',
+      emergencyPhone: 'هاتف الطوارئ',
+      emergencyPhonePlaceholder: 'رقم هاتف الطوارئ',
       address: 'العنوان',
       addressPlaceholder: 'العنوان',
       email: 'الايميل',

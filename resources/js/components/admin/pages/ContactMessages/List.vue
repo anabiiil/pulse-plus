@@ -1,254 +1,271 @@
 <template>
-    <div>
-        <h1 class="text-2xl font-bold mb-6">Contact Messages</h1>
-
+    <div class="col-xl-12">
         <!-- Statistics Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            <div class="bg-white p-6 rounded-lg shadow">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-gray-500 text-sm">Total Messages</p>
-                        <p class="text-2xl font-bold">{{ statistics.total }}</p>
-                    </div>
-                    <div class="bg-blue-100 p-3 rounded-full">
-                        <i class="pi pi-envelope text-blue-500 text-2xl"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white p-6 rounded-lg shadow">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-gray-500 text-sm">Pending</p>
-                        <p class="text-2xl font-bold text-orange-500">{{ statistics.pending }}</p>
-                    </div>
-                    <div class="bg-orange-100 p-3 rounded-full">
-                        <i class="pi pi-clock text-orange-500 text-2xl"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white p-6 rounded-lg shadow">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-gray-500 text-sm">Read</p>
-                        <p class="text-2xl font-bold text-green-500">{{ statistics.read }}</p>
-                    </div>
-                    <div class="bg-green-100 p-3 rounded-full">
-                        <i class="pi pi-check-circle text-green-500 text-2xl"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Filters -->
-        <div class="bg-white p-4 rounded-lg shadow mb-6">
-            <div class="flex gap-2">
-                <button
-                    @click="filterStatus = ''"
-                    :class="filterStatus === '' ? 'bg-blue-500 text-white' : 'bg-gray-200'"
-                    class="px-4 py-2 rounded"
-                >
-                    All
-                </button>
-                <button
-                    @click="filterStatus = 'pending'"
-                    :class="filterStatus === 'pending' ? 'bg-orange-500 text-white' : 'bg-gray-200'"
-                    class="px-4 py-2 rounded"
-                >
-                    Pending
-                </button>
-                <button
-                    @click="filterStatus = 'read'"
-                    :class="filterStatus === 'read' ? 'bg-green-500 text-white' : 'bg-gray-200'"
-                    class="px-4 py-2 rounded"
-                >
-                    Read
-                </button>
-            </div>
-        </div>
-
-        <!-- Messages List -->
-        <div class="bg-white rounded-lg shadow overflow-hidden">
-            <div v-if="loading" class="p-8 text-center">
-                <i class="pi pi-spin pi-spinner text-4xl text-gray-400"></i>
-            </div>
-
-            <div v-else-if="messages.length === 0" class="p-8 text-center text-gray-500">
-                No messages found
-            </div>
-
-            <div v-else>
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                From
-                            </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Subject
-                            </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Date
-                            </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Status
-                            </th>
-                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Actions
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        <tr
-                            v-for="message in messages"
-                            :key="message.id"
-                            :class="message.status === 'pending' ? 'bg-orange-50' : ''"
-                        >
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex flex-col">
-                                    <div class="text-sm font-medium text-gray-900">{{ message.name }}</div>
-                                    <div class="text-sm text-gray-500">{{ message.email }}</div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4">
-                                <div class="text-sm text-gray-900">{{ message.subject }}</div>
-                                <div class="text-sm text-gray-500 truncate max-w-xs">{{ message.message }}</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {{ formatDate(message.created_at) }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span
-                                    :class="{
-                                        'bg-orange-100 text-orange-800': message.status === 'pending',
-                                        'bg-green-100 text-green-800': message.status === 'read'
-                                    }"
-                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
-                                >
-                                    {{ message.status }}
+        <div class="row mb-4">
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                <div class="card custom-card overflow-hidden">
+                    <div class="card-body">
+                        <div class="d-flex align-items-top justify-content-between">
+                            <div>
+                                <span class="avatar avatar-md avatar-rounded bg-primary">
+                                    <i class="ti ti-mail fs-16"></i>
                                 </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <button
-                                    @click="viewMessage(message)"
-                                    class="text-blue-600 hover:text-blue-900 mr-3"
-                                >
-                                    <i class="pi pi-eye"></i>
-                                </button>
-                                <button
-                                    v-if="message.status === 'pending'"
-                                    @click="markAsRead(message.id)"
-                                    class="text-green-600 hover:text-green-900 mr-3"
-                                    title="Mark as Read"
-                                >
-                                    <i class="pi pi-check"></i>
-                                </button>
-                                <button
-                                    @click="deleteMessage(message.id)"
-                                    class="text-red-600 hover:text-red-900"
-                                >
-                                    <i class="pi pi-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <!-- Pagination -->
-                <div v-if="pagination.last_page > 1" class="px-6 py-4 border-t border-gray-200">
-                    <div class="flex items-center justify-between">
-                        <div class="text-sm text-gray-700">
-                            Showing {{ pagination.from }} to {{ pagination.to }} of {{ pagination.total }} results
-                        </div>
-                        <div class="flex gap-2">
-                            <button
-                                @click="changePage(pagination.current_page - 1)"
-                                :disabled="pagination.current_page === 1"
-                                class="px-3 py-1 border rounded disabled:opacity-50"
-                            >
-                                Previous
-                            </button>
-                            <button
-                                @click="changePage(pagination.current_page + 1)"
-                                :disabled="pagination.current_page === pagination.last_page"
-                                class="px-3 py-1 border rounded disabled:opacity-50"
-                            >
-                                Next
-                            </button>
+                            </div>
+                            <div class="flex-fill ms-3">
+                                <div class="d-flex align-items-center justify-content-between flex-wrap">
+                                    <div>
+                                        <p class="text-muted mb-0">Total Messages</p>
+                                        <h4 class="fw-semibold mt-1">{{ statistics.total }}</h4>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                <div class="card custom-card overflow-hidden">
+                    <div class="card-body">
+                        <div class="d-flex align-items-top justify-content-between">
+                            <div>
+                                <span class="avatar avatar-md avatar-rounded bg-warning">
+                                    <i class="ti ti-clock fs-16"></i>
+                                </span>
+                            </div>
+                            <div class="flex-fill ms-3">
+                                <div class="d-flex align-items-center justify-content-between flex-wrap">
+                                    <div>
+                                        <p class="text-muted mb-0">Pending</p>
+                                        <h4 class="fw-semibold mt-1 text-warning">{{ statistics.pending }}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                <div class="card custom-card overflow-hidden">
+                    <div class="card-body">
+                        <div class="d-flex align-items-top justify-content-between">
+                            <div>
+                                <span class="avatar avatar-md avatar-rounded bg-success">
+                                    <i class="ti ti-check fs-16"></i>
+                                </span>
+                            </div>
+                            <div class="flex-fill ms-3">
+                                <div class="d-flex align-items-center justify-content-between flex-wrap">
+                                    <div>
+                                        <p class="text-muted mb-0">Read</p>
+                                        <h4 class="fw-semibold mt-1 text-success">{{ statistics.read }}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Card -->
+        <div class="card custom-card">
+            <div class="card-header justify-content-between">
+                <div class="card-title">
+                    Contact Messages
+                </div>
+                <!-- Filters -->
+                <div class="d-flex gap-2">
+                    <button
+                        @click="filterStatus = ''"
+                        :class="filterStatus === '' ? 'btn-primary' : 'btn-light'"
+                        class="btn btn-sm"
+                    >
+                        All
+                    </button>
+                    <button
+                        @click="filterStatus = 'pending'"
+                        :class="filterStatus === 'pending' ? 'btn-warning' : 'btn-light'"
+                        class="btn btn-sm"
+                    >
+                        Pending
+                    </button>
+                    <button
+                        @click="filterStatus = 'read'"
+                        :class="filterStatus === 'read' ? 'btn-success' : 'btn-light'"
+                        class="btn btn-sm"
+                    >
+                        Read
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div v-if="loading" class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+
+                <div v-else-if="messages.length === 0" class="text-center py-5 text-muted">
+                    <i class="ti ti-inbox fs-1 d-block mb-3"></i>
+                    <p>No messages found</p>
+                </div>
+
+                <div v-else class="table-responsive">
+                    <table class="table text-nowrap table-hover border table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">From</th>
+                                <th scope="col">Subject</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Status</th>
+                                <th scope="col" class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                v-for="message in messages"
+                                :key="message.id"
+                                :class="message.status === 'pending' ? 'table-warning' : ''"
+                            >
+                                <td>
+                                    <div class="d-flex flex-column">
+                                        <span class="fw-semibold">{{ message.name }}</span>
+                                        <span class="text-muted fs-12">{{ message.email }}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex flex-column">
+                                        <span class="fw-semibold">{{ message.subject }}</span>
+                                        <span class="text-muted fs-12 text-truncate" style="max-width: 300px;">{{ message.message }}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="text-muted fs-12">{{ formatDate(message.created_at) }}</span>
+                                </td>
+                                <td>
+                                    <span
+                                        :class="{
+                                            'badge bg-warning': message.status === 'pending',
+                                            'badge bg-success': message.status === 'read'
+                                        }"
+                                    >
+                                        {{ message.status }}
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                    <div class="btn-group" role="group">
+                                        <button
+                                            @click="viewMessage(message)"
+                                            class="btn btn-sm btn-primary-light"
+                                            title="View"
+                                        >
+                                            <i class="ti ti-eye"></i>
+                                        </button>
+                                        <button
+                                            v-if="message.status === 'pending'"
+                                            @click="markAsRead(message.id)"
+                                            class="btn btn-sm btn-success-light"
+                                            title="Mark as Read"
+                                        >
+                                            <i class="ti ti-check"></i>
+                                        </button>
+                                        <button
+                                            @click="deleteMessage(message.id)"
+                                            class="btn btn-sm btn-danger-light"
+                                            title="Delete"
+                                        >
+                                            <i class="ti ti-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Pagination -->
+                    <nav v-if="pagination.last_page > 1" aria-label="Page navigation" class="mt-3">
+                        <ul class="pagination justify-content-between align-items-center">
+                            <li class="page-item">
+                                <span class="text-muted">
+                                    Showing {{ pagination.from }} to {{ pagination.to }} of {{ pagination.total }} entries
+                                </span>
+                            </li>
+                            <li class="d-flex gap-2">
+                                <button
+                                    @click="changePage(pagination.current_page - 1)"
+                                    :disabled="pagination.current_page === 1"
+                                    class="btn btn-sm btn-primary-light"
+                                >
+                                    <i class="ti ti-chevron-left"></i> Previous
+                                </button>
+                                <button
+                                    @click="changePage(pagination.current_page + 1)"
+                                    :disabled="pagination.current_page === pagination.last_page"
+                                    class="btn btn-sm btn-primary-light"
+                                >
+                                    Next <i class="ti ti-chevron-right"></i>
+                                </button>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
 
         <!-- View Message Modal -->
-        <div
-            v-if="selectedMessage"
-            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-            @click.self="selectedMessage = null"
-        >
-            <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-                <div class="p-6">
-                    <div class="flex justify-between items-start mb-4">
-                        <h2 class="text-2xl font-bold">Message Details</h2>
-                        <button @click="selectedMessage = null" class="text-gray-500 hover:text-gray-700">
-                            <i class="pi pi-times text-xl"></i>
-                        </button>
+        <div v-if="selectedMessage" class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title">Message Details</h6>
+                        <button @click="selectedMessage = null" type="button" class="btn-close"></button>
                     </div>
-
-                    <div class="space-y-4">
-                        <div>
-                            <label class="text-sm font-medium text-gray-500">From:</label>
-                            <p class="text-lg">{{ selectedMessage.name }}</p>
-                        </div>
-
-                        <div>
-                            <label class="text-sm font-medium text-gray-500">Email:</label>
-                            <p class="text-lg">{{ selectedMessage.email }}</p>
-                        </div>
-
-                        <div>
-                            <label class="text-sm font-medium text-gray-500">Subject:</label>
-                            <p class="text-lg font-semibold">{{ selectedMessage.subject }}</p>
-                        </div>
-
-                        <div>
-                            <label class="text-sm font-medium text-gray-500">Message:</label>
-                            <p class="text-gray-700 whitespace-pre-wrap">{{ selectedMessage.message }}</p>
-                        </div>
-
-                        <div>
-                            <label class="text-sm font-medium text-gray-500">Date:</label>
-                            <p>{{ formatDate(selectedMessage.created_at) }}</p>
-                        </div>
-
-                        <div>
-                            <label class="text-sm font-medium text-gray-500">Status:</label>
-                            <span
-                                :class="{
-                                    'bg-orange-100 text-orange-800': selectedMessage.status === 'pending',
-                                    'bg-green-100 text-green-800': selectedMessage.status === 'read'
-                                }"
-                                class="px-2 py-1 text-xs font-semibold rounded-full"
-                            >
-                                {{ selectedMessage.status }}
-                            </span>
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">From:</label>
+                                <p class="text-muted">{{ selectedMessage.name }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Email:</label>
+                                <p class="text-muted">{{ selectedMessage.email }}</p>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">Subject:</label>
+                                <p class="text-muted">{{ selectedMessage.subject }}</p>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">Message:</label>
+                                <p class="text-muted" style="white-space: pre-wrap;">{{ selectedMessage.message }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Date:</label>
+                                <p class="text-muted">{{ formatDate(selectedMessage.created_at) }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Status:</label>
+                                <div>
+                                    <span
+                                        :class="{
+                                            'badge bg-warning': selectedMessage.status === 'pending',
+                                            'badge bg-success': selectedMessage.status === 'read'
+                                        }"
+                                    >
+                                        {{ selectedMessage.status }}
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="mt-6 flex gap-2">
+                    <div class="modal-footer">
                         <button
                             v-if="selectedMessage.status === 'pending'"
                             @click="markAsRead(selectedMessage.id)"
-                            class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                            class="btn btn-success"
                         >
-                            Mark as Read
+                            <i class="ti ti-check me-2"></i> Mark as Read
                         </button>
-                        <button
-                            @click="selectedMessage = null"
-                            class="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300"
-                        >
+                        <button @click="selectedMessage = null" class="btn btn-secondary">
                             Close
                         </button>
                     </div>

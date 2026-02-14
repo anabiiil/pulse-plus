@@ -2,12 +2,12 @@
 
     <!-- Start::main-sidebar-header -->
     <div class="main-sidebar-header">
-        <a href="/dash" class="header-logo">
-            <img src="../../images/website/logo.png" alt="Pulse Logo" class="desktop-logo" style="max-height: 45px; width: auto;">
-            <img src="../../images/website/logo.png" alt="Pulse Logo" class="toggle-logo" style="max-height: 35px; width: auto;">
-            <img src="../../images/website/logo.png" alt="Pulse Logo" class="desktop-white" style="max-height: 45px; width: auto;">
-            <img src="../../images/website/logo.png" alt="Pulse Logo" class="toggle-white" style="max-height: 35px; width: auto;">
-        </a>
+<!--        <a href="/dash" class="header-logo">-->
+<!--            <img src="../../images/website/logo.png" alt="Pulse Logo" class="desktop-logo" style="max-height: 45px; width: auto;">-->
+<!--            <img src="../../images/website/logo.png" alt="Pulse Logo" class="toggle-logo" style="max-height: 35px; width: auto;">-->
+<!--            <img src="../../images/website/logo.png" alt="Pulse Logo" class="desktop-white" style="max-height: 45px; width: auto;">-->
+<!--            <img src="../../images/website/logo.png" alt="Pulse Logo" class="toggle-white" style="max-height: 35px; width: auto;">-->
+<!--        </a>-->
     </div>
     <!-- End::main-sidebar-header -->
 

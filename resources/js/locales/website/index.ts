@@ -82,6 +82,39 @@ export interface TranslationSchema {
     };
     copyright: string;
   };
+  contact: {
+    title: string;
+    subtitle: string;
+    form: {
+      name: string;
+      namePlaceholder: string;
+      email: string;
+      emailPlaceholder: string;
+      subject: string;
+      subjectPlaceholder: string;
+      message: string;
+      messagePlaceholder: string;
+      submit: string;
+      sending: string;
+      sendMessage: string;
+    };
+    info: {
+      phone: string;
+      email: string;
+      location: string;
+      address: string;
+    };
+    premiumService: {
+      title: string;
+      description: string;
+      button: string;
+    };
+    messages: {
+      success: string;
+      error: string;
+      validationError: string;
+    };
+  };
   footer: {
     description: string;
     quickLinks: string;

@@ -8,6 +8,7 @@ use App\Http\Controllers\Dash\ServiceController;
 use App\Http\Controllers\Dash\SettingController;
 use App\Http\Controllers\Dash\SliderController;
 use App\Http\Controllers\Dash\UserController;
+use App\Http\Controllers\Api\ContactMessageController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['guest:admin']], static function () {
@@ -33,5 +34,14 @@ Route::group(
         Route::apiResource('users', UserController::class);
         Route::apiResource('settings', SettingController::class);
         Route::get('settings/slug/{slug}', [SettingController::class, 'getBySlug']);
+
+        // Contact Messages Management
+        Route::prefix('api/admin/contact-messages')->group(function () {
+            Route::get('/', [ContactMessageController::class, 'index']);
+            Route::get('/statistics', [ContactMessageController::class, 'statistics']);
+            Route::get('/{id}', [ContactMessageController::class, 'show']);
+            Route::patch('/{id}/mark-as-read', [ContactMessageController::class, 'markAsRead']);
+            Route::delete('/{id}', [ContactMessageController::class, 'destroy']);
+        });
 
     });

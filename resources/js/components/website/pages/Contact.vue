@@ -1,134 +1,231 @@
 <template>
-    <v-container class="py-16">
-        <v-row>
-            <v-col cols="12" md="6">
-                <h1 class="text-h3 mb-8">Contact Us</h1>
-                <v-card elevation="2" class="pa-6">
-                    <v-form @submit.prevent="submitForm">
-                        <v-text-field
-                            v-model="formData.name"
-                            label="Name"
-                            variant="outlined"
-                            :error-messages="errors.name"
-                            required
-                        ></v-text-field>
+    <div class="contact-page">
+        <!-- Navigation -->
+        <Navigation />
 
-                        <v-text-field
-                            v-model="formData.email"
-                            label="Email"
-                            type="email"
-                            variant="outlined"
-                            :error-messages="errors.email"
-                            required
-                        ></v-text-field>
+        <!-- Contact Section -->
+        <div class="p-10 bg-gray-100">
+            <!-- Header -->
+            <div class="p-10 text-center">
+                <h2 class="text-4xl font-bold mb-6 text-[#123057]">
+                    {{ t.contact.title }}
+                </h2>
+                <p class="text-gray-500 font-bold">{{ t.contact.subtitle }}</p>
+            </div>
 
-                        <v-text-field
-                            v-model="formData.phone"
-                            label="Phone"
-                            variant="outlined"
-                            :error-messages="errors.phone"
-                        ></v-text-field>
+            <!-- Main Content Grid -->
+            <div class="mx-auto grid lg:grid-cols-3 grid-cols-1 gap-12 px-4">
+                <!-- Left Sidebar - Contact Info Cards -->
+                <div>
+                    <div class="mx-auto space-y-4">
+                        <!-- Contact Info Card -->
+                        <div class="bg-white p-10 rounded-[24px] space-y-3 shadow-[0_12px_30px_-18px_rgba(0,0,0,0.25)]">
+                            <!-- Email -->
+                            <div class="flex items-center gap-3 bg-[#F6F7F9] rounded-[14px] px-4 py-3">
+                                <div class="p-3 rounded-xl shadow-[inset_0px_4px_4px_0px_rgba(0,0,0,0.25)] bg-[#1BB2B1] flex items-center justify-center">
+                                    <i class="pi pi-envelope text-white text-[20px]"></i>
+                                </div>
+                                <span class="flex flex-col gap-2">
+                                    <p class="text-gray-500 text-[13px]">{{ t.contact.info.email }}</p>
+                                    <p class="[direction:ltr]">info@pulse-plus.com</p>
+                                </span>
+                            </div>
 
-                        <v-textarea
-                            v-model="formData.message"
-                            label="Message"
-                            variant="outlined"
-                            rows="5"
-                            :error-messages="errors.message"
-                            required
-                        ></v-textarea>
+                            <!-- Phone -->
+                            <div class="flex items-center gap-3 bg-[#F6F7F9] rounded-[14px] px-4 py-3">
+                                <div class="p-3 rounded-xl shadow-[inset_0px_4px_4px_0px_rgba(0,0,0,0.25)] bg-[#1BB2B1] flex items-center justify-center">
+                                    <i class="pi pi-phone text-white text-[20px]"></i>
+                                </div>
+                                <span class="flex flex-col gap-2">
+                                    <p class="text-[13px] text-gray-500">{{ t.contact.info.phone }}</p>
+                                    <p class="[direction:ltr]">+2 01022335566</p>
+                                </span>
+                            </div>
 
-                        <v-btn
-                            type="submit"
-                            color="primary"
-                            size="large"
-                            :loading="loading"
-                            block
-                        >
-                            Send Message
-                        </v-btn>
-                    </v-form>
-                </v-card>
-            </v-col>
-            <v-col cols="12" md="6">
-                <h2 class="text-h5 mb-4">Get in Touch</h2>
-                <v-card elevation="2" class="pa-6">
-                    <div class="mb-4">
-                        <h3 class="text-h6 mb-2">Address</h3>
-                        <p>123 Healthcare Street<br>Medical District<br>City, State 12345</p>
+                            <!-- Location -->
+                            <div class="flex items-center gap-3 bg-[#F6F7F9] rounded-[14px] px-4 py-3">
+                                <div class="p-3 rounded-xl shadow-[inset_0px_4px_4px_0px_rgba(0,0,0,0.25)] bg-[#1BB2B1] flex items-center justify-center">
+                                    <i class="pi pi-map-marker text-white text-[20px]"></i>
+                                </div>
+                                <span class="flex flex-col gap-2">
+                                    <p class="text-[13px] text-gray-500">{{ t.contact.info.location }}</p>
+                                    <p>{{ t.contact.info.address }}</p>
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Premium Service Card -->
+                        <div class="bg-[#0C2A44] rounded-[22px] p-5 text-white shadow-[0_18px_40px_-20px_rgba(12,42,68,0.9)]">
+                            <h3 class="text-[15px] font-semibold mb-2">
+                                {{ t.contact.premiumService?.title || 'خدمة مميزة' }}
+                            </h3>
+                            <p class="text-[13px] leading-relaxed text-gray-200 mb-4">
+                                {{ t.contact.premiumService?.description || 'احصل على استشارة مجانية وتواصل مع فريقنا لمساعدتك في اختيار الحل الأنسب لك' }}
+                            </p>
+                            <button class="w-full py-3 rounded-xl bg-[#19C5A3] text-center text-white text-[14px] font-semibold hover:bg-[#14b092] transition duration-150">
+                                {{ t.contact.premiumService?.button || 'احجز استشارة مجانية' }}
+                            </button>
+                        </div>
                     </div>
-                    <div class="mb-4">
-                        <h3 class="text-h6 mb-2">Phone</h3>
-                        <p>+1 (555) 123-4567</p>
+                </div>
+
+                <!-- Right Side - Contact Form -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white p-10 rounded-[48px] shadow-xl">
+                        <div class="text-2xl font-bold p-10 mb-8 text-[#123057]">
+                            {{ t.contact.form.sendMessage || 'أرسل لنا رسالة' }}
+                        </div>
+
+                        <form @submit.prevent="submitForm" class="grid gap-7 grid-cols-1 lg:grid-cols-2">
+                            <!-- Name Field -->
+                            <div>
+                                <label class="block text-gray-700 font-semibold mb-2">{{ t.contact.form.name }}</label>
+                                <input
+                                    v-model="form.name"
+                                    type="text"
+                                    :placeholder="t.contact.form.namePlaceholder"
+                                    class="focus-visible:outline-none focus-visible:ring-0 focus:ring-0 focus:border-transparent bg-gray-50 border-0 transition-shadow duration-300 ease-in-out hover:shadow-2xl cursor-pointer shadow-xl font-semibold rounded-[30px] w-full p-4 my-2"
+                                    :class="{ 'border-2 border-red-500': errors.name }"
+                                />
+                                <p v-if="errors.name" class="text-red-500 text-sm mt-1">{{ errors.name[0] }}</p>
+                            </div>
+
+                            <!-- Email Field -->
+                            <div>
+                                <label class="block text-gray-700 font-semibold mb-2">{{ t.contact.form.email }}</label>
+                                <input
+                                    v-model="form.email"
+                                    type="email"
+                                    :placeholder="t.contact.form.emailPlaceholder"
+                                    class="focus-visible:outline-none focus-visible:ring-0 focus:ring-0 focus:border-transparent bg-gray-50 border-0 transition-shadow duration-300 ease-in-out hover:shadow-2xl cursor-pointer shadow-xl font-semibold rounded-[30px] w-full p-4 my-2"
+                                    :class="{ 'border-2 border-red-500': errors.email }"
+                                />
+                                <p v-if="errors.email" class="text-red-500 text-sm mt-1">{{ errors.email[0] }}</p>
+                            </div>
+
+                            <!-- Subject Field -->
+                            <div class="lg:col-span-2">
+                                <label class="block text-gray-700 font-semibold mb-2">{{ t.contact.form.subject }}</label>
+                                <input
+                                    v-model="form.subject"
+                                    type="text"
+                                    :placeholder="t.contact.form.subjectPlaceholder"
+                                    class="focus-visible:outline-none focus-visible:ring-0 focus:ring-0 focus:border-transparent bg-gray-50 border-0 transition-shadow duration-300 ease-in-out hover:shadow-2xl cursor-pointer shadow-xl font-semibold rounded-[30px] w-full p-4 my-2"
+                                    :class="{ 'border-2 border-red-500': errors.subject }"
+                                />
+                                <p v-if="errors.subject" class="text-red-500 text-sm mt-1">{{ errors.subject[0] }}</p>
+                            </div>
+
+                            <!-- Message Field -->
+                            <div class="lg:col-span-2">
+                                <label class="block text-gray-700 font-semibold mb-2">{{ t.contact.form.message }}</label>
+                                <textarea
+                                    v-model="form.message"
+                                    :placeholder="t.contact.form.messagePlaceholder"
+                                    class="focus-visible:outline-none focus-visible:ring-0 focus:ring-0 focus:border-transparent bg-gray-50 border-0 transition-shadow duration-300 ease-in-out hover:shadow-2xl cursor-pointer shadow-xl font-semibold rounded-[30px] w-full p-4 my-2 min-h-[150px] resize-none"
+                                    :class="{ 'border-2 border-red-500': errors.message }"
+                                ></textarea>
+                                <p v-if="errors.message" class="text-red-500 text-sm mt-1">{{ errors.message[0] }}</p>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="lg:col-span-2 p-2 flex items-center justify-center">
+                                <button
+                                    type="submit"
+                                    :disabled="submitting"
+                                    class="px-20 py-3 rounded-xl bg-[#00A5AA] text-white flex items-center hover:bg-[#008a8e] transition duration-150 disabled:opacity-50 disabled:cursor-not-allowed font-semibold"
+                                >
+                                    <i class="pi pi-send mx-2"></i>
+                                    <span v-if="!submitting">{{ t.contact.form.submit }}</span>
+                                    <span v-else>{{ t.contact.form.sending }}</span>
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="mb-4">
-                        <h3 class="text-h6 mb-2">Email</h3>
-                        <p>info@pulse.com</p>
-                    </div>
-                    <div>
-                        <h3 class="text-h6 mb-2">Hours</h3>
-                        <p>Monday - Friday: 9:00 AM - 6:00 PM<br>Saturday: 10:00 AM - 4:00 PM<br>Sunday: Closed</p>
-                    </div>
-                </v-card>
-            </v-col>
-        </v-row>
-    </v-container>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <Footer />
+    </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
+import { ref, reactive, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { useHead } from '@vueuse/head';
+import { useWebsiteStore } from '../../../stores/websiteStore';
+import { useToast } from 'vue-toastification';
 import axios from 'axios';
 
+// Import layout components
+import Navigation from '../Navigation.vue';
+import Footer from '../Footer.vue';
+
+const router = useRouter();
+const websiteStore = useWebsiteStore();
+const toast = useToast();
+
+// Get translations
+const t = computed(() => websiteStore.t);
+
 useHead({
-    title: 'Contact Us',
+    title: computed(() => `${t.value.contact?.title || 'Contact Us'} - Pulse`),
 });
 
-const loading = ref(false);
-const formData = reactive({
+// Form state
+const form = reactive({
     name: '',
     email: '',
-    phone: '',
+    subject: '',
     message: '',
 });
 
-const errors = reactive({
-    name: '',
-    email: '',
-    phone: '',
-    message: '',
-});
+const errors = ref<any>({});
+const submitting = ref(false);
 
-const resetErrors = () => {
-    errors.name = '';
-    errors.email = '';
-    errors.phone = '';
-    errors.message = '';
-};
-
+// Submit form
 const submitForm = async () => {
-    resetErrors();
-    loading.value = true;
+    if (submitting.value) return;
+
+    submitting.value = true;
+    errors.value = {};
 
     try {
-        const response = await axios.post('/api/website/contact', formData);
-        window.showSuccessToast?.('Message sent successfully!');
+        const response = await axios.post('/api/website/contact-messages', form);
 
-        // Reset form
-        formData.name = '';
-        formData.email = '';
-        formData.phone = '';
-        formData.message = '';
+        if (response.data.success) {
+            toast.success(response.data.message || t.value.contact.messages.success);
+
+            // Reset form
+            form.name = '';
+            form.email = '';
+            form.subject = '';
+            form.message = '';
+        }
     } catch (error: any) {
-        if (error.response?.data?.errors) {
-            Object.keys(error.response.data.errors).forEach(key => {
-                errors[key] = error.response.data.errors[key][0];
-            });
+        if (error.response?.status === 422) {
+            // Validation errors
+            errors.value = error.response.data.errors || {};
+            toast.error(error.response.data.message || t.value.contact.messages.validationError);
         } else {
-            window.showErrorToast?.('Failed to send message. Please try again.');
+            toast.error(error.response?.data?.message || t.value.contact.messages.error);
         }
     } finally {
-        loading.value = false;
+        submitting.value = false;
     }
 };
+
+onMounted(() => {
+    // Initialize websiteStore and set router
+    websiteStore.setRouter(router);
+});
 </script>
+
+<style scoped>
+.contact-page {
+    min-height: 100vh;
+}
+</style>
+

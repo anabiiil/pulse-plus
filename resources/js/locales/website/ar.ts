@@ -76,6 +76,39 @@ export default {
     },
     copyright: 'جميع الحقوق محفوظة © Pulse'
   },
+  contact: {
+    title: 'تواصل معنا',
+    subtitle: 'نحن هنا للإجابة على أسئلتك ومساعدتك',
+    form: {
+      name: 'الاسم',
+      namePlaceholder: 'مثال: أحمد محمد',
+      email: 'البريد الإلكتروني',
+      emailPlaceholder: 'example@mail.com',
+      subject: 'الموضوع',
+      subjectPlaceholder: 'كيف يمكننا مساعدتك؟',
+      message: 'الرسالة',
+      messagePlaceholder: 'اكتب رسالتك هنا...',
+      submit: 'إرسال رسالة',
+      sending: 'جاري الإرسال...',
+      sendMessage: 'أرسل لنا رسالة',
+    },
+    info: {
+      phone: 'رقم الهاتف',
+      email: 'البريد الإلكتروني',
+      location: 'المقر الرئيسي',
+      address: 'القاهرة، جمهورية مصر العربية',
+    },
+    premiumService: {
+      title: 'خدمة مميزة',
+      description: 'احصل على استشارة مجانية وتواصل مع فريقنا لمساعدتك في اختيار الحل الأنسب لك',
+      button: 'احجز استشارة مجانية',
+    },
+    messages: {
+      success: 'تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.',
+      error: 'فشل إرسال الرسالة. يرجى المحاولة مرة أخرى.',
+      validationError: 'يرجى التحقق من البيانات المدخلة',
+    }
+  },
   footer: {
     description: 'نحن نؤمن أن التكنولوجيا يجب أن تخدم الإنسانية، خصوصاً في لحظات الضغف والقوة',
     quickLinks: 'روابط سريعة',

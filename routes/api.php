@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\Website\ProductController;
 use App\Http\Controllers\Api\Website\ServiceController;
 use App\Http\Controllers\Api\Website\SettingController;
 use App\Http\Controllers\Api\Website\SliderController;
+use App\Http\Controllers\Api\ContactMessageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -62,8 +63,19 @@ Route::prefix('website')->group(function () {
     // Enums
     Route::get('/enums/marital-status', [EnumController::class, 'maritalStatus']);
 
-    // Contact Form
+    // Contact Form (Public - No Auth Required)
+    Route::post('/contact-messages', [ContactMessageController::class, 'store']);
+
+    // Contact Form (Old endpoint for backward compatibility)
     Route::post('/contact', [ContactController::class, 'store']);
 });
 
+// Admin Contact Messages Management
+Route::prefix('admin/contact-messages')->middleware('auth:sanctum')->group(function () {
+    Route::get('/', [ContactMessageController::class, 'index']);
+    Route::get('/statistics', [ContactMessageController::class, 'statistics']);
+    Route::get('/{id}', [ContactMessageController::class, 'show']);
+    Route::patch('/{id}/mark-as-read', [ContactMessageController::class, 'markAsRead']);
+    Route::delete('/{id}', [ContactMessageController::class, 'destroy']);
+});
 

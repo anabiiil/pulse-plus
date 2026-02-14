@@ -194,6 +194,18 @@ const routes = [
             },
         ],
     },
+
+    // Contact Messages routes
+    {
+        path: '/dash/contact-messages',
+        children: [
+            {
+                path: '',
+                name: 'contact-messages.list',
+                component: () => import('../components/admin/pages/ContactMessages/List.vue'),
+            },
+        ],
+    },
 ];
 
 const router = createRouter({

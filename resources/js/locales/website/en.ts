@@ -76,6 +76,39 @@ export default {
     },
     copyright: 'All rights reserved © Pulse'
   },
+  contact: {
+    title: 'Contact Us',
+    subtitle: 'We\'re here to answer your questions and help you',
+    form: {
+      name: 'Name',
+      namePlaceholder: 'Example: Ahmed Mohamed',
+      email: 'Email',
+      emailPlaceholder: 'example@mail.com',
+      subject: 'Subject',
+      subjectPlaceholder: 'How can we help you?',
+      message: 'Message',
+      messagePlaceholder: 'Write your message here...',
+      submit: 'Send Message',
+      sending: 'Sending...',
+      sendMessage: 'Send us a message',
+    },
+    info: {
+      phone: 'Phone Number',
+      email: 'Email',
+      location: 'Headquarters',
+      address: 'Cairo, Arab Republic of Egypt',
+    },
+    premiumService: {
+      title: 'Premium Service',
+      description: 'Get a free consultation and connect with our team to help you choose the best solution for you',
+      button: 'Book Free Consultation',
+    },
+    messages: {
+      success: 'Your message has been sent successfully! We will contact you soon.',
+      error: 'Failed to send message. Please try again.',
+      validationError: 'Please check the entered data',
+    }
+  },
   footer: {
     description: 'We believe that technology should serve humanity, especially in moments of weakness and strength',
     quickLinks: 'Quick Links',

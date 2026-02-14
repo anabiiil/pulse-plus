@@ -16,7 +16,7 @@
                 <button @click="scrollToSection('products')" class="relative transition duration-150 font-semibold mx-4 hover:text-teal-500 cursor-pointer">{{ t.nav.store }}</button>
                 <button @click="scrollToSection('features')" class="hover:text-teal-500 transition duration-150 font-semibold mx-4 cursor-pointer">{{ t.nav.services }}</button>
                 <button @click="scrollToSection('about')" class="hover:text-teal-500 transition duration-150 font-semibold mx-4 cursor-pointer">{{ t.nav.about }}</button>
-                <button @click="scrollToSection('contact')" class="hover:text-teal-500 transition duration-150 font-semibold mx-4 cursor-pointer">{{ t.nav.contact }}</button>
+                <router-link :to="contactPath" class="hover:text-teal-500 transition duration-150 font-semibold mx-4 cursor-pointer" :class="$route.path.includes('/contact') ? 'text-teal-500' : ''">{{ t.nav.contact }}</router-link>
             </div>
         </div>
         <div class="flex items-center gap-4">
@@ -71,7 +71,7 @@
                     <li><button @click="scrollToSection('products')" class="block py-2 rounded hover:bg-[#123057] hover:text-white transition-all w-full cursor-pointer">{{ t.nav.store }}</button></li>
                     <li><button @click="scrollToSection('features')" class="block py-2 rounded hover:bg-[#123057] hover:text-white transition-all w-full cursor-pointer">{{ t.nav.services }}</button></li>
                     <li><button @click="scrollToSection('about')" class="block py-2 rounded hover:bg-[#123057] hover:text-white transition-all w-full cursor-pointer">{{ t.nav.about }}</button></li>
-                    <li><button @click="scrollToSection('contact')" class="block py-2 rounded hover:bg-[#123057] hover:text-white transition-all w-full cursor-pointer">{{ t.nav.contact }}</button></li>
+                    <li><router-link :to="contactPath" @click="toggleMenu" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all">{{ t.nav.contact }}</router-link></li>
                     <!-- Logout button for mobile when authenticated -->
                     <li v-if="isAuthenticated">
                         <button @click="handleLogout" :disabled="loggingOut" class="block py-2 rounded bg-red-500 text-white hover:bg-red-600 transition-all font-semibold disabled:opacity-50 w-full">
@@ -114,6 +114,7 @@ const currentLocale = computed(() => websiteStore.locale || 'ar');
 const homePath = computed(() => currentLocale.value === 'en' ? '/en' : '/ar');
 const loginPath = computed(() => currentLocale.value === 'en' ? '/en/login' : '/ar/login');
 const profilePath = computed(() => currentLocale.value === 'en' ? '/en/profile' : '/ar/profile');
+const contactPath = computed(() => currentLocale.value === 'en' ? '/en/contact' : '/ar/contact');
 
 const toggleMenu = () => {
     menuOpen.value = !menuOpen.value;

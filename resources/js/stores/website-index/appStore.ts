@@ -38,13 +38,18 @@ export const useAppStore = defineStore('website-index-app', () => {
         const currentPath = routerInstance?.currentRoute?.value?.path || window.location.pathname;
         const newPath = switchLocaleRoute(currentPath, newLocale);
 
-        // Update state first
+        // Update state first (this will trigger reactive updates)
         locale.value = newLocale;
         localStorage.setItem('locale', newLocale);
         updateHtmlAttributes();
 
-        // Use full page reload to ensure translations update correctly
-        window.location.href = newPath;
+        // Navigate using Vue Router (SPA navigation without page reload)
+        if (routerInstance) {
+            routerInstance.push(newPath);
+        } else {
+            // Fallback to window navigation if router not available
+            window.location.href = newPath;
+        }
     }
 
     function updateHtmlAttributes() {

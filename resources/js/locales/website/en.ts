@@ -73,6 +73,12 @@ export default {
       successUpdate: 'Profile updated successfully!',
       errorUpdate: 'Failed to update profile',
       errorLoad: 'Failed to load user data',
+      nameRequired: 'Name field is required',
+      emailRequired: 'Email field is required',
+      emailInvalid: 'Email must be valid',
+      phoneInvalid: 'Phone number is invalid',
+      invalidImage: 'Image must be a valid format (jpg, png)',
+      imageTooLarge: 'Image size is too large (maximum 2MB)',
     },
     copyright: 'All rights reserved © Pulse'
   },
@@ -107,6 +113,12 @@ export default {
       success: 'Your message has been sent successfully! We will contact you soon.',
       error: 'Failed to send message. Please try again.',
       validationError: 'Please check the entered data',
+      nameRequired: 'Name field is required',
+      emailRequired: 'Email field is required',
+      emailInvalid: 'Email must be valid',
+      subjectRequired: 'Subject field is required',
+      messageRequired: 'Message field is required',
+      messageTooLong: 'Message is too long (maximum 5000 characters)',
     }
   },
   footer: {

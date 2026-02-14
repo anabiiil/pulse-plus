@@ -14,6 +14,15 @@ class ContactMessageController extends Controller
      */
     public function store(Request $request)
     {
+        // Detect language from request header or default to Arabic
+        $locale = $request->header('Accept-Language', 'ar');
+        if (str_contains($locale, 'en')) {
+            $locale = 'en';
+        } else {
+            $locale = 'ar';
+        }
+        app()->setLocale($locale);
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
@@ -24,7 +33,7 @@ class ContactMessageController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Validation failed',
+                'message' => __('messages.validation_failed'),
                 'errors' => $validator->errors()
             ], 422);
         }
@@ -40,14 +49,14 @@ class ContactMessageController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Your message has been sent successfully!',
+                'message' => __('messages.contact_message_sent'),
                 'data' => $contactMessage
             ], 201);
 
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to send message. Please try again later.',
+                'message' => __('messages.contact_message_failed'),
                 'error' => $e->getMessage()
             ], 500);
         }
@@ -85,7 +94,7 @@ class ContactMessageController extends Controller
         if (!$message) {
             return response()->json([
                 'success' => false,
-                'message' => 'Contact message not found'
+                'message' => __('messages.contact_message_not_found')
             ], 404);
         }
 
@@ -105,7 +114,7 @@ class ContactMessageController extends Controller
         if (!$message) {
             return response()->json([
                 'success' => false,
-                'message' => 'Contact message not found'
+                'message' => __('messages.contact_message_not_found')
             ], 404);
         }
 
@@ -113,7 +122,7 @@ class ContactMessageController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Message marked as read',
+            'message' => __('messages.contact_message_marked_as_read'),
             'data' => $message->fresh()
         ]);
     }
@@ -128,7 +137,7 @@ class ContactMessageController extends Controller
         if (!$message) {
             return response()->json([
                 'success' => false,
-                'message' => 'Contact message not found'
+                'message' => __('messages.contact_message_not_found')
             ], 404);
         }
 
@@ -136,7 +145,7 @@ class ContactMessageController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Contact message deleted successfully'
+            'message' => __('messages.contact_message_deleted')
         ]);
     }
 
@@ -155,6 +164,34 @@ class ContactMessageController extends Controller
                 'total' => $total,
                 'pending' => $pending,
                 'read' => $read,
+            ]
+        ]);
+    }
+
+    /**
+     * Get contact information (Public)
+     */
+    public function getContactInfo(Request $request)
+    {
+        // Detect language from request header or default to Arabic
+        $locale = $request->header('Accept-Language', 'ar');
+        if (str_contains($locale, 'en')) {
+            $locale = 'en';
+        } else {
+            $locale = 'ar';
+        }
+
+        // Get settings
+        $phone = \App\Models\Setting::where('slug', 'phone')->first();
+        $email = \App\Models\Setting::where('slug', 'email')->first();
+        $address = \App\Models\Setting::where('slug', 'address')->first();
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'phone' => $phone ? $phone->getTranslation('content', $locale) : '+2 01022335566',
+                'email' => $email ? $email->getTranslation('content', $locale) : 'info@pulse-plus.com',
+                'address' => $address ? $address->getTranslation('content', $locale) : ($locale === 'ar' ? 'القاهرة، جمهورية مصر العربية' : 'Cairo, Arab Republic of Egypt'),
             ]
         ]);
     }

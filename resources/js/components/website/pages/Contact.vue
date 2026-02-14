@@ -27,7 +27,7 @@
                                 </div>
                                 <span class="flex flex-col gap-2">
                                     <p class="text-gray-500 text-[13px]">{{ t.contact.info.email }}</p>
-                                    <p class="[direction:ltr]">info@pulse-plus.com</p>
+                                    <p class="[direction:ltr]">{{ contactInfo.email }}</p>
                                 </span>
                             </div>
 
@@ -38,7 +38,7 @@
                                 </div>
                                 <span class="flex flex-col gap-2">
                                     <p class="text-[13px] text-gray-500">{{ t.contact.info.phone }}</p>
-                                    <p class="[direction:ltr]">+2 01022335566</p>
+                                    <p class="[direction:ltr]">{{ contactInfo.phone }}</p>
                                 </span>
                             </div>
 
@@ -49,7 +49,7 @@
                                 </div>
                                 <span class="flex flex-col gap-2">
                                     <p class="text-[13px] text-gray-500">{{ t.contact.info.location }}</p>
-                                    <p>{{ t.contact.info.address }}</p>
+                                    <p>{{ contactInfo.address }}</p>
                                 </span>
                             </div>
                         </div>
@@ -184,6 +184,34 @@ const form = reactive({
 
 const errors = ref<any>({});
 const submitting = ref(false);
+const contactInfo = ref({
+    phone: '+2 01022335566',
+    email: 'info@pulse-plus.com',
+    address: websiteStore.locale === 'ar' ? 'القاهرة، جمهورية مصر العربية' : 'Cairo, Arab Republic of Egypt'
+});
+const loadingInfo = ref(false);
+
+// Fetch contact information from API
+const fetchContactInfo = async () => {
+    loadingInfo.value = true;
+    try {
+        const currentLang = websiteStore.locale || 'ar';
+        const response = await axios.get('/api/website/contact-info', {
+            headers: {
+                'Accept-Language': currentLang
+            }
+        });
+
+        if (response.data.success && response.data.data) {
+            contactInfo.value = response.data.data;
+        }
+    } catch (error) {
+        console.error('Failed to load contact info:', error);
+        // Keep default values on error
+    } finally {
+        loadingInfo.value = false;
+    }
+};
 
 // Submit form
 const submitForm = async () => {
@@ -193,7 +221,13 @@ const submitForm = async () => {
     errors.value = {};
 
     try {
-        const response = await axios.post('/api/website/contact-messages', form);
+        // Send language header to backend
+        const currentLang = websiteStore.locale || 'ar';
+        const response = await axios.post('/api/website/contact-messages', form, {
+            headers: {
+                'Accept-Language': currentLang
+            }
+        });
 
         if (response.data.success) {
             toast.success(response.data.message || t.value.contact.messages.success);
@@ -208,7 +242,16 @@ const submitForm = async () => {
         if (error.response?.status === 422) {
             // Validation errors
             errors.value = error.response.data.errors || {};
-            toast.error(error.response.data.message || t.value.contact.messages.validationError);
+
+            // Display first error or use generic message
+            const firstErrorField = Object.keys(errors.value)[0];
+            const firstErrorMessage = errors.value[firstErrorField]
+                ? (Array.isArray(errors.value[firstErrorField])
+                    ? errors.value[firstErrorField][0]
+                    : errors.value[firstErrorField])
+                : error.response.data.message;
+
+            toast.error(firstErrorMessage || t.value.contact.messages.validationError);
         } else {
             toast.error(error.response?.data?.message || t.value.contact.messages.error);
         }
@@ -220,6 +263,9 @@ const submitForm = async () => {
 onMounted(() => {
     // Initialize websiteStore and set router
     websiteStore.setRouter(router);
+
+    // Fetch dynamic contact information
+    fetchContactInfo();
 });
 </script>
 

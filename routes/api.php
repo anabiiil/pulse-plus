@@ -65,6 +65,7 @@ Route::prefix('website')->group(function () {
 
     // Contact Form (Public - No Auth Required)
     Route::post('/contact-messages', [ContactMessageController::class, 'store']);
+    Route::get('/contact-info', [ContactMessageController::class, 'getContactInfo']);
 
     // Contact Form (Old endpoint for backward compatibility)
     Route::post('/contact', [ContactController::class, 'store']);

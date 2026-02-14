@@ -113,6 +113,12 @@ export interface TranslationSchema {
       success: string;
       error: string;
       validationError: string;
+      nameRequired: string;
+      emailRequired: string;
+      emailInvalid: string;
+      subjectRequired: string;
+      messageRequired: string;
+      messageTooLong: string;
     };
   };
   footer: {

@@ -25,8 +25,8 @@
             <div class="md:w-1/3 flex justify-center md:justify-end" :class="isRTL ? 'text-center md:text-right' : 'text-center md:text-left'">
                 <div>
                     <h3 class="font-semibold mb-2">{{ t.footer.contactUs }}</h3>
-                    <p class="text-sm">info@pulse-plus.com</p>
-                    <p class="text-sm">+2 01022335566</p>
+                    <p class="text-sm [direction:ltr]">{{ contactInfo.email }}</p>
+                    <p class="text-sm [direction:ltr]">{{ contactInfo.phone }}</p>
                 </div>
             </div>
         </div>
@@ -38,19 +38,48 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useWebsiteStore } from '../../stores/websiteStore';
+import axios from 'axios';
 import footerLogoImg from '../../images/website/footer-logo.png';
 
 const websiteStore = useWebsiteStore();
 const t = computed(() => websiteStore.t);
 const isRTL = computed(() => websiteStore.isRTL);
 
+const contactInfo = ref({
+    phone: '+2 01022335566',
+    email: 'info@pulse-plus.com'
+});
+
+// Fetch contact information from API
+const fetchContactInfo = async () => {
+    try {
+        const currentLang = websiteStore.locale || 'ar';
+        const response = await axios.get('/api/website/contact-info', {
+            headers: {
+                'Accept-Language': currentLang
+            }
+        });
+
+        if (response.data.success && response.data.data) {
+            contactInfo.value.phone = response.data.data.phone;
+            contactInfo.value.email = response.data.data.email;
+        }
+    } catch (error) {
+        console.error('Failed to load contact info:', error);
+        // Keep default values on error
+    }
+};
+
 onMounted(() => {
     // Initialize store if not already initialized
     if (!websiteStore.isLoading) {
         websiteStore.init();
     }
+
+    // Fetch dynamic contact information
+    fetchContactInfo();
 });
 </script>
 

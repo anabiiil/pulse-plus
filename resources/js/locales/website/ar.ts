@@ -73,6 +73,12 @@ export default {
       successUpdate: 'تم تحديث الملف الشخصي بنجاح!',
       errorUpdate: 'فشل تحديث الملف الشخصي',
       errorLoad: 'فشل تحميل بيانات المستخدم',
+      nameRequired: 'حقل الاسم مطلوب',
+      emailRequired: 'حقل البريد الإلكتروني مطلوب',
+      emailInvalid: 'يجب أن يكون البريد الإلكتروني صالح',
+      phoneInvalid: 'رقم الهاتف غير صالح',
+      invalidImage: 'يجب أن تكون الصورة بصيغة صالحة (jpg, png)',
+      imageTooLarge: 'حجم الصورة كبير جداً (الحد الأقصى 2MB)',
     },
     copyright: 'جميع الحقوق محفوظة © Pulse'
   },
@@ -107,6 +113,12 @@ export default {
       success: 'تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.',
       error: 'فشل إرسال الرسالة. يرجى المحاولة مرة أخرى.',
       validationError: 'يرجى التحقق من البيانات المدخلة',
+      nameRequired: 'حقل الاسم مطلوب',
+      emailRequired: 'حقل البريد الإلكتروني مطلوب',
+      emailInvalid: 'يجب أن يكون البريد الإلكتروني صالح',
+      subjectRequired: 'حقل الموضوع مطلوب',
+      messageRequired: 'حقل الرسالة مطلوب',
+      messageTooLong: 'الرسالة طويلة جداً (الحد الأقصى 5000 حرف)',
     }
   },
   footer: {

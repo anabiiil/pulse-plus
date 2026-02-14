@@ -1,8 +1,8 @@
 <template>
     <!-- Top Contact Bar -->
     <div class="flex items-center text-white font-bold justify-center p-4 gap-10 w-full bg-[#03315A]">
-        <p class="[direction:ltr] text-[12px] lg:text-base"><i class="pi pi-phone text-white mx-2 text-[14px] lg:text-[18px]"></i> +2 01022335566</p>
-        <p class="[direction:ltr] text-[12px] lg:text-base"><i class="pi pi-envelope text-white mx-2 text-[14px] lg:text-[18px]"></i> info@pulse-plus.com</p>
+        <p class="[direction:ltr] text-[12px] lg:text-base"><i class="pi pi-phone text-white mx-2 text-[14px] lg:text-[18px]"></i> {{ contactInfo.phone }}</p>
+        <p class="[direction:ltr] text-[12px] lg:text-base"><i class="pi pi-envelope text-white mx-2 text-[14px] lg:text-[18px]"></i> {{ contactInfo.email }}</p>
     </div>
 
     <!-- Navigation Desktop -->
@@ -96,6 +96,7 @@ import { useRouter } from 'vue-router';
 import { useWebsiteStore } from '../../stores/websiteStore';
 import { useAuth } from '../../composables/useAuth';
 import { useToast } from 'vue-toastification';
+import axios from 'axios';
 import logoImg from '../../images/website/logo.png';
 
 const router = useRouter();
@@ -105,6 +106,10 @@ const toast = useToast();
 
 const menuOpen = ref(false);
 const loggingOut = ref(false);
+const contactInfo = ref({
+    phone: '+2 01022335566',
+    email: 'info@pulse-plus.com'
+});
 
 const t = computed(() => websiteStore.t);
 const isRTL = computed(() => websiteStore.isRTL);
@@ -115,6 +120,26 @@ const homePath = computed(() => currentLocale.value === 'en' ? '/en' : '/ar');
 const loginPath = computed(() => currentLocale.value === 'en' ? '/en/login' : '/ar/login');
 const profilePath = computed(() => currentLocale.value === 'en' ? '/en/profile' : '/ar/profile');
 const contactPath = computed(() => currentLocale.value === 'en' ? '/en/contact' : '/ar/contact');
+
+// Fetch contact information from API
+const fetchContactInfo = async () => {
+    try {
+        const currentLang = websiteStore.locale || 'ar';
+        const response = await axios.get('/api/website/contact-info', {
+            headers: {
+                'Accept-Language': currentLang
+            }
+        });
+
+        if (response.data.success && response.data.data) {
+            contactInfo.value.phone = response.data.data.phone;
+            contactInfo.value.email = response.data.data.email;
+        }
+    } catch (error) {
+        console.error('Failed to load contact info:', error);
+        // Keep default values on error
+    }
+};
 
 const toggleMenu = () => {
     menuOpen.value = !menuOpen.value;
@@ -158,6 +183,9 @@ onMounted(() => {
 
     // Inject router into store for navigation
     websiteStore.setRouter(router);
+
+    // Fetch dynamic contact information
+    fetchContactInfo();
 });
 </script>
 

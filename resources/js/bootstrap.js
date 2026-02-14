@@ -23,3 +23,28 @@ if (token) {
 } else {
     console.error('CSRF token not found. Check if it is correctly included in your Blade template.');
 }
+
+// Add interceptor to automatically add Accept-Language header
+axios.interceptors.request.use((config) => {
+    // Detect language from URL path or localStorage
+    let locale = 'ar'; // default
+
+    const path = window.location.pathname;
+    if (path.startsWith('/en/') || path.startsWith('/en')) {
+        locale = 'en';
+    } else if (path.startsWith('/ar/') || path.startsWith('/ar')) {
+        locale = 'ar';
+    } else {
+        // Fallback to localStorage
+        const storedLocale = localStorage.getItem('locale');
+        if (storedLocale && (storedLocale === 'en' || storedLocale === 'ar')) {
+            locale = storedLocale;
+        }
+    }
+
+    config.headers['Accept-Language'] = locale;
+    return config;
+}, (error) => {
+    return Promise.reject(error);
+});
+

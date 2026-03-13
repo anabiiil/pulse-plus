@@ -24,13 +24,13 @@ class UserInfoController extends Controller
 
         // Find user by hash_url (UUID)
         $user = User::where('hash_url', $uuid)
-            ->with(['country', 'diseases'])
+            ->with(['country', 'diseases', 'medicalInfo'])
             ->first();
 
-        if (!$user) {
+        if (! $user) {
             return response()->json([
                 'success' => false,
-                'message' => __('messages.user_not_found')
+                'message' => __('messages.user_not_found'),
             ], 404);
         }
 
@@ -52,24 +52,19 @@ class UserInfoController extends Controller
                 'id' => $user->country->id,
                 'name' => $user->country->name,
             ] : null,
-            'diseases' => $user->diseases->map(function ($disease) {
-                return [
-                    'id' => $disease->id,
-                    'name' => $disease->name,
-                ];
-            }),
+            'diseases' => $user->diseases->map(fn ($disease) => [
+                'id' => $disease->id,
+                'name' => $disease->getTranslation('name', app()->getLocale(), useFallbackLocale: true),
+            ])->values(),
             'medical_info' => $user->medicalInfo ? [
-                'blood_type' => $user->medicalInfo->blood_type,
-                'allergies' => $user->medicalInfo->allergies,
-                'medications' => $user->medicalInfo->medications,
-                'medical_notes' => $user->medicalInfo->medical_notes,
+                'blood_type' => $user->medicalInfo->blood_type?->value,
+                'notes' => $user->medicalInfo->notes,
             ] : null,
         ];
 
         return response()->json([
             'success' => true,
-            'data' => $userData
+            'data' => $userData,
         ]);
     }
 }
-

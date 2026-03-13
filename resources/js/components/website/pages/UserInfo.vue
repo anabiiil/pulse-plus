@@ -173,13 +173,14 @@
                     </div>
 
                     <!-- Medical Information Card -->
-                    <div v-if="user.medical_info" class="bg-white rounded-[48px] shadow-2xl px-5 lg:px-10 py-5 my-5">
+                    <div v-if="user.medical_info || (user.diseases && user.diseases.length > 0)" class="bg-white rounded-[48px] shadow-2xl px-5 lg:px-10 py-5 my-5">
                         <div class="p-2 font-bold text-[#FF6760] text-2xl lg:text-[32px] mb-3">
                             {{ t.userInfo.medicalInfo }}
                         </div>
                         <div class="grid grid-cols-2 gap-4">
+
                             <!-- Blood Type -->
-                            <div v-if="user.medical_info.blood_type" class="my-2 col-span-2 lg:col-span-1">
+                            <div v-if="user.medical_info?.blood_type" class="my-2 col-span-2 lg:col-span-1">
                                 <p class="text-gray-500 text-sm mb-1">{{ t.userInfo.bloodType }}</p>
                                 <p class="font-semibold text-[#FF6760] text-xl">{{ user.medical_info.blood_type }}</p>
                             </div>
@@ -190,8 +191,8 @@
                                 <p class="font-semibold [direction:ltr]">{{ user.emergency_phone }}</p>
                             </div>
 
-                            <!-- Chronic Diseases / Allergies -->
-                            <div v-if="(user.diseases && user.diseases.length > 0) || user.medical_info.allergies" class="col-span-2 my-2">
+                            <!-- Chronic Diseases -->
+                            <div v-if="user.diseases && user.diseases.length > 0" class="col-span-2 my-2">
                                 <p class="text-gray-500 text-sm mb-1">{{ t.userInfo.chronicDiseasesAllergies }}</p>
                                 <div class="flex flex-wrap gap-2 mt-2">
                                     <span
@@ -201,22 +202,15 @@
                                     >
                                         {{ disease.name }}
                                     </span>
-                                    <span v-if="user.medical_info.allergies" class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-sm font-semibold">
-                                        {{ user.medical_info.allergies }}
-                                    </span>
                                 </div>
                             </div>
 
-                            <!-- Other Medical Notes -->
-                            <div v-if="user.medical_info.medical_notes || user.medical_info.medications" class="my-2 col-span-2">
+                            <!-- Medical Notes -->
+                            <div v-if="user.medical_info?.notes" class="my-2 col-span-2">
                                 <p class="text-gray-500 text-sm mb-1">{{ t.userInfo.otherMedicalNotes }}</p>
-                                <p v-if="user.medical_info.medications" class="font-semibold mb-2">
-                                    <span class="text-gray-600">{{ t.userInfo.medications }}:</span> {{ user.medical_info.medications }}
-                                </p>
-                                <p v-if="user.medical_info.medical_notes" class="font-semibold">
-                                    {{ user.medical_info.medical_notes }}
-                                </p>
+                                <p class="font-semibold text-gray-800 leading-relaxed whitespace-pre-line">{{ user.medical_info.notes }}</p>
                             </div>
+
                         </div>
                     </div>
 

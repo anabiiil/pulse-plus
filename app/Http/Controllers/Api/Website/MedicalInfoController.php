@@ -38,9 +38,19 @@ class MedicalInfoController extends Controller
         /** @var \App\Models\User $user */
         $user = auth('web')->user();
 
-        // Update or create medical info record
+        // Update emergency phone and display toggle on the User record
+        $userFields = array_filter([
+            'emergency_phone'   => $request->input('emergency_phone'),
+            'display_emergency' => $request->input('display_emergency'),
+        ], fn ($v) => ! is_null($v));
+
+        if (! empty($userFields)) {
+            $user->update($userFields);
+        }
+
+        // Update or create medical info record (blood type, notes only)
         $medicalInfo = $user->medicalInfo()->firstOrNew();
-        $medicalInfo->fill($request->only(['blood_type', 'emergency_number', 'notes']));
+        $medicalInfo->fill($request->only(['blood_type', 'notes']));
         $medicalInfo->save();
 
         // Sync chronic diseases if provided
@@ -54,13 +64,14 @@ class MedicalInfoController extends Controller
         app()->setLocale($lang);
 
         return $this->responseData([
-            'medical_info' => [
-                'blood_type' => $medicalInfo->blood_type,
-                'emergency_number' => $medicalInfo->emergency_number,
-                'notes' => $medicalInfo->notes,
+            'emergency_phone'   => $user->emergency_phone,
+            'display_emergency' => (bool) $user->display_emergency,
+            'medical_info'      => [
+                'blood_type' => $medicalInfo->blood_type?->value,
+                'notes'      => $medicalInfo->notes,
             ],
             'diseases' => DiseaseResource::collection($user->diseases),
-            'message' => 'Medical information updated successfully.',
+            'message'  => 'Medical information updated successfully.',
         ]);
     }
 }

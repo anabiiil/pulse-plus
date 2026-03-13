@@ -551,8 +551,6 @@ const formData = reactive({
     name: '',
     email: '',           // Read-only, not sent in update
     phone: '',           // Read-only, not sent in update
-    emergency_phone: '',
-    display_emergency: false,
     birthdate: '',
     gender: 'male',
     address: '',
@@ -563,7 +561,8 @@ const formData = reactive({
 // Medical form data
 const medicalFormData = reactive({
     blood_type: '',
-    emergency_number: '',
+    emergency_phone: '',
+    display_emergency: false,
     notes: '',
 });
 
@@ -582,7 +581,7 @@ const errors = reactive<Record<string, string>>({
 const profileCompletion = computed(() => {
     let completed = 0;
     const fields = [
-        'name', 'email', 'phone', 'emergency_phone',
+        'name', 'email', 'phone',
         'birthdate', 'gender', 'address', 'nationality_id', 'marital_status',
     ];
 
@@ -644,26 +643,25 @@ const loadUser = async () => {
     try {
         await fetchUser();
         if (authUser.value) {
-            formData.name              = authUser.value.name || '';
-            formData.email             = authUser.value.email || '';
-            formData.phone             = authUser.value.phone || '';
-            formData.emergency_phone   = authUser.value.emergency_phone || '';
-            formData.display_emergency = authUser.value.display_emergency || false;
-            formData.birthdate         = authUser.value.birthdate || '';
-            formData.gender            = authUser.value.gender || 'male';
-            formData.address           = authUser.value.address || '';
-            formData.nationality_id    = authUser.value.country_id || null;
-            formData.marital_status    = authUser.value.marital_status || '';
+            formData.name           = authUser.value.name || '';
+            formData.email          = authUser.value.email || '';
+            formData.phone          = authUser.value.phone || '';
+            formData.birthdate      = authUser.value.birthdate || '';
+            formData.gender         = authUser.value.gender || 'male';
+            formData.address        = authUser.value.address || '';
+            formData.nationality_id = authUser.value.country_id || null;
+            formData.marital_status = authUser.value.marital_status || '';
 
             if (authUser.value.profile_image_url) {
                 profileImage.value = authUser.value.profile_image_url;
             }
 
             // Populate medical form
+            medicalFormData.emergency_phone   = authUser.value.emergency_phone || '';
+            medicalFormData.display_emergency = authUser.value.display_emergency || false;
             if (authUser.value.medical_info) {
-                medicalFormData.blood_type       = authUser.value.medical_info.blood_type || '';
-                medicalFormData.emergency_number = authUser.value.medical_info.emergency_number || '';
-                medicalFormData.notes            = authUser.value.medical_info.notes || '';
+                medicalFormData.blood_type = authUser.value.medical_info.blood_type || '';
+                medicalFormData.notes      = authUser.value.medical_info.notes || '';
             }
 
             // Populate selected diseases
@@ -713,11 +711,6 @@ const handleUpdate = async () => {
         const formDataToSend = new FormData();
         formDataToSend.append('name', formData.name);
 
-        if (formData.emergency_phone) {
-            formDataToSend.append('emergency_phone', formData.emergency_phone);
-        }
-
-        formDataToSend.append('display_emergency', formData.display_emergency ? '1' : '0');
 
         if (formData.birthdate) {
             formDataToSend.append('birthdate', formData.birthdate);
@@ -778,16 +771,14 @@ const handleUpdate = async () => {
 // Reset form
 const resetForm = () => {
     if (authUser.value) {
-        formData.name              = authUser.value.name || '';
-        formData.email             = authUser.value.email || '';
-        formData.phone             = authUser.value.phone || '';
-        formData.emergency_phone   = authUser.value.emergency_phone || '';
-        formData.display_emergency = authUser.value.display_emergency || false;
-        formData.birthdate         = authUser.value.birthdate || '';
-        formData.gender            = authUser.value.gender || 'male';
-        formData.address           = authUser.value.address || '';
-        formData.nationality_id    = authUser.value.country_id || null;
-        formData.marital_status    = authUser.value.marital_status || '';
+        formData.name           = authUser.value.name || '';
+        formData.email          = authUser.value.email || '';
+        formData.phone          = authUser.value.phone || '';
+        formData.birthdate      = authUser.value.birthdate || '';
+        formData.gender         = authUser.value.gender || 'male';
+        formData.address        = authUser.value.address || '';
+        formData.nationality_id = authUser.value.country_id || null;
+        formData.marital_status = authUser.value.marital_status || '';
 
         profileImage.value     = authUser.value.profile_image_url || null;
         profileImageFile.value = null;
@@ -816,12 +807,13 @@ const handleMedicalUpdate = async () => {
 
     try {
         const payload: Record<string, unknown> = {
-            disease_ids: selectedDiseases.value.map(d => d.id),
+            disease_ids:       selectedDiseases.value.map(d => d.id),
+            display_emergency: medicalFormData.display_emergency,
         };
 
-        if (medicalFormData.blood_type)       payload.blood_type       = medicalFormData.blood_type;
-        if (medicalFormData.emergency_number) payload.emergency_number = medicalFormData.emergency_number;
-        if (medicalFormData.notes)            payload.notes            = medicalFormData.notes;
+        if (medicalFormData.blood_type)     payload.blood_type     = medicalFormData.blood_type;
+        if (medicalFormData.emergency_phone) payload.emergency_phone = medicalFormData.emergency_phone;
+        if (medicalFormData.notes)           payload.notes           = medicalFormData.notes;
 
         const response = await axios.put('/api/website/medical-info', payload, {
             params: { lang: currentLocale.value },

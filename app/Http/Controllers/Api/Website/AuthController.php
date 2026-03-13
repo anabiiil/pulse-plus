@@ -26,7 +26,7 @@ class AuthController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
+        if (! $user || ! Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
             ]);
@@ -50,7 +50,6 @@ class AuthController extends Controller
         ]);
     }
 
-
     /**
      * Handle user logout
      */
@@ -65,7 +64,7 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return $this->responseData([
-            'message' => 'Logout successful'
+            'message' => 'Logout successful',
         ]);
     }
 
@@ -76,9 +75,11 @@ class AuthController extends Controller
     {
         $user = auth('web')->user();
 
-        if (!$user) {
+        if (! $user) {
             return $this->responseError(['message' => 'Unauthenticated'], code: 401);
         }
+
+        $user->load('medicalInfo', 'diseases');
 
         return $this->responseData([
             'user' => [
@@ -95,7 +96,16 @@ class AuthController extends Controller
                 'marital_status' => $user->marital_status,
                 'profile_image_url' => $user->profile_image_url,
                 'hash_url' => $user->hash_url,
-            ]
+                'medical_info' => $user->medicalInfo ? [
+                    'blood_type' => $user->medicalInfo->blood_type?->value,
+                    'emergency_number' => $user->medicalInfo->emergency_number,
+                    'notes' => $user->medicalInfo->notes,
+                ] : null,
+                'diseases' => $user->diseases->map(fn ($d) => [
+                    'id' => $d->id,
+                    'name' => $d->name,
+                ])->values(),
+            ],
         ]);
     }
 
@@ -106,7 +116,7 @@ class AuthController extends Controller
     {
         $user = auth('web')->user();
 
-        if (!$user) {
+        if (! $user) {
             return $this->responseError(['message' => 'Unauthenticated'], code: 401);
         }
 
@@ -145,7 +155,7 @@ class AuthController extends Controller
         }
 
         // Remove profile_image from validated if not uploaded to avoid overwriting
-        if (!$request->hasFile('profile_image')) {
+        if (! $request->hasFile('profile_image')) {
             unset($validated['profile_image']);
         }
 
@@ -167,7 +177,7 @@ class AuthController extends Controller
                 'profile_image_url' => $user->profile_image_url,
                 'hash_url' => $user->hash_url,
             ],
-            'message' => 'Profile updated successfully'
+            'message' => 'Profile updated successfully',
         ]);
     }
 
@@ -178,7 +188,7 @@ class AuthController extends Controller
     {
         $user = auth('web')->user();
 
-        if (!$user) {
+        if (! $user) {
             return $this->responseError(['message' => 'Unauthenticated'], code: 401);
         }
 
@@ -187,19 +197,18 @@ class AuthController extends Controller
             'password' => 'required|string|min:6|confirmed',
         ]);
 
-        if (!Hash::check($validated['current_password'], $user->password)) {
+        if (! Hash::check($validated['current_password'], $user->password)) {
             throw ValidationException::withMessages([
                 'current_password' => ['Current password is incorrect.'],
             ]);
         }
 
         $user->update([
-            'password' => Hash::make($validated['password'])
+            'password' => Hash::make($validated['password']),
         ]);
 
         return $this->responseData([
-            'message' => 'Password changed successfully'
+            'message' => 'Password changed successfully',
         ]);
     }
 }
-

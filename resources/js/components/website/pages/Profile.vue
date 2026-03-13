@@ -413,6 +413,7 @@
                                         </select>
                                         <i class="pi pi-heart absolute top-1/2 right-5 text-gray-400 -translate-y-1/2 text-[18px] pointer-events-none"></i>
                                     </div>
+                                    <p v-if="medicalErrors.blood_type" class="text-red-500 text-sm mt-1">{{ medicalErrors.blood_type }}</p>
                                 </div>
 
                                 <!-- Emergency Number -->
@@ -428,6 +429,7 @@
                                         />
                                         <i class="pi pi-user absolute top-1/2 right-5 text-gray-400 -translate-y-1/2 text-[18px]"></i>
                                     </div>
+                                    <p v-if="medicalErrors.emergency_number" class="text-red-500 text-sm mt-1">{{ medicalErrors.emergency_number }}</p>
                                 </div>
 
                                 <!-- Chronic Diseases / Allergies -->
@@ -460,9 +462,11 @@
                             <div class="flex flex-col items-center justify-center">
                                 <button
                                     type="submit"
-                                    class="py-3 px-20 border-0 rounded-xl bg-[#123057] text-white font-bold hover:bg-[#0e2540] transition duration-150"
+                                    :disabled="updatingMedical"
+                                    class="py-3 px-20 border-0 rounded-xl bg-[#123057] text-white font-bold hover:bg-[#0e2540] transition duration-150 disabled:opacity-50"
                                 >
-                                    {{ t.profile.form?.saveChanges || 'حفظ التغييرات' }}
+                                    <span v-if="!updatingMedical">{{ t.profile.form?.saveChanges || 'حفظ التغييرات' }}</span>
+                                    <span v-else>{{ t.profile.form?.saving || 'جارٍ الحفظ...' }}</span>
                                 </button>
                                 <button
                                     type="button"
@@ -533,6 +537,10 @@ const profileImageFile = ref<File | null>(null);
 
 // Loading states
 const updating = ref(false);
+const updatingMedical = ref(false);
+
+// Medical form errors
+const medicalErrors = reactive<Record<string, string>>({});
 
 // Options for selects
 const nationalities = ref<Array<{ id: number; name_ar: string; name_en: string }>>([]);
@@ -561,33 +569,7 @@ const medicalFormData = reactive({
 
 // Diseases multi-select
 const selectedDiseases = ref<SelectOption[]>([]);
-
-const diseaseOptions: SelectOption[] = [
-    { id: 1,  name: 'السكري' },
-    { id: 2,  name: 'ضغط الدم' },
-    { id: 3,  name: 'أمراض القلب' },
-    { id: 4,  name: 'الربو' },
-    { id: 5,  name: 'الفشل الكلوي' },
-    { id: 6,  name: 'قصور الغدة الدرقية' },
-    { id: 7,  name: 'فرط نشاط الغدة الدرقية' },
-    { id: 8,  name: 'الأنيميا' },
-    { id: 9,  name: 'الصرع' },
-    { id: 10, name: 'الروماتيزم' },
-    { id: 11, name: 'التهاب المفاصل' },
-    { id: 12, name: 'الأكزيما' },
-    { id: 13, name: 'حساسية الغذاء' },
-    { id: 14, name: 'حساسية الأدوية' },
-    { id: 15, name: 'حساسية اللاتكس' },
-    { id: 16, name: 'الصدفية' },
-    { id: 17, name: 'قرحة المعدة' },
-    { id: 18, name: 'القولون العصبي' },
-    { id: 19, name: 'الكبد الدهني' },
-    { id: 20, name: 'التهاب الكبد' },
-    { id: 21, name: 'حصوات الكلى' },
-    { id: 22, name: 'الجلطة الدماغية' },
-    { id: 23, name: 'الذبحة الصدرية' },
-    { id: 24, name: 'هشاشة العظام' },
-];
+const diseaseOptions = ref<SelectOption[]>([]);
 
 // Errors
 const errors = reactive<Record<string, string>>({
@@ -642,6 +624,21 @@ const fetchMaritalStatus = async () => {
     }
 };
 
+// Fetch chronic diseases from API based on current locale
+const fetchDiseases = async () => {
+    try {
+        const response = await axios.get('/api/website/diseases', {
+            params: { lang: currentLocale.value },
+        });
+        diseaseOptions.value = (response.data.data.diseases || []).map((d: { id: number; name: string }) => ({
+            id: d.id,
+            name: d.name,
+        }));
+    } catch (error) {
+        console.error('Error fetching diseases:', error);
+    }
+};
+
 // Load user data
 const loadUser = async () => {
     try {
@@ -660,6 +657,23 @@ const loadUser = async () => {
 
             if (authUser.value.profile_image_url) {
                 profileImage.value = authUser.value.profile_image_url;
+            }
+
+            // Populate medical form
+            if (authUser.value.medical_info) {
+                medicalFormData.blood_type       = authUser.value.medical_info.blood_type || '';
+                medicalFormData.emergency_number = authUser.value.medical_info.emergency_number || '';
+                medicalFormData.notes            = authUser.value.medical_info.notes || '';
+            }
+
+            // Populate selected diseases
+            if (authUser.value.diseases?.length) {
+                selectedDiseases.value = authUser.value.diseases.map(d => ({
+                    id: d.id,
+                    name: typeof d.name === 'object'
+                        ? (d.name[currentLocale.value] ?? d.name['ar'] ?? Object.values(d.name)[0])
+                        : d.name,
+                }));
             }
         }
     } catch (error: any) {
@@ -795,18 +809,64 @@ const copyProfileLink = async () => {
     }
 };
 
-// Handle medical form update (API to be implemented)
+// Handle medical form update
 const handleMedicalUpdate = async () => {
-    // TODO: connect to API
-    toast.success(currentLocale.value === 'ar' ? 'تم حفظ البيانات الطبية' : 'Medical data saved');
+    updatingMedical.value = true;
+    Object.keys(medicalErrors).forEach(k => delete medicalErrors[k]);
+
+    try {
+        const payload: Record<string, unknown> = {
+            disease_ids: selectedDiseases.value.map(d => d.id),
+        };
+
+        if (medicalFormData.blood_type)       payload.blood_type       = medicalFormData.blood_type;
+        if (medicalFormData.emergency_number) payload.emergency_number = medicalFormData.emergency_number;
+        if (medicalFormData.notes)            payload.notes            = medicalFormData.notes;
+
+        const response = await axios.put('/api/website/medical-info', payload, {
+            params: { lang: currentLocale.value },
+        });
+
+        // Refresh selected diseases list from response (translated names)
+        const returnedDiseases = response.data.data.diseases || [];
+        selectedDiseases.value = returnedDiseases.map((d: { id: number; name: string }) => ({
+            id: d.id,
+            name: d.name,
+        }));
+
+        toast.success(currentLocale.value === 'ar' ? 'تم حفظ البيانات الطبية بنجاح' : 'Medical data saved successfully');
+
+    } catch (error: any) {
+        if (error.response?.status === 422) {
+            const responseErrors = error.response.data.errors || {};
+            Object.keys(responseErrors).forEach(key => {
+                medicalErrors[key] = Array.isArray(responseErrors[key])
+                    ? responseErrors[key][0]
+                    : responseErrors[key];
+            });
+        } else if (error.response?.status === 401) {
+            toast.error(currentLocale.value === 'ar' ? 'يجب تسجيل الدخول أولاً' : 'Please login first');
+            window.location.href = `/${currentLocale.value === 'ar' ? 'ar' : 'en'}/login`;
+        } else {
+            toast.error(currentLocale.value === 'ar' ? 'حدث خطأ، يرجى المحاولة مرة أخرى' : 'An error occurred, please try again');
+        }
+    } finally {
+        updatingMedical.value = false;
+    }
 };
 
 // Reset medical form
 const resetMedicalForm = () => {
-    medicalFormData.blood_type       = '';
-    medicalFormData.emergency_number = '';
-    medicalFormData.notes            = '';
-    selectedDiseases.value           = [];
+    medicalFormData.blood_type       = authUser.value?.medical_info?.blood_type || '';
+    medicalFormData.emergency_number = authUser.value?.medical_info?.emergency_number || '';
+    medicalFormData.notes            = authUser.value?.medical_info?.notes || '';
+    selectedDiseases.value           = (authUser.value?.diseases || []).map(d => ({
+        id: d.id,
+        name: typeof d.name === 'object'
+            ? (d.name[currentLocale.value] ?? d.name['ar'] ?? Object.values(d.name)[0])
+            : d.name,
+    }));
+    Object.keys(medicalErrors).forEach(k => delete medicalErrors[k]);
 };
 
 // Load user on mount
@@ -815,5 +875,6 @@ onMounted(async () => {
     await loadUser();
     fetchNationalities();
     fetchMaritalStatus();
+    fetchDiseases();
 });
 </script>

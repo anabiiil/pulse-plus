@@ -16,6 +16,12 @@ interface User {
     marital_status?: string | null;
     profile_image_url?: string | null;
     hash_url?: string | null;
+    medical_info?: {
+        blood_type?: string | null;
+        emergency_number?: string | null;
+        notes?: string | null;
+    } | null;
+    diseases?: Array<{ id: number; name: Record<string, string> | string }>;
 }
 
 interface LoginCredentials {

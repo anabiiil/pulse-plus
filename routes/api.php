@@ -1,15 +1,16 @@
 <?php
 
+use App\Http\Controllers\Api\ContactMessageController;
 use App\Http\Controllers\Api\Website\AuthController;
 use App\Http\Controllers\Api\Website\ContactController;
 use App\Http\Controllers\Api\Website\EnumController;
 use App\Http\Controllers\Api\Website\HomeController;
+use App\Http\Controllers\Api\Website\MedicalInfoController;
 use App\Http\Controllers\Api\Website\NationalityController;
 use App\Http\Controllers\Api\Website\ProductController;
 use App\Http\Controllers\Api\Website\ServiceController;
 use App\Http\Controllers\Api\Website\SettingController;
 use App\Http\Controllers\Api\Website\SliderController;
-use App\Http\Controllers\Api\ContactMessageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,7 +22,7 @@ Route::get('/', function (Request $request) {
     return response()->json([
         'message' => 'Pulse API',
         'version' => '1.0',
-        'status' => 'active'
+        'status' => 'active',
     ]);
 });
 
@@ -41,7 +42,13 @@ Route::prefix('website')->group(function () {
         Route::put('/auth/profile', [AuthController::class, 'updateProfile']);
         Route::post('/auth/profile', [AuthController::class, 'updateProfile']); // POST for FormData
         Route::post('/auth/change-password', [AuthController::class, 'changePassword']);
+
+        // Medical Info (blood type, emergency number, notes, diseases sync)
+        Route::put('/medical-info', [MedicalInfoController::class, 'updateMedicalInfo']);
     });
+
+    // Chronic Diseases (public list by language)
+    Route::get('/diseases', [MedicalInfoController::class, 'diseases']);
 
     // Services
     Route::get('/services', [ServiceController::class, 'index']);
@@ -86,4 +93,3 @@ Route::prefix('admin/contact-messages')->middleware('auth:sanctum')->group(funct
     Route::patch('/{id}/mark-as-read', [ContactMessageController::class, 'markAsRead']);
     Route::delete('/{id}', [ContactMessageController::class, 'destroy']);
 });
-

@@ -253,51 +253,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Emergency Phone -->
-                                <div class="p-2 text-[#123057] flex flex-col col-span-2 lg:col-span-1 relative">
-                                    <label class="font-bold">{{ t.profile.form.emergencyPhone }}</label>
-                                    <div class="relative">
-                                        <input
-                                            v-model="formData.emergency_phone"
-                                            type="text"
-                                            :placeholder="t.profile.form.emergencyPhonePlaceholder"
-                                            dir="ltr"
-                                            class="focus:ring-0 focus:border-transparent bg-gray-50 border-0 shadow-xl transition-shadow duration-300 ease-in-out hover:shadow-2xl cursor-pointer font-semibold rounded-[30px] w-full p-4 my-2 pr-12"
-                                        >
-                                        <i class="pi pi-phone absolute top-1/2 text-gray-400 right-5 text-[18px] -translate-y-1/2"></i>
-                                    </div>
-                                </div>
-
-                                <!-- Display Emergency Toggle -->
-                                <div class="p-2 text-[#123057] flex flex-col col-span-2 relative">
-                                    <div class="bg-gray-50 border-0 shadow-xl rounded-[30px] p-6 my-2">
-                                        <div class="flex items-center justify-between">
-                                            <div class="flex-1">
-                                                <label class="font-bold text-lg cursor-pointer">
-                                                    {{ t.profile.form.displayEmergency }}
-                                                </label>
-                                                <p class="text-sm text-gray-600 mt-1">
-                                                    {{ t.profile.form.displayEmergencyDesc }}
-                                                </p>
-                                            </div>
-                                            <div class="flex-shrink-0 ml-4">
-                                                <label class="relative inline-flex items-center cursor-pointer">
-                                                    <input
-                                                        type="checkbox"
-                                                        v-model="formData.display_emergency"
-                                                        class="sr-only peer"
-                                                    >
-                                                    <div
-                                                        class="w-14 h-7 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-teal-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-teal-500"></div>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- View Emergency Profile Link -->
-
-
                                 <!-- Address -->
                                 <div class="p-2 text-[#123057] flex flex-col col-span-2 lg:col-span-1 relative">
                                     <label class="font-bold">{{ t.profile.form.address }}</label>
@@ -333,32 +288,6 @@
                                     </div>
                                 </div>
 
-                            </div>
-                            <div v-if="authUser?.hash_url"
-                                 class="p-2 text-[#123057] flex flex-col col-span-2 relative">
-                                <div class="bg-[#FF6760] border-0 shadow-xl rounded-[30px] p-6 my-2">
-                                    <div class="flex items-center justify-between">
-                                        <div class="flex-1 text-white">
-                                            <label class="font-bold text-lg">
-                                                {{ t.profile.form.emergencyProfileLink }}
-                                            </label>
-                                            <p class="text-sm text-white/90 mt-1">
-                                                {{ t.profile.form.emergencyProfileLinkDesc }}
-                                            </p>
-                                        </div>
-                                        <div class="flex-shrink-0 ml-4">
-                                            <a
-                                                :href="`/user/info/${authUser.hash_url}`"
-                                                target="_blank"
-                                                class="inline-flex items-center gap-2 bg-white text-[#FF6760] font-bold px-6 py-3 rounded-full hover:bg-gray-100 transition duration-150 shadow-lg"
-                                            >
-                                                <i class="pi pi-external-link"></i>
-                                                {{ t.profile.form.viewProfile }}
-                                            </a>
-                                        </div>
-                                    </div>
-
-                                </div>
                             </div>
                             <!-- Buttons -->
                             <div class="flex flex-col items-center justify-center">
@@ -416,20 +345,72 @@
                                     <p v-if="medicalErrors.blood_type" class="text-red-500 text-sm mt-1">{{ medicalErrors.blood_type }}</p>
                                 </div>
 
-                                <!-- Emergency Number -->
+                                <!-- Emergency Phone -->
                                 <div class="flex text-[#123057] flex-col col-span-2 lg:col-span-1 relative">
-                                    <label class="font-bold mb-2">{{ t.profile.medicalForm.emergencyNumber }}</label>
+                                    <label class="font-bold mb-2">{{ t.profile.form.emergencyPhone }}</label>
                                     <div class="relative">
                                         <input
-                                            v-model="medicalFormData.emergency_number"
+                                            v-model="medicalFormData.emergency_phone"
                                             type="text"
                                             dir="ltr"
-                                            :placeholder="t.profile.medicalForm.emergencyNumberPlaceholder"
+                                            :placeholder="t.profile.form.emergencyPhonePlaceholder"
                                             class="bg-gray-50 focus:ring-0 focus:border-transparent border-0 shadow-xl font-semibold rounded-[30px] w-full p-4 pr-12"
                                         />
-                                        <i class="pi pi-user absolute top-1/2 right-5 text-gray-400 -translate-y-1/2 text-[18px]"></i>
+                                        <i class="pi pi-phone absolute top-1/2 right-5 text-gray-400 -translate-y-1/2 text-[18px]"></i>
                                     </div>
-                                    <p v-if="medicalErrors.emergency_number" class="text-red-500 text-sm mt-1">{{ medicalErrors.emergency_number }}</p>
+                                    <p v-if="medicalErrors.emergency_phone" class="text-red-500 text-sm mt-1">{{ medicalErrors.emergency_phone }}</p>
+                                </div>
+
+                                <!-- Display Emergency Toggle -->
+                                <div class="flex text-[#123057] flex-col col-span-2 relative">
+                                    <div class="bg-gray-50 border-0 shadow-xl rounded-[30px] p-6">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex-1">
+                                                <label class="font-bold text-lg cursor-pointer">
+                                                    {{ t.profile.form.displayEmergency }}
+                                                </label>
+                                                <p class="text-sm text-gray-600 mt-1">
+                                                    {{ t.profile.form.displayEmergencyDesc }}
+                                                </p>
+                                            </div>
+                                            <div class="flex-shrink-0 ml-4">
+                                                <label class="relative inline-flex items-center cursor-pointer">
+                                                    <input
+                                                        type="checkbox"
+                                                        v-model="medicalFormData.display_emergency"
+                                                        class="sr-only peer"
+                                                    >
+                                                    <div class="w-14 h-7 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-teal-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-teal-500"></div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Emergency Profile Link -->
+                                <div v-if="authUser?.hash_url" class="flex text-[#123057] flex-col col-span-2 relative">
+                                    <div class="bg-[#FF6760] border-0 shadow-xl rounded-[30px] p-6">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex-1 text-white">
+                                                <label class="font-bold text-lg">
+                                                    {{ t.profile.form.emergencyProfileLink }}
+                                                </label>
+                                                <p class="text-sm text-white/90 mt-1">
+                                                    {{ t.profile.form.emergencyProfileLinkDesc }}
+                                                </p>
+                                            </div>
+                                            <div class="flex-shrink-0 ml-4">
+                                                <a
+                                                    :href="`/user/info/${authUser.hash_url}`"
+                                                    target="_blank"
+                                                    class="inline-flex items-center gap-2 bg-white text-[#FF6760] font-bold px-6 py-3 rounded-full hover:bg-gray-100 transition duration-150 shadow-lg"
+                                                >
+                                                    <i class="pi pi-external-link"></i>
+                                                    {{ t.profile.form.viewProfile }}
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <!-- Chronic Diseases / Allergies -->
@@ -849,10 +830,11 @@ const handleMedicalUpdate = async () => {
 
 // Reset medical form
 const resetMedicalForm = () => {
-    medicalFormData.blood_type       = authUser.value?.medical_info?.blood_type || '';
-    medicalFormData.emergency_number = authUser.value?.medical_info?.emergency_number || '';
-    medicalFormData.notes            = authUser.value?.medical_info?.notes || '';
-    selectedDiseases.value           = (authUser.value?.diseases || []).map(d => ({
+    medicalFormData.blood_type        = authUser.value?.medical_info?.blood_type || '';
+    medicalFormData.emergency_phone   = authUser.value?.emergency_phone || '';
+    medicalFormData.display_emergency = authUser.value?.display_emergency || false;
+    medicalFormData.notes             = authUser.value?.medical_info?.notes || '';
+    selectedDiseases.value            = (authUser.value?.diseases || []).map(d => ({
         id: d.id,
         name: typeof d.name === 'object'
             ? (d.name[currentLocale.value] ?? d.name['ar'] ?? Object.values(d.name)[0])

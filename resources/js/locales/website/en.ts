@@ -38,6 +38,18 @@ export default {
       title: 'Medical Archive',
       subtitle: 'X-rays, Reports, Prescriptions...'
     },
+    medicalForm: {
+      pageTitle: 'Your Medical Record',
+      pageSubtitle: 'This information is important in emergencies to save your life.',
+      bloodType: 'Blood Type',
+      selectBloodType: 'Select Blood Type',
+      emergencyNumber: 'Emergency Contact Number',
+      emergencyNumberPlaceholder: 'Emergency contact number',
+      chronicDiseases: 'Chronic Diseases / Allergies',
+      chronicDiseasesPlaceholder: 'Chronic diseases / allergies',
+      medicalNotes: 'Other Medical Notes',
+      medicalNotesPlaceholder: 'Other medical notes...',
+    },
     securityNotice: {
       title: 'Your Data is Safe',
       description: 'We use the highest encryption standards to ensure your data is only accessible to those you allow in emergencies'

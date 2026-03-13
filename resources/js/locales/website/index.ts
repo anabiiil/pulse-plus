@@ -44,6 +44,18 @@ export interface TranslationSchema {
       title: string;
       subtitle: string;
     };
+    medicalForm: {
+      pageTitle: string;
+      pageSubtitle: string;
+      bloodType: string;
+      selectBloodType: string;
+      emergencyNumber: string;
+      emergencyNumberPlaceholder: string;
+      chronicDiseases: string;
+      chronicDiseasesPlaceholder: string;
+      medicalNotes: string;
+      medicalNotesPlaceholder: string;
+    };
     securityNotice: {
       title: string;
       description: string;

@@ -38,6 +38,18 @@ export default {
       title: 'الأرشيف الطبي',
       subtitle: 'الأشعة والتقارير والروشتات...'
     },
+    medicalForm: {
+      pageTitle: 'سجلك الطبي',
+      pageSubtitle: 'هذه المعلومات مهمة في حالات الطوارئ لإنقاذ حياتك.',
+      bloodType: 'فصيلة الدم',
+      selectBloodType: 'فصيلة الدم',
+      emergencyNumber: 'رقم شخص للطوارئ',
+      emergencyNumberPlaceholder: 'رقم شخص للطوارئ',
+      chronicDiseases: 'الأمراض المزمنة / الحساسية',
+      chronicDiseasesPlaceholder: 'الأمراض المزمنة / الحساسية',
+      medicalNotes: 'ملاحظات طبية أخرى',
+      medicalNotesPlaceholder: 'ملاحظات طبية أخرى...',
+    },
     securityNotice: {
       title: 'بياناتك في أمان',
       description: 'نستخدم أعلى معايير التشفير لضمان أن بياناتك متاحة فقط لمن تسمح لهم في حالات الطوارئ'

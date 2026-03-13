@@ -41,13 +41,12 @@
                                         <p class="text-sm opacity-90">{{ t.profile.personalInfo.subtitle }}</p>
                                     </div>
                                 </div>
-                                <div class="text-xl text-gray-400">
+                                <div class="text-xl" :class="activeTab === 'personal' ? 'text-white' : 'text-gray-400'">
                                     <i :class="isRTL ? 'pi-angle-left' : 'pi-angle-right'" class="pi"></i>
                                 </div>
                             </div>
 
-                            <!-- Medical Data Tab - Commented for future use -->
-                            <!--
+                            <!-- Medical Data Tab -->
                             <div
                                 @click="activeTab = 'medical'"
                                 :class="activeTab === 'medical' ? 'bg-teal-500 text-white shadow-xl' : 'bg-gray-100 text-[#123057]'"
@@ -58,33 +57,34 @@
                                         <i :class="activeTab === 'medical' ? 'text-teal-500' : 'text-teal-500'" class="pi pi-heart text-[22px]"></i>
                                     </div>
                                     <div>
-                                        <p class="font-semibold">البيانات الطبية</p>
-                                        <p class="text-sm opacity-90">فصيلة الدم، الحساسية...</p>
+                                        <p class="font-semibold">{{ t.profile.medicalData?.title || 'البيانات الطبية' }}</p>
+                                        <p class="text-sm opacity-90">{{ t.profile.medicalData?.subtitle || 'فصيلة الدم، الحساسية...' }}</p>
                                     </div>
                                 </div>
-                                <div class="text-xl text-gray-400"><i class="pi pi-angle-left"></i></div>
+                                <div class="text-xl" :class="activeTab === 'medical' ? 'text-white' : 'text-gray-400'">
+                                    <i :class="isRTL ? 'pi-angle-left' : 'pi-angle-right'" class="pi"></i>
+                                </div>
                             </div>
-                            -->
 
-                            <!-- Medical Archive Tab - Commented for future use -->
-                            <!--
-                            <div
-                                @click="activeTab = 'archive'"
-                                :class="activeTab === 'archive' ? 'bg-teal-500 text-white shadow-xl' : 'bg-gray-100 text-[#123057]'"
-                                class="cursor-pointer hover:scale-102 transition-transform duration-300 ease-in-out rounded-3xl px-7 py-6 flex items-center justify-between shadow-md"
-                            >
-                                <div class="flex items-center gap-3">
-                                    <div :class="activeTab === 'archive' ? 'bg-white' : 'bg-white shadow-2xl'" class="p-5 rounded-xl flex items-center justify-center">
-                                        <i :class="activeTab === 'archive' ? 'text-teal-500' : 'text-teal-500'" class="pi pi-file text-[22px]"></i>
-                                    </div>
-                                    <div>
-                                        <p class="font-semibold">الأرشيف الطبي</p>
-                                        <p class="text-sm opacity-90">الأشعة والتقارير والروشتات...</p>
-                                    </div>
-                                </div>
-                                <div class="text-xl text-gray-400"><i class="pi pi-angle-left"></i></div>
-                            </div>
-                            -->
+<!--                            &lt;!&ndash; Medical Archive Tab &ndash;&gt;-->
+<!--                            <div-->
+<!--                                @click="activeTab = 'archive'"-->
+<!--                                :class="activeTab === 'archive' ? 'bg-teal-500 text-white shadow-xl' : 'bg-gray-100 text-[#123057]'"-->
+<!--                                class="cursor-pointer hover:scale-102 transition-transform duration-300 ease-in-out rounded-3xl px-7 py-6 flex items-center justify-between shadow-md"-->
+<!--                            >-->
+<!--                                <div class="flex items-center gap-3">-->
+<!--                                    <div :class="activeTab === 'archive' ? 'bg-white' : 'bg-white shadow-2xl'" class="p-5 rounded-xl flex items-center justify-center">-->
+<!--                                        <i :class="activeTab === 'archive' ? 'text-teal-500' : 'text-teal-500'" class="pi pi-file text-[22px]"></i>-->
+<!--                                    </div>-->
+<!--                                    <div>-->
+<!--                                        <p class="font-semibold">{{ t.profile.medicalArchive?.title || 'الأرشيف الطبي' }}</p>-->
+<!--                                        <p class="text-sm opacity-90">{{ t.profile.medicalArchive?.subtitle || 'الأشعة والتقارير والروشتات...' }}</p>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="text-xl text-gray-400">-->
+<!--                                    <i :class="isRTL ? 'pi-angle-left' : 'pi-angle-right'" class="pi"></i>-->
+<!--                                </div>-->
+<!--                            </div>-->
                         </div>
                     </div>
 
@@ -381,19 +381,108 @@
                         </form>
                     </div>
 
-                    <!-- Medical Data Tab - Commented for future use -->
-                    <!--
-                    <div v-show="activeTab === 'medical'" class="bg-white p-10 rounded-[48px] shadow-xl">
-                        <h3 class="text-2xl font-bold mb-4">البيانات الطبية</h3>
-                        <p class="text-gray-600">هذا القسم قيد التطوير...</p>
+                    <!-- Medical Data Tab -->
+                    <div v-show="activeTab === 'medical'" class="bg-white p-10 rounded-[48px] shadow-xl transform transition duration-500 hover:shadow-2xl cursor-pointer relative overflow-hidden">
+                        <div class="mb-10">
+                            <h3 class="text-2xl font-bold mb-2">{{ t.profile.medicalForm.pageTitle }}</h3>
+                            <p class="text-gray-600 text-[14px] font-semibold">
+                                {{ t.profile.medicalForm.pageSubtitle }}
+                            </p>
+                        </div>
+
+                        <form @submit.prevent="handleMedicalUpdate">
+                            <div class="grid text-[#123057] grid-cols-2 gap-6">
+
+                                <!-- Blood Type -->
+                                <div class="flex text-[#123057] flex-col col-span-2 lg:col-span-1 relative">
+                                    <label class="font-bold mb-2">{{ t.profile.medicalForm.bloodType }}</label>
+                                    <div class="relative">
+                                        <select
+                                            v-model="medicalFormData.blood_type"
+                                            class="bg-gray-50 border-0 shadow-xl font-semibold rounded-[30px] w-full p-4 pr-12 appearance-none focus:ring-0 focus:border-transparent"
+                                        >
+                                            <option value="">{{ t.profile.medicalForm.selectBloodType }}</option>
+                                            <option value="A+">A+</option>
+                                            <option value="A-">A-</option>
+                                            <option value="B+">B+</option>
+                                            <option value="B-">B-</option>
+                                            <option value="AB+">AB+</option>
+                                            <option value="AB-">AB-</option>
+                                            <option value="O+">O+</option>
+                                            <option value="O-">O-</option>
+                                        </select>
+                                        <i class="pi pi-heart absolute top-1/2 right-5 text-gray-400 -translate-y-1/2 text-[18px] pointer-events-none"></i>
+                                    </div>
+                                </div>
+
+                                <!-- Emergency Number -->
+                                <div class="flex text-[#123057] flex-col col-span-2 lg:col-span-1 relative">
+                                    <label class="font-bold mb-2">{{ t.profile.medicalForm.emergencyNumber }}</label>
+                                    <div class="relative">
+                                        <input
+                                            v-model="medicalFormData.emergency_number"
+                                            type="text"
+                                            dir="ltr"
+                                            :placeholder="t.profile.medicalForm.emergencyNumberPlaceholder"
+                                            class="bg-gray-50 focus:ring-0 focus:border-transparent border-0 shadow-xl font-semibold rounded-[30px] w-full p-4 pr-12"
+                                        />
+                                        <i class="pi pi-user absolute top-1/2 right-5 text-gray-400 -translate-y-1/2 text-[18px]"></i>
+                                    </div>
+                                </div>
+
+                                <!-- Chronic Diseases / Allergies -->
+                                <div class="flex text-[#123057] flex-col col-span-2 relative">
+                                    <label class="font-bold mb-2">{{ t.profile.medicalForm.chronicDiseases }}</label>
+                                    <div class="relative">
+                                        <input
+                                            v-model="medicalFormData.chronic_diseases"
+                                            type="text"
+                                            :placeholder="t.profile.medicalForm.chronicDiseasesPlaceholder"
+                                            class="bg-gray-50 focus:ring-0 focus:border-transparent border-0 shadow-xl font-semibold rounded-[30px] w-full p-4 pr-12"
+                                        />
+                                        <i class="pi pi-heart absolute top-1/2 right-5 text-gray-400 -translate-y-1/2 text-[18px]"></i>
+                                    </div>
+                                </div>
+
+                                <!-- Other Medical Notes -->
+                                <div class="flex text-[#123057] flex-col col-span-2 relative">
+                                    <label class="font-bold mb-2">{{ t.profile.medicalForm.medicalNotes }}</label>
+                                    <textarea
+                                        v-model="medicalFormData.notes"
+                                        rows="4"
+                                        :placeholder="t.profile.medicalForm.medicalNotesPlaceholder"
+                                        class="bg-gray-50 focus:ring-0 focus:border-transparent border-0 shadow-xl font-semibold rounded-[30px] w-full p-5 resize-none"
+                                    ></textarea>
+                                </div>
+
+                            </div>
+
+                            <div class="my-10 h-px bg-gray-200"></div>
+
+                            <!-- Buttons -->
+                            <div class="flex flex-col items-center justify-center">
+                                <button
+                                    type="submit"
+                                    class="py-3 px-20 border-0 rounded-xl bg-[#123057] text-white font-bold hover:bg-[#0e2540] transition duration-150"
+                                >
+                                    {{ t.profile.form?.saveChanges || 'حفظ التغييرات' }}
+                                </button>
+                                <button
+                                    type="button"
+                                    @click="resetMedicalForm"
+                                    class="py-3 px-20 border-0 text-gray-400 mt-4 font-semibold"
+                                >
+                                    {{ t.profile.form?.cancelChanges || 'إلغاء التعديلات' }}
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                    -->
 
                     <!-- Medical Archive Tab - Commented for future use -->
                     <!--
                     <div v-show="activeTab === 'archive'" class="bg-white p-10 rounded-[48px] shadow-xl">
-                        <h3 class="text-2xl font-bold mb-4">الأرشيف الطبي</h3>
-                        <p class="text-gray-600">هذا القسم قيد التطوير...</p>
+                        <h3 class="text-2xl font-bold mb-4">{{ t.profile.medicalArchive?.title || 'الأرشيف الطبي' }}</h3>
+                        <p class="text-gray-600">{{ t.profile.medicalArchive?.comingSoon || 'هذا القسم قيد التطوير...' }}</p>
                     </div>
                     -->
                 </div>
@@ -463,6 +552,14 @@ const formData = reactive({
     address: '',
     nationality_id: null as number | null,
     marital_status: '',
+});
+
+// Medical form data
+const medicalFormData = reactive({
+    blood_type: '',
+    emergency_number: '',
+    chronic_diseases: '',
+    notes: '',
 });
 
 // Errors
@@ -669,6 +766,20 @@ const copyProfileLink = async () => {
             toast.error(t.value.profile.form.linkCopyFailed || 'Failed to copy link');
         }
     }
+};
+
+// Handle medical form update (API to be implemented)
+const handleMedicalUpdate = async () => {
+    // TODO: connect to API
+    toast.success(currentLocale.value === 'ar' ? 'تم حفظ البيانات الطبية' : 'Medical data saved');
+};
+
+// Reset medical form
+const resetMedicalForm = () => {
+    medicalFormData.blood_type        = '';
+    medicalFormData.emergency_number  = '';
+    medicalFormData.chronic_diseases  = '';
+    medicalFormData.notes             = '';
 };
 
 // Load user on mount

@@ -433,15 +433,12 @@
                                 <!-- Chronic Diseases / Allergies -->
                                 <div class="flex text-[#123057] flex-col col-span-2 relative">
                                     <label class="font-bold mb-2">{{ t.profile.medicalForm.chronicDiseases }}</label>
-                                    <div class="relative">
-                                        <input
-                                            v-model="medicalFormData.chronic_diseases"
-                                            type="text"
-                                            :placeholder="t.profile.medicalForm.chronicDiseasesPlaceholder"
-                                            class="bg-gray-50 focus:ring-0 focus:border-transparent border-0 shadow-xl font-semibold rounded-[30px] w-full p-4 pr-12"
-                                        />
-                                        <i class="pi pi-heart absolute top-1/2 right-5 text-gray-400 -translate-y-1/2 text-[18px]"></i>
-                                    </div>
+                                    <MultiSelect
+                                        v-model="selectedDiseases"
+                                        :options="diseaseOptions"
+                                        :placeholder="t.profile.medicalForm.chronicDiseasesPlaceholder"
+                                        :no-results-text="currentLocale === 'ar' ? 'لا توجد نتائج' : 'No results found'"
+                                    />
                                 </div>
 
                                 <!-- Other Medical Notes -->
@@ -508,6 +505,7 @@ import userVectorImg from '../../../images/website/user-vector.png';
 // Import layout components
 import Navigation from '../Navigation.vue';
 import Footer from '../Footer.vue';
+import MultiSelect, { type SelectOption } from '../forms/MultiSelect.vue';
 
 // window.location.origin غير متاح مباشرة في الـ template في Vue 3
 const origin = window.location.origin;
@@ -558,9 +556,38 @@ const formData = reactive({
 const medicalFormData = reactive({
     blood_type: '',
     emergency_number: '',
-    chronic_diseases: '',
     notes: '',
 });
+
+// Diseases multi-select
+const selectedDiseases = ref<SelectOption[]>([]);
+
+const diseaseOptions: SelectOption[] = [
+    { id: 1,  name: 'السكري' },
+    { id: 2,  name: 'ضغط الدم' },
+    { id: 3,  name: 'أمراض القلب' },
+    { id: 4,  name: 'الربو' },
+    { id: 5,  name: 'الفشل الكلوي' },
+    { id: 6,  name: 'قصور الغدة الدرقية' },
+    { id: 7,  name: 'فرط نشاط الغدة الدرقية' },
+    { id: 8,  name: 'الأنيميا' },
+    { id: 9,  name: 'الصرع' },
+    { id: 10, name: 'الروماتيزم' },
+    { id: 11, name: 'التهاب المفاصل' },
+    { id: 12, name: 'الأكزيما' },
+    { id: 13, name: 'حساسية الغذاء' },
+    { id: 14, name: 'حساسية الأدوية' },
+    { id: 15, name: 'حساسية اللاتكس' },
+    { id: 16, name: 'الصدفية' },
+    { id: 17, name: 'قرحة المعدة' },
+    { id: 18, name: 'القولون العصبي' },
+    { id: 19, name: 'الكبد الدهني' },
+    { id: 20, name: 'التهاب الكبد' },
+    { id: 21, name: 'حصوات الكلى' },
+    { id: 22, name: 'الجلطة الدماغية' },
+    { id: 23, name: 'الذبحة الصدرية' },
+    { id: 24, name: 'هشاشة العظام' },
+];
 
 // Errors
 const errors = reactive<Record<string, string>>({
@@ -776,10 +803,10 @@ const handleMedicalUpdate = async () => {
 
 // Reset medical form
 const resetMedicalForm = () => {
-    medicalFormData.blood_type        = '';
-    medicalFormData.emergency_number  = '';
-    medicalFormData.chronic_diseases  = '';
-    medicalFormData.notes             = '';
+    medicalFormData.blood_type       = '';
+    medicalFormData.emergency_number = '';
+    medicalFormData.notes            = '';
+    selectedDiseases.value           = [];
 };
 
 // Load user on mount

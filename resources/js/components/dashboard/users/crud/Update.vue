@@ -98,7 +98,7 @@
                                         <select class="form-control" :class="{ 'is-invalid': errors['country_id'] }" v-model="formData.country_id">
                                             <option value="">Select Country</option>
                                             <option v-for="country in countries" :key="country.id" :value="country.id">
-                                                {{ country.name }}
+                                                {{ country.name_en || country.name?.en || country.name }}
                                             </option>
                                         </select>
                                         <span class="text-danger d-block mt-2" v-if="errors['country_id']">
@@ -168,7 +168,7 @@ const { update, getUser, user } = useUsers();
 const loading = ref(true);
 const errors = reactive<Record<string, any>>({});
 const userId = ref<string | number>(Array.isArray(route.params.id) ? route.params.id[0] : route.params.id);
-const countries = ref<Array<{id: number, name: string}>>([]);
+const countries = ref<Array<{id: number, name?: any, name_en?: string, name_ar?: string}>>([]);
 
 const formData = reactive({
     name: '',
@@ -178,7 +178,7 @@ const formData = reactive({
     birthdate: '',
     gender: '',
     marital_status: '',
-    country_id: '',
+    country_id: '' as string | number,
     address: '',
     status: true,
 });

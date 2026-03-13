@@ -16,10 +16,12 @@ class CountryResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => (integer)$this->id,
-            'name' => (array)$this->getTranslations('name'),
+            'id' => (int) $this->id,
+            'name' => (array) $this->getTranslations('name'),
+            'name_en' => (string) $this->getTranslation('name', 'en'),
+            'name_ar' => (string) $this->getTranslation('name', 'ar'),
             'status' => $this->status?->value,
-            'created_at' => (string)($this->created_at ? Carbon::parse($this->created_at)->format('Y-m-d H:i:s') : null),
+            'created_at' => (string) ($this->created_at ? Carbon::parse($this->created_at)->format('Y-m-d H:i:s') : null),
         ];
     }
 }

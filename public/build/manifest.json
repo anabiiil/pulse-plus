@@ -1,11 +1,11 @@
 {
-  "_Footer.vue_vue_type_script_setup_true_lang-COvR1pLm.js": {
-    "file": "assets/Footer.vue_vue_type_script_setup_true_lang-COvR1pLm.js",
+  "_Footer.vue_vue_type_script_setup_true_lang-DKmRk2J9.js": {
+    "file": "assets/Footer.vue_vue_type_script_setup_true_lang-DKmRk2J9.js",
     "name": "Footer.vue_vue_type_script_setup_true_lang",
     "imports": [
       "_pinia-xDMDoLs3.js",
       "resources/js/website-index.js",
-      "_footer-logo-DNnZnx5v.js"
+      "_footer-logo-B9_6Rl5t.js"
     ]
   },
   "_StatusEnum-C57FGDSg.js": {
@@ -26,8 +26,8 @@
       "assets/TiptapMenuBar-BKPKH4vJ.css"
     ]
   },
-  "_footer-logo-DNnZnx5v.js": {
-    "file": "assets/footer-logo-DNnZnx5v.js",
+  "_footer-logo-B9_6Rl5t.js": {
+    "file": "assets/footer-logo-B9_6Rl5t.js",
     "name": "footer-logo",
     "imports": [
       "_pinia-xDMDoLs3.js",
@@ -112,7 +112,7 @@
     "src": "node_modules/primeicons/fonts/primeicons.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-B6vwD2AN.css",
+    "file": "assets/app-DbH6oD-F.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "name": "app",
@@ -121,7 +121,7 @@
     ]
   },
   "resources/css/website.css": {
-    "file": "assets/website-HKwNIhK8.css",
+    "file": "assets/website-W4r6rn17.css",
     "src": "resources/css/website.css",
     "isEntry": true,
     "name": "website",
@@ -130,7 +130,7 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-BqjHx07P.js",
+    "file": "assets/app-RYHNr3qX.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -393,7 +393,7 @@
     ]
   },
   "resources/js/components/dashboard/slider/crud/Update.vue": {
-    "file": "assets/Update-Bar3MJw7.js",
+    "file": "assets/Update-CfukBRMK.js",
     "name": "Update",
     "src": "resources/js/components/dashboard/slider/crud/Update.vue",
     "isDynamicEntry": true,
@@ -403,7 +403,7 @@
     ]
   },
   "resources/js/components/dashboard/sliders/List.vue": {
-    "file": "assets/List-Bb0P89BF.js",
+    "file": "assets/List-BwCUGTlp.js",
     "name": "List",
     "src": "resources/js/components/dashboard/sliders/List.vue",
     "isDynamicEntry": true,
@@ -445,7 +445,7 @@
     ]
   },
   "resources/js/components/dashboard/users/List.vue": {
-    "file": "assets/List-CPe5QaoL.js",
+    "file": "assets/List-CyZXRpFR.js",
     "name": "List",
     "src": "resources/js/components/dashboard/users/List.vue",
     "isDynamicEntry": true,
@@ -477,7 +477,7 @@
     ]
   },
   "resources/js/components/dashboard/users/crud/Show.vue": {
-    "file": "assets/Show-DOBs1VFh.js",
+    "file": "assets/Show-XoEM9FOn.js",
     "name": "Show",
     "src": "resources/js/components/dashboard/users/crud/Show.vue",
     "isDynamicEntry": true,
@@ -502,18 +502,18 @@
     ]
   },
   "resources/js/components/website-index/pages/Index.vue": {
-    "file": "assets/Index-C6hnOfTx.js",
+    "file": "assets/Index-DuNZupmT.js",
     "name": "Index",
     "src": "resources/js/components/website-index/pages/Index.vue",
     "isDynamicEntry": true,
     "imports": [
       "_pinia-xDMDoLs3.js",
       "resources/js/website-index.js",
-      "_footer-logo-DNnZnx5v.js"
+      "_footer-logo-B9_6Rl5t.js"
     ],
     "css": [
       "assets/Index-D8f91Mzp.css",
-      "assets/website-HKwNIhK8.css"
+      "assets/website-W4r6rn17.css"
     ],
     "assets": [
       "assets/slide-kl6v87yz.png",
@@ -525,60 +525,60 @@
     ]
   },
   "resources/js/components/website/pages/Contact.vue": {
-    "file": "assets/Contact-PKnQZKOo.js",
+    "file": "assets/Contact-BuImfb1T.js",
     "name": "Contact",
     "src": "resources/js/components/website/pages/Contact.vue",
     "isDynamicEntry": true,
     "imports": [
       "_pinia-xDMDoLs3.js",
       "resources/js/website-index.js",
-      "_footer-logo-DNnZnx5v.js",
-      "_Footer.vue_vue_type_script_setup_true_lang-COvR1pLm.js"
+      "_footer-logo-B9_6Rl5t.js",
+      "_Footer.vue_vue_type_script_setup_true_lang-DKmRk2J9.js"
     ],
     "css": [
       "assets/Contact-Cuj9dmrw.css",
-      "assets/website-HKwNIhK8.css"
+      "assets/website-W4r6rn17.css"
     ]
   },
   "resources/js/components/website/pages/Login.vue": {
-    "file": "assets/Login-BAcDrNRN.js",
+    "file": "assets/Login-DfldL22C.js",
     "name": "Login",
     "src": "resources/js/components/website/pages/Login.vue",
     "isDynamicEntry": true,
     "imports": [
       "_pinia-xDMDoLs3.js",
       "resources/js/website-index.js",
-      "_footer-logo-DNnZnx5v.js",
-      "_Footer.vue_vue_type_script_setup_true_lang-COvR1pLm.js"
+      "_footer-logo-B9_6Rl5t.js",
+      "_Footer.vue_vue_type_script_setup_true_lang-DKmRk2J9.js"
     ],
     "css": [
       "assets/Login-DsTQI5V6.css",
-      "assets/website-HKwNIhK8.css"
+      "assets/website-W4r6rn17.css"
     ],
     "assets": [
       "assets/shield-Bh8JUfs7.png"
     ]
   },
   "resources/js/components/website/pages/Profile.vue": {
-    "file": "assets/Profile-BZF7Hbsd.js",
+    "file": "assets/Profile-bMNKKric.js",
     "name": "Profile",
     "src": "resources/js/components/website/pages/Profile.vue",
     "isDynamicEntry": true,
     "imports": [
       "_pinia-xDMDoLs3.js",
-      "_footer-logo-DNnZnx5v.js",
+      "_footer-logo-B9_6Rl5t.js",
       "resources/js/website-index.js",
-      "_Footer.vue_vue_type_script_setup_true_lang-COvR1pLm.js"
+      "_Footer.vue_vue_type_script_setup_true_lang-DKmRk2J9.js"
     ],
     "css": [
-      "assets/website-HKwNIhK8.css"
+      "assets/website-W4r6rn17.css"
     ],
     "assets": [
       "assets/user-vector-DYJ3cU25.png"
     ]
   },
   "resources/js/components/website/pages/UserInfo.vue": {
-    "file": "assets/UserInfo-B7abCWVZ.js",
+    "file": "assets/UserInfo-CDojRymJ.js",
     "name": "UserInfo",
     "src": "resources/js/components/website/pages/UserInfo.vue",
     "isDynamicEntry": true,
@@ -587,8 +587,8 @@
       "resources/js/website-index.js"
     ],
     "css": [
-      "assets/UserInfo-Df2yyzHQ.css",
-      "assets/website-HKwNIhK8.css"
+      "assets/UserInfo-DiKWuPad.css",
+      "assets/website-W4r6rn17.css"
     ]
   },
   "resources/js/images/website/footer-logo.png": {
@@ -632,7 +632,7 @@
     "src": "resources/js/images/website/vector-3.png"
   },
   "resources/js/website-index.js": {
-    "file": "assets/website-index-CRt7X805.js",
+    "file": "assets/website-index-N_pt-Pgd.js",
     "name": "website-index",
     "src": "resources/js/website-index.js",
     "isEntry": true,
@@ -648,7 +648,7 @@
     ],
     "css": [
       "assets/website-index-B-j-5dyI.css",
-      "assets/website-HKwNIhK8.css"
+      "assets/website-W4r6rn17.css"
     ],
     "assets": [
       "assets/primeicons-DMOk5skT.eot",

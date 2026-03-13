@@ -29,7 +29,7 @@ class LoginController extends Controller
 
             return $this->responseData([
                 'user' => auth('admin')->user(),
-            ]);
+            ], msg: 'Login successful');
 
         }
 

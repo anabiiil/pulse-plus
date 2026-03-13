@@ -41,10 +41,10 @@
             </div>
 
             <!-- User Info Display -->
-            <section v-else class="bg-gray-50 py-7 px-5">
+            <section v-else class="bg-gray-50 py-4 lg:py-7 px-3 lg:px-5">
                 <div class="grid lg:grid-cols-3 grid-cols-1 lg:gap-7 gap-0">
-                    <!-- Left Sidebar -->
-                    <div class="p-5">
+                    <!-- Left Sidebar (Desktop Only) -->
+                    <div class="hidden lg:block p-5">
                         <div class="bg-white rounded-[48px] flex flex-col items-center justify-center gap-2 shadow-2xl px-5 lg:px-12 py-8 my-5">
                             <!-- Profile Image -->
                         <div class="bg-[#FF6760] my-4 rounded-[28px] p-7 shadow-[inset_0_4px_4px_0_rgba(0,0,0,0.25)] w-fit">
@@ -88,10 +88,37 @@
                 </div>
 
                 <!-- Right Content -->
-                <div class="col-span-2 p-5">
+                <div class="col-span-2 p-2 lg:p-5">
+                    <!-- Mobile Profile Box -->
+                    <div class="lg:hidden bg-white rounded-[48px] shadow-2xl px-5 py-8 mb-5">
+                        <div class="flex flex-col items-center justify-center gap-4">
+                            <!-- Profile Image -->
+                            <div class="bg-[#FF6760] rounded-[28px] p-5 shadow-[inset_0_4px_4px_0_rgba(0,0,0,0.25)]">
+                                <img
+                                    v-if="user.profile_image_url"
+                                    :src="user.profile_image_url"
+                                    :alt="user.name"
+                                    class="w-16 h-16 rounded-full object-cover"
+                                >
+                                <i v-else class="pi pi-user font-bold text-4xl text-white"></i>
+                            </div>
+
+                            <!-- User Name -->
+                            <h2 class="text-xl font-bold text-[#123057]">{{ user.name }}</h2>
+
+                            <!-- Blood Type Badge -->
+                            <div v-if="user.medical_info?.blood_type" class="flex items-center gap-2 bg-[#FF6760] rounded-full px-6 py-2 shadow-lg">
+                                <div class="bg-white px-3 py-1 rounded-full font-bold text-[#FF6760]">
+                                    {{ user.medical_info.blood_type }}
+                                </div>
+                                <span class="text-white font-semibold">{{ t.userInfo.bloodType }}</span>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Personal Information Card -->
-                    <div class="bg-white rounded-[48px] shadow-2xl px-10 py-5 my-5">
-                        <div class="p-2 font-bold text-[#FF6760] text-[32px] mb-3">
+                    <div class="bg-white rounded-[48px] shadow-2xl px-5 lg:px-10 py-5 my-5">
+                        <div class="p-2 font-bold text-[#FF6760] text-2xl lg:text-[32px] mb-3">
                             {{ t.userInfo.personalInfo }}
                         </div>
                         <div class="grid grid-cols-2 gap-4">
@@ -146,8 +173,8 @@
                     </div>
 
                     <!-- Medical Information Card -->
-                    <div v-if="user.medical_info" class="bg-white rounded-[48px] shadow-2xl px-10 py-5 my-5">
-                        <div class="p-2 font-bold text-[#FF6760] text-[32px] mb-3">
+                    <div v-if="user.medical_info" class="bg-white rounded-[48px] shadow-2xl px-5 lg:px-10 py-5 my-5">
+                        <div class="p-2 font-bold text-[#FF6760] text-2xl lg:text-[32px] mb-3">
                             {{ t.userInfo.medicalInfo }}
                         </div>
                         <div class="grid grid-cols-2 gap-4">
@@ -197,9 +224,14 @@
                     <a
                         v-if="user.emergency_phone && user.display_emergency"
                         :href="`tel:${user.emergency_phone}`"
-                        class="bg-[#FF6760] py-5 text-3xl font-bold text-center text-white rounded-2xl w-full shadow-xl flex items-center justify-center hover:bg-[#e55850] transition duration-150"
+                        class="lg:hidden block bg-[#FF6760] py-5 px-6 text-2xl font-bold text-center text-white rounded-[28px] w-full shadow-2xl hover:bg-[#e55850] transition duration-150 my-5"
                     >
-                        <i class="pi pi-phone mx-4"></i>{{ t.userInfo.callEmergencyNumber }}
+                        <div class="flex items-center justify-center gap-3">
+                            <div class="bg-white p-3 rounded-full">
+                                <i class="pi pi-phone text-[#FF6760] text-xl"></i>
+                            </div>
+                            <span>{{ t.userInfo.callEmergencyNumber }}</span>
+                        </div>
                     </a>
 
                     <!-- Footer Text (Mobile) -->

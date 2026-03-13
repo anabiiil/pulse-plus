@@ -58,7 +58,7 @@ export default {
                 });
 
                 if (response.status === 200) {
-                    showSuccessToast('Validation Error');
+                    showSuccessToast('Login successful! Redirecting...');
 
                     localStorage.setItem('user', JSON.stringify(response.data.data.user));
                     window.location.href = '/dash/index'; // Redirect to dashboard after successful login

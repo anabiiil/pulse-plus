@@ -68,7 +68,7 @@
                     <code class="d-block mb-4 fs-13">{{ createdItem.uuid }}</code>
 
                     <div class="d-flex justify-content-center mb-4">
-                        <canvas ref="qrCanvas" style="max-width: 100%; height: auto;"></canvas>
+                        <canvas ref="qrCanvas" style="max-width: 300px  !important;height:300px;"></canvas>
                     </div>
 
                     <div class="d-flex justify-content-center gap-2">

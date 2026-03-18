@@ -67,7 +67,7 @@
                         <!-- QR Code Preview -->
                         <div class="col-lg-6 d-flex flex-column align-items-center py-2">
                             <label class="form-label w-100">QR Code</label>
-                            <canvas ref="qrCanvas" class="border rounded p-2 shadow-sm mb-2" style="max-width: 100%; height: auto;"></canvas>
+                            <canvas ref="qrCanvas" class="border rounded p-2 shadow-sm mb-2" style="max-width: 300px  !important;height:300px;"></canvas>
                             <button type="button" class="btn btn-sm btn-success" @click="downloadQr">
                                 <i class="fe fe-download me-1"></i> Download QR
                             </button>

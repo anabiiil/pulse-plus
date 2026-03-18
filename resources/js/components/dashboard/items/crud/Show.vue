@@ -63,7 +63,7 @@
                     <!-- QR Code -->
                     <div class="col-lg-6 d-flex flex-column align-items-center justify-content-center py-4">
                         <p class="text-muted mb-3">Scan this QR code to get the item UUID</p>
-                        <canvas ref="qrCanvas" class="mb-4 border rounded p-2 shadow-sm" style="max-width: 50%; height: auto;"></canvas>
+                        <canvas ref="qrCanvas" class="mb-4 border rounded p-2 shadow-sm" style="max-width: 300px  !important;height:300px;"></canvas>
                         <button class="btn btn-success" @click="downloadQr">
                             <i class="fe fe-download me-1"></i> Download QR Code
                         </button>

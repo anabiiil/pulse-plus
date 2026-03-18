@@ -19,6 +19,8 @@ class ItemResource extends JsonResource
             'status' => $this->status->value,
             'status_label' => $this->status->label(),
             'status_color' => $this->status->color(),
+            'qr_code' => $this->qr_code,
+            'qr_code_path' => $this->qr_code_path,
             'user' => $this->when($this->relationLoaded('user') && $this->user, fn () => [
                 'id' => $this->user->id,
                 'name' => $this->user->name,

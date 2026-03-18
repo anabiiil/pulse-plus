@@ -72,7 +72,17 @@
                     <div class="col-md-6 mb-3">
                         <div class="info-item">
                             <label class="text-muted">Assigned Item:</label>
-                            <p class="fw-bold">{{ user.item?.name || user.item?.uuid || '-' }}</p>
+                            <p class="fw-bold">{{ user.item?.name || '-' }}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <div class="info-item">
+                            <label class="text-muted">Item UUID:</label>
+                            <p class="fw-bold">
+                                <code v-if="user.item?.uuid">{{ user.item.uuid }}</code>
+                                <span v-else class="text-muted fst-italic">No item assigned</span>
+                            </p>
                         </div>
                     </div>
 
@@ -96,51 +106,51 @@
 
                     <!-- QR Code Section -->
                     <div class="col-md-12 mt-4">
-                        <h5 class="mb-3">QR Code</h5>
+                        <h5 class="mb-3">Item QR Code</h5>
                     </div>
 
-                    <div class="col-md-6 mb-3" v-if="user.item?.uuid">
-                        <div class="info-item">
-                            <label class="text-muted">Item QR Code:</label>
-                            <div class="mt-2">
-                                <canvas ref="qrCanvas" style="max-width: 200px; height: 200px;" class="mb-2"></canvas>
-                                <div>
+                    <div class="col-md-12 mb-3" v-if="user.item?.uuid">
+                        <div class="row align-items-start">
+                            <div class="col-md-4 text-center">
+                                <canvas ref="qrCanvas" class="border rounded p-2 shadow-sm mb-2" style="width: 220px; height: 220px;"></canvas>
+                                <div class="mt-2">
                                     <button @click="downloadQRCode" class="btn btn-sm btn-primary">
-                                        <i class="fe fe-download"></i> Download QR Code
+                                        <i class="fe fe-download me-1"></i> Download QR Code
                                     </button>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="info-item mb-3">
+                                    <label class="text-muted">Item UUID:</label>
+                                    <p class="fw-bold"><code>{{ user.item.uuid }}</code></p>
+                                </div>
+                                <div class="info-item">
+                                    <label class="text-muted">User Link (Item UUID):</label>
+                                    <div class="d-flex align-items-center gap-2 mt-2">
+                                        <input
+                                            type="text"
+                                            :value="getUserLink()"
+                                            readonly
+                                            class="form-control form-control-sm"
+                                            style="font-size: 0.875rem;"
+                                        >
+                                        <button
+                                            @click="copyUserLink"
+                                            class="btn btn-sm btn-info"
+                                            :class="{ 'btn-success': copied }"
+                                        >
+                                            <i :class="copied ? 'fe fe-check' : 'fe fe-copy'"></i>
+                                            {{ copied ? 'Copied!' : 'Copy' }}
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 mb-3" v-else>
+                    <div class="col-md-12 mb-3" v-else>
                         <div class="info-item">
                             <label class="text-muted">Item QR Code:</label>
                             <p class="text-muted fst-italic">No item assigned to this user.</p>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <div class="info-item">
-                            <label class="text-muted">User Link (Item UUID):</label>
-                            <div class="d-flex align-items-center gap-2 mt-2" v-if="user.item?.uuid">
-                                <input
-                                    type="text"
-                                    :value="getUserLink()"
-                                    readonly
-                                    class="form-control form-control-sm"
-                                    id="userLinkInput"
-                                    style="font-size: 0.875rem;"
-                                >
-                                <button
-                                    @click="copyUserLink"
-                                    class="btn btn-sm btn-info"
-                                    :class="{ 'btn-success': copied }"
-                                >
-                                    <i :class="copied ? 'fe fe-check' : 'fe fe-copy'"></i>
-                                    {{ copied ? 'Copied!' : 'Copy' }}
-                                </button>
-                            </div>
-                            <p class="text-muted fst-italic mt-2" v-else>No item assigned.</p>
                         </div>
                     </div>
 
@@ -221,13 +231,13 @@ const getUserLink = (): string => {
 };
 
 /**
- * Generate QR code on the canvas from item UUID
+ * Generate QR code on the canvas from item UUID (encodes the full URL)
  */
 const generateQRCode = async (): Promise<void> => {
     await nextTick();
     if (qrCanvas.value && user.value?.item?.uuid) {
-        await QRCode.toCanvas(qrCanvas.value, user.value.item.uuid, {
-            width: 200,
+        await QRCode.toCanvas(qrCanvas.value, getUserLink(), {
+            width: 220,
             margin: 2,
             color: { dark: '#000000', light: '#ffffff' },
         });

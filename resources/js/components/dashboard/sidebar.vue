@@ -129,6 +129,22 @@
                 </li>
 
                 <li class="slide">
+                    <router-link to="/dash/items" class="side-menu__item">
+                        <span class="me-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round">
+                                <rect x="3" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="14" width="7" height="7"></rect>
+                                <rect x="3" y="14" width="7" height="7"></rect>
+                            </svg>
+                        </span>
+                        <span class="side-menu__label">Items</span>
+                    </router-link>
+                </li>
+
+                <li class="slide">
                     <router-link to="/dash/contact-messages" class="side-menu__item">
                         <span class="me-2">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"

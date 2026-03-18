@@ -195,6 +195,41 @@ const routes = [
         ],
     },
 
+    // Items routes with nested CRUD operations
+    {
+        path: '/dash/items',
+        children: [
+            {
+                path: '',
+                name: 'items.list',
+                component: () => import('../components/dashboard/items/List.vue'),
+            },
+            {
+                path: 'create',
+                name: 'items.create',
+                component: () => import('../components/dashboard/items/crud/Create.vue'),
+            },
+            {
+                path: ':id/show',
+                name: 'items.show',
+                component: () => import('../components/dashboard/items/crud/Show.vue'),
+                props: true,
+            },
+            {
+                path: ':id/edit',
+                name: 'items.update',
+                component: () => import('../components/dashboard/items/crud/Update.vue'),
+                props: true,
+            },
+            {
+                path: ':id/delete',
+                name: 'items.delete',
+                component: () => import('../components/dashboard/items/crud/Delete.vue'),
+                props: true,
+            },
+        ],
+    },
+
     // Contact Messages routes
     {
         path: '/dash/contact-messages',

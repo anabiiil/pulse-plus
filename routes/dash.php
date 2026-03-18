@@ -1,14 +1,15 @@
 <?php
 
+use App\Http\Controllers\Api\ContactMessageController;
 use App\Http\Controllers\Dash\AdminsController;
 use App\Http\Controllers\Dash\Auth\LoginController;
 use App\Http\Controllers\Dash\CountryController;
+use App\Http\Controllers\Dash\ItemController;
 use App\Http\Controllers\Dash\ProductController;
 use App\Http\Controllers\Dash\ServiceController;
 use App\Http\Controllers\Dash\SettingController;
 use App\Http\Controllers\Dash\SliderController;
 use App\Http\Controllers\Dash\UserController;
-use App\Http\Controllers\Api\ContactMessageController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['guest:admin']], static function () {
@@ -31,6 +32,7 @@ Route::group(
         Route::apiResource('services', ServiceController::class);
         Route::apiResource('products', ProductController::class);
         Route::apiResource('sliders', SliderController::class);
+        Route::apiResource('items', ItemController::class);
         Route::apiResource('users', UserController::class);
         Route::apiResource('settings', SettingController::class);
         Route::get('settings/slug/{slug}', [SettingController::class, 'getBySlug']);

@@ -31,15 +31,15 @@ class UserController extends Controller
      */
     public function index(Request $request): \Illuminate\Http\JsonResponse
     {
-        $perPage = $request->get('per_page', self::DEFAULT_PER_PAGE);
+        $perPage = (int) $request->get('per_page', self::DEFAULT_PER_PAGE);
         $sortBy = self::SORT_FIELD_MAPPING[$request->get('sortBy', 'id')] ?? 'id';
         $sortDesc = $request->get('sortDesc', 'desc');
         $search = $request->get('search');
 
-        $perPage = $perPage === -1 ? User::count() : $perPage;
+        $perPage = $perPage === -1 ? (User::count() ?: self::DEFAULT_PER_PAGE) : $perPage;
 
         $users = User::query()
-            ->with('country')
+            ->with('country', 'item')
             ->when($search, fn ($query) => $query->where('name', 'like', "%{$search}%")
                 ->orWhere('email', 'like', "%{$search}%")
                 ->orWhere('phone', 'like', "%{$search}%"))
@@ -75,7 +75,8 @@ class UserController extends Controller
      */
     public function show(User $user): \Illuminate\Http\JsonResponse
     {
-        $user->load('country', 'medicalInfo', 'diseases');
+        $user->load('country', 'medicalInfo', 'diseases', 'item');
+
         return $this->responseData(new UserResource($user));
     }
 
@@ -90,7 +91,7 @@ class UserController extends Controller
             $data = $request->validated();
 
             // Only update password if provided
-            if (!empty($data['password'])) {
+            if (! empty($data['password'])) {
                 $data['password'] = Hash::make($data['password']);
             } else {
                 unset($data['password']);
@@ -116,6 +117,7 @@ class UserController extends Controller
     {
         return DB::transaction(function () use ($user) {
             $user->delete();
+
             return $this->responseData([], msg: 'user deleted successfully');
         });
     }

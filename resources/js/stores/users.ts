@@ -2,6 +2,13 @@ import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import axios from "axios";
 
+interface Item {
+    id: number;
+    uuid: string;
+    name: string | null;
+    status: boolean;
+}
+
 interface User {
     id: number;
     name: string;
@@ -13,6 +20,8 @@ interface User {
     marital_status?: string;
     country_id?: number;
     country?: any;
+    item_id?: number | null;
+    item?: Item | null;
     status: string;
     hash_url?: string;
     qr_code?: string;

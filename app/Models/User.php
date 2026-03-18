@@ -33,6 +33,7 @@ class User extends Authenticatable
         'birthdate',
         'gender',
         'country_id',
+        'item_id',
         'marital_status',
         'password',
         'status',
@@ -84,6 +85,11 @@ class User extends Authenticatable
     public function country(): BelongsTo
     {
         return $this->belongsTo(Country::class);
+    }
+
+    public function item(): BelongsTo
+    {
+        return $this->belongsTo(Item::class);
     }
 
     /**
@@ -205,7 +211,7 @@ class User extends Authenticatable
                     $qrCodePath = 'qr-codes';
                     $fullPath = storage_path('app/public/'.$qrCodePath);
 
-                    if (!\File::exists($fullPath)) {
+                    if (! \File::exists($fullPath)) {
                         \File::makeDirectory($fullPath, 0755, true);
                     }
 

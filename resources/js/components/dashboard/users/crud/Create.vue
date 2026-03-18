@@ -145,6 +145,25 @@
                                     </div>
                                 </div>
 
+                                <div class="col-lg-6">
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">Item</label>
+                                        <select
+                                            class="form-control"
+                                            :class="{ 'is-invalid': errors['item_id'] }"
+                                            v-model="formData.item_id"
+                                        >
+                                            <option value="">Select Item</option>
+                                            <option v-for="item in availableItems" :key="item.id" :value="item.id">
+                                                {{ item.name || item.uuid }}
+                                            </option>
+                                        </select>
+                                        <span class="text-danger d-block mt-2" v-if="errors['item_id']">
+                                            {{ Array.isArray(errors['item_id']) ? errors['item_id'][0] : errors['item_id'] }}
+                                        </span>
+                                    </div>
+                                </div>
+
                                 <div class="col-lg-12">
                                     <div class="form-group mb-3">
                                         <label class="form-label">Address</label>
@@ -219,6 +238,7 @@ const { create } = useUsers();
 const loading = ref(false);
 const errors = reactive<Record<string, any>>({});
 const countries = ref<Array<{id: number, name?: any, name_en?: string, name_ar?: string}>>([]);
+const availableItems = ref<Array<{id: number, uuid: string, name: string | null}>>([]);
 
 const formData = reactive({
     name: '',
@@ -229,6 +249,7 @@ const formData = reactive({
     gender: '',
     marital_status: '',
     country_id: '' as string | number,
+    item_id: '' as string | number,
     address: '',
     status: true,
 });
@@ -242,6 +263,18 @@ const loadCountries = async () => {
         countries.value = response.data.data || [];
     } catch (error) {
         console.error('Failed to load countries:', error);
+    }
+};
+
+/**
+ * Load available items
+ */
+const loadItems = async () => {
+    try {
+        const response = await axios.get('/items', { params: { per_page: -1 } });
+        availableItems.value = response.data.data || [];
+    } catch (error) {
+        console.error('Failed to load items:', error);
     }
 };
 
@@ -271,6 +304,7 @@ const handleSubmit = async () => {
             gender: formData.gender || undefined,
             marital_status: formData.marital_status || undefined,
             country_id: formData.country_id || undefined,
+            item_id: formData.item_id || undefined,
             address: formData.address || undefined,
             status: formData.status ? '1' : '0',
         };
@@ -295,6 +329,7 @@ const handleSubmit = async () => {
 
 onMounted(() => {
     loadCountries();
+    loadItems();
 });
 
 </script>

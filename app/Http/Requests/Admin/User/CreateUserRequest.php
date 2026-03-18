@@ -27,16 +27,17 @@ class CreateUserRequest extends FormRequest
             'email' => [
                 'required',
                 'email',
-                Rule::unique('users', 'email')->ignore($userId)
+                Rule::unique('users', 'email')->ignore($userId),
             ],
             'phone' => [
                 'nullable',
                 'string',
                 'max:20',
-                Rule::unique('users', 'phone')->ignore($userId)
+                Rule::unique('users', 'phone')->ignore($userId),
             ],
             'password' => $userId ? 'nullable|string|min:8' : 'required|string|min:8',
             'country_id' => 'nullable|exists:countries,id',
+            'item_id' => 'nullable|exists:items,id',
             'address' => 'nullable|string',
             'birthdate' => 'nullable|date',
             'gender' => 'nullable|in:male,female',

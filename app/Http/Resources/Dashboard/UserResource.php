@@ -2,10 +2,6 @@
 
 namespace App\Http\Resources\Dashboard;
 
-use App\Http\Resources\ClubResource;
-use App\Http\Resources\User\Team\TeamResource;
-use App\Livewire\Admin\Competition\Modal\Club;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -32,6 +28,13 @@ class UserResource extends JsonResource
                 'id' => $this->country->id,
                 'name' => $this->country->name,
             ] : null,
+            'item_id' => $this->item_id,
+            'item' => $this->when($this->relationLoaded('item') && $this->item, fn () => [
+                'id' => $this->item->id,
+                'uuid' => $this->item->uuid,
+                'name' => $this->item->name,
+                'status' => (bool) $this->item->status,
+            ]),
             'status' => (bool) $this->status,
             'hash_url' => $this->hash_url,
             'qr_code' => $this->qr_code,

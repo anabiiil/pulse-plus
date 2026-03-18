@@ -71,6 +71,13 @@
 
                     <div class="col-md-6 mb-3">
                         <div class="info-item">
+                            <label class="text-muted">Assigned Item:</label>
+                            <p class="fw-bold">{{ user.item?.name || user.item?.uuid || '-' }}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <div class="info-item">
                             <label class="text-muted">Status:</label>
                             <p>
                                 <span class="badge" :class="StatusEnum.getClass(user.status)">
@@ -92,11 +99,11 @@
                         <h5 class="mb-3">QR Code</h5>
                     </div>
 
-                    <div class="col-md-6 mb-3" v-if="user.qr_code_path">
+                    <div class="col-md-6 mb-3" v-if="user.item?.uuid">
                         <div class="info-item">
-                            <label class="text-muted">QR Code:</label>
+                            <label class="text-muted">Item QR Code:</label>
                             <div class="mt-2">
-                                <img :src="user.qr_code_path" alt="QR Code" style="max-width: 200px;" class="mb-2">
+                                <canvas ref="qrCanvas" style="max-width: 200px; height: 200px;" class="mb-2"></canvas>
                                 <div>
                                     <button @click="downloadQRCode" class="btn btn-sm btn-primary">
                                         <i class="fe fe-download"></i> Download QR Code
@@ -105,11 +112,17 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-6 mb-3" v-else>
+                        <div class="info-item">
+                            <label class="text-muted">Item QR Code:</label>
+                            <p class="text-muted fst-italic">No item assigned to this user.</p>
+                        </div>
+                    </div>
 
                     <div class="col-md-6 mb-3">
                         <div class="info-item">
-                            <label class="text-muted">User Link:</label>
-                            <div class="d-flex align-items-center gap-2 mt-2">
+                            <label class="text-muted">User Link (Item UUID):</label>
+                            <div class="d-flex align-items-center gap-2 mt-2" v-if="user.item?.uuid">
                                 <input
                                     type="text"
                                     :value="getUserLink()"
@@ -127,6 +140,7 @@
                                     {{ copied ? 'Copied!' : 'Copy' }}
                                 </button>
                             </div>
+                            <p class="text-muted fst-italic mt-2" v-else>No item assigned.</p>
                         </div>
                     </div>
 
@@ -170,12 +184,13 @@
 
 <script setup lang="ts">
 
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, nextTick, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useHead } from '@vueuse/head';
 import { useUsers } from '../../../../composables/useUsers';
 import { formatDate } from '../../../../main/date';
 import { StatusEnum } from '../../../../enums/StatusEnum';
+import QRCode from 'qrcode';
 
 declare global {
     interface Window {
@@ -195,19 +210,54 @@ const { getUser, user } = useUsers();
 const loading = ref(true);
 const userId = ref<string | number>(Array.isArray(route.params.id) ? route.params.id[0] : route.params.id);
 const copied = ref(false);
+const qrCanvas = ref<HTMLCanvasElement | null>(null);
 
 /**
- * Get the user link with hash
+ * Get the user link using item UUID
  */
-const getUserLink = () => {
-    if (!user.value?.hash_url) return '';
-    return `https://pulse-plus.com/user/info/${user.value.hash_url}`;
+const getUserLink = (): string => {
+    if (!user.value?.item?.uuid) return '';
+    return `https://pulse-plus.com/user/info/${user.value.item.uuid}`;
+};
+
+/**
+ * Generate QR code on the canvas from item UUID
+ */
+const generateQRCode = async (): Promise<void> => {
+    await nextTick();
+    if (qrCanvas.value && user.value?.item?.uuid) {
+        await QRCode.toCanvas(qrCanvas.value, user.value.item.uuid, {
+            width: 200,
+            margin: 2,
+            color: { dark: '#000000', light: '#ffffff' },
+        });
+    }
+};
+
+/**
+ * Download the QR code as PNG
+ */
+const downloadQRCode = (): void => {
+    if (!qrCanvas.value || !user.value?.item) {
+        if (window.showErrorToast) {
+            window.showErrorToast('QR Code not available');
+        }
+        return;
+    }
+    const link = document.createElement('a');
+    link.download = `item-qr-${user.value.item.uuid}.png`;
+    link.href = qrCanvas.value.toDataURL('image/png');
+    link.click();
+
+    if (window.showSuccessToast) {
+        window.showSuccessToast('QR Code downloaded successfully!');
+    }
 };
 
 /**
  * Copy user link to clipboard
  */
-const copyUserLink = async () => {
+const copyUserLink = async (): Promise<void> => {
     try {
         const link = getUserLink();
         await navigator.clipboard.writeText(link);
@@ -217,7 +267,6 @@ const copyUserLink = async () => {
             window.showSuccessToast('Link copied to clipboard!');
         }
 
-        // Reset copied state after 2 seconds
         setTimeout(() => {
             copied.value = false;
         }, 2000);
@@ -229,85 +278,7 @@ const copyUserLink = async () => {
     }
 };
 
-/**
- * Download QR code image
- */
-const downloadQRCode = async () => {
-    try {
-        if (!user.value?.qr_code_path) {
-            if (window.showErrorToast) {
-                window.showErrorToast('QR Code not available');
-            }
-            return;
-        }
-
-        // Fetch the SVG
-        const response = await fetch(user.value.qr_code_path);
-        const svgText = await response.text();
-
-        // Create an image element from SVG
-        const img = new Image();
-        const svgBlob = new Blob([svgText], { type: 'image/svg+xml' });
-        const svgUrl = URL.createObjectURL(svgBlob);
-
-        img.onload = () => {
-            // Create canvas to convert SVG to PNG
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-
-            // Set canvas size to match image
-            canvas.width = img.width || 300;
-            canvas.height = img.height || 300;
-
-            // Draw image on canvas with white background
-            if (ctx) {
-                ctx.fillStyle = 'white';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.drawImage(img, 0, 0);
-
-                // Convert canvas to PNG blob
-                canvas.toBlob((blob) => {
-                    if (blob) {
-                        // Create download link
-                        const url = window.URL.createObjectURL(blob);
-                        const link = document.createElement('a');
-                        link.href = url;
-                        link.download = `user-qr-${user.value.name.replace(/\s+/g, '-').toLowerCase()}-${user.value.id}.png`;
-                        document.body.appendChild(link);
-                        link.click();
-
-                        // Cleanup
-                        document.body.removeChild(link);
-                        window.URL.revokeObjectURL(url);
-
-                        if (window.showSuccessToast) {
-                            window.showSuccessToast('QR Code downloaded successfully!');
-                        }
-                    }
-                }, 'image/png');
-            }
-
-            // Cleanup SVG URL
-            URL.revokeObjectURL(svgUrl);
-        };
-
-        img.onerror = () => {
-            URL.revokeObjectURL(svgUrl);
-            if (window.showErrorToast) {
-                window.showErrorToast('Failed to load QR Code image');
-            }
-        };
-
-        img.src = svgUrl;
-    } catch (error) {
-        console.error('Failed to download QR code:', error);
-        if (window.showErrorToast) {
-            window.showErrorToast('Failed to download QR Code');
-        }
-    }
-};
-
-const loadUser = async () => {
+const loadUser = async (): Promise<void> => {
     try {
         loading.value = true;
         await getUser(Number(userId.value));
@@ -315,7 +286,10 @@ const loadUser = async () => {
         if (!user.value) {
             window.showErrorToast('User not found');
             await router.push('/dash/users');
+            return;
         }
+
+        await generateQRCode();
     } catch (error: any) {
         const errorMsg = error?.response?.data?.message || 'Failed to load user';
         window.showErrorToast(errorMsg);

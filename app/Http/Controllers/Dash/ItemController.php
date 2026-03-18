@@ -30,12 +30,12 @@ class ItemController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        $perPage = $request->get('per_page', self::DEFAULT_PER_PAGE);
+        $perPage = (int) $request->get('per_page', self::DEFAULT_PER_PAGE);
         $sortBy = self::SORT_FIELD_MAPPING[$request->get('sortBy', 'id')] ?? 'id';
         $sortDesc = $request->get('sortDesc', 'desc');
         $search = $request->get('search');
 
-        $perPage = $perPage === -1 ? Item::count() : (int) $perPage;
+        $perPage = $perPage === -1 ? (Item::count() ?: self::DEFAULT_PER_PAGE) : $perPage;
 
         $items = Item::query()
             ->when($search, fn ($query) => $query->where('name', 'like', "%{$search}%")

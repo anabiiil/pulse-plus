@@ -50,9 +50,14 @@
                                     </template>
 
                                     <template #item.status="{ item }">
-                                        <span class="badge" :class="item.status ? 'bg-success' : 'bg-danger'">
-                                            {{ item.status ? 'Active' : 'Inactive' }}
+                                        <span class="badge" :class="item.status_color">
+                                            {{ item.status_label }}
                                         </span>
+                                    </template>
+
+                                    <template #item.user="{ item }">
+                                        <span v-if="item.user?.name" class="fw-semibold">{{ item.user.name }}</span>
+                                        <span v-else class="text-muted fst-italic">—</span>
                                     </template>
 
                                     <template #item.actions="{ item }">
@@ -117,6 +122,7 @@ const headers = [
     { key: 'name', title: 'Name', sortable: true },
     { key: 'uuid', title: 'UUID', sortable: false },
     { key: 'status', title: 'Status', sortable: true },
+    { key: 'user', title: 'Assigned To', sortable: false },
     { key: 'created_at', title: 'Created At', sortable: true },
     { key: 'actions', title: 'Actions', sortable: false },
 ];

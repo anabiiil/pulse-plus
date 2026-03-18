@@ -141,7 +141,7 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-CE3x0kwD.js",
+    "file": "assets/app-NP22Jse0.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -213,7 +213,7 @@
     ]
   },
   "resources/js/components/dashboard/items/List.vue": {
-    "file": "assets/List-Cbfj1fFQ.js",
+    "file": "assets/List-CiD7mkk3.js",
     "name": "List",
     "src": "resources/js/components/dashboard/items/List.vue",
     "isDynamicEntry": true,
@@ -461,7 +461,7 @@
     ]
   },
   "resources/js/components/dashboard/slider/crud/Update.vue": {
-    "file": "assets/Update-DEG9-7TB.js",
+    "file": "assets/Update-DLIAra6n.js",
     "name": "Update",
     "src": "resources/js/components/dashboard/slider/crud/Update.vue",
     "isDynamicEntry": true,
@@ -471,7 +471,7 @@
     ]
   },
   "resources/js/components/dashboard/sliders/List.vue": {
-    "file": "assets/List-DlqRDcax.js",
+    "file": "assets/List-CluICEiV.js",
     "name": "List",
     "src": "resources/js/components/dashboard/sliders/List.vue",
     "isDynamicEntry": true,
@@ -513,7 +513,7 @@
     ]
   },
   "resources/js/components/dashboard/users/List.vue": {
-    "file": "assets/List-0GoHMNbN.js",
+    "file": "assets/List-CofL74Xj.js",
     "name": "List",
     "src": "resources/js/components/dashboard/users/List.vue",
     "isDynamicEntry": true,
@@ -525,7 +525,7 @@
     ]
   },
   "resources/js/components/dashboard/users/crud/Create.vue": {
-    "file": "assets/Create-CcCMk6t7.js",
+    "file": "assets/Create-TmRwcDYt.js",
     "name": "Create",
     "src": "resources/js/components/dashboard/users/crud/Create.vue",
     "isDynamicEntry": true,
@@ -545,7 +545,7 @@
     ]
   },
   "resources/js/components/dashboard/users/crud/Show.vue": {
-    "file": "assets/Show-Bx7Wlx3V.js",
+    "file": "assets/Show-CIdo6-yb.js",
     "name": "Show",
     "src": "resources/js/components/dashboard/users/crud/Show.vue",
     "isDynamicEntry": true,
@@ -561,7 +561,7 @@
     ]
   },
   "resources/js/components/dashboard/users/crud/Update.vue": {
-    "file": "assets/Update-_8Qc-kKH.js",
+    "file": "assets/Update-DMRiz4iS.js",
     "name": "Update",
     "src": "resources/js/components/dashboard/users/crud/Update.vue",
     "isDynamicEntry": true,

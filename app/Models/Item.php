@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\Enums\Item\ItemStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -27,7 +28,7 @@ class Item extends Model
     protected function casts(): array
     {
         return [
-            'status' => 'boolean',
+            'status' => ItemStatusEnum::class,
         ];
     }
 

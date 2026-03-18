@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Dash;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\User\CreateUserRequest;
 use App\Http\Resources\Dashboard\UserResource;
+use App\Models\Item;
 use App\Models\User;
+use App\Support\Enums\Item\ItemStatusEnum;
 use App\Support\Traits\Api\ApiResponseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -66,6 +68,10 @@ class UserController extends Controller
 
             $user = User::create($data);
 
+            if (! empty($data['item_id'])) {
+                Item::where('id', $data['item_id'])->update(['status' => ItemStatusEnum::Used]);
+            }
+
             return $this->responseData(new UserResource($user), 201);
         });
     }
@@ -89,6 +95,8 @@ class UserController extends Controller
     {
         return DB::transaction(function () use ($request, $user) {
             $data = $request->validated();
+            $oldItemId = $user->item_id;
+            $newItemId = $data['item_id'] ?? null;
 
             // Only update password if provided
             if (! empty($data['password'])) {
@@ -104,6 +112,16 @@ class UserController extends Controller
 
             $user->update($data);
 
+            // Sync item statuses when assignment changes
+            if ($oldItemId !== $newItemId) {
+                if ($oldItemId) {
+                    Item::where('id', $oldItemId)->update(['status' => ItemStatusEnum::Active]);
+                }
+                if ($newItemId) {
+                    Item::where('id', $newItemId)->update(['status' => ItemStatusEnum::Used]);
+                }
+            }
+
             return $this->responseData(new UserResource($user));
         });
     }
@@ -116,6 +134,10 @@ class UserController extends Controller
     public function destroy(User $user): \Illuminate\Http\JsonResponse
     {
         return DB::transaction(function () use ($user) {
+            if ($user->item_id) {
+                Item::where('id', $user->item_id)->update(['status' => ItemStatusEnum::Active]);
+            }
+
             $user->delete();
 
             return $this->responseData([], msg: 'user deleted successfully');

@@ -271,7 +271,7 @@ const loadCountries = async () => {
  */
 const loadItems = async () => {
     try {
-        const response = await axios.get('/items', { params: { per_page: -1 } });
+        const response = await axios.get('/items', { params: { per_page: -1, for_user: 1 } });
         availableItems.value = response.data.data || [];
     } catch (error) {
         console.error('Failed to load items:', error);

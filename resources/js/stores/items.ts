@@ -6,7 +6,10 @@ interface Item {
     id: number;
     uuid: string;
     name: string | null;
-    status: boolean;
+    status: 'active' | 'inactive' | 'used';
+    status_label: string;
+    status_color: string;
+    user?: { id: number; name: string } | null;
     created_at: string;
     updated_at: string;
 }

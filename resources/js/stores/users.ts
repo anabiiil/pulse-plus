@@ -6,7 +6,8 @@ interface Item {
     id: number;
     uuid: string;
     name: string | null;
-    status: boolean;
+    status: string;
+    qr_code_path: string | null;
 }
 
 interface User {

@@ -109,14 +109,23 @@
                         <h5 class="mb-3">Item QR Code</h5>
                     </div>
 
-                    <div class="col-md-12 mb-3" v-if="user.item?.uuid">
+                    <div class="col-md-12 mb-3" v-if="user.item?.qr_code_path">
                         <div class="row align-items-start">
                             <div class="col-md-4 text-center">
-                                <canvas ref="qrCanvas" class="border rounded p-2 shadow-sm mb-2" style="width: 220px; height: 220px;"></canvas>
+                                <img
+                                    :src="user.item.qr_code_path"
+                                    alt="Item QR Code"
+                                    class="border rounded p-2 shadow-sm mb-2"
+                                    style="width: 220px; height: 220px; object-fit: contain;"
+                                >
                                 <div class="mt-2">
-                                    <button @click="downloadQRCode" class="btn btn-sm btn-primary">
+                                    <a
+                                        :href="user.item.qr_code_path"
+                                        :download="`item-qr-${user.item.uuid}.svg`"
+                                        class="btn btn-sm btn-primary"
+                                    >
                                         <i class="fe fe-download me-1"></i> Download QR Code
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
                             <div class="col-md-8">
@@ -194,13 +203,12 @@
 
 <script setup lang="ts">
 
-import { ref, onMounted, nextTick, watch } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useHead } from '@vueuse/head';
 import { useUsers } from '../../../../composables/useUsers';
 import { formatDate } from '../../../../main/date';
 import { StatusEnum } from '../../../../enums/StatusEnum';
-import QRCode from 'qrcode';
 
 declare global {
     interface Window {
@@ -220,7 +228,6 @@ const { getUser, user } = useUsers();
 const loading = ref(true);
 const userId = ref<string | number>(Array.isArray(route.params.id) ? route.params.id[0] : route.params.id);
 const copied = ref(false);
-const qrCanvas = ref<HTMLCanvasElement | null>(null);
 
 /**
  * Get the user link using item UUID
@@ -230,39 +237,6 @@ const getUserLink = (): string => {
     return `https://pulse-plus.com/user/info/${user.value.item.uuid}`;
 };
 
-/**
- * Generate QR code on the canvas from item UUID (encodes the full URL)
- */
-const generateQRCode = async (): Promise<void> => {
-    await nextTick();
-    if (qrCanvas.value && user.value?.item?.uuid) {
-        await QRCode.toCanvas(qrCanvas.value, getUserLink(), {
-            width: 220,
-            margin: 2,
-            color: { dark: '#000000', light: '#ffffff' },
-        });
-    }
-};
-
-/**
- * Download the QR code as PNG
- */
-const downloadQRCode = (): void => {
-    if (!qrCanvas.value || !user.value?.item) {
-        if (window.showErrorToast) {
-            window.showErrorToast('QR Code not available');
-        }
-        return;
-    }
-    const link = document.createElement('a');
-    link.download = `item-qr-${user.value.item.uuid}.png`;
-    link.href = qrCanvas.value.toDataURL('image/png');
-    link.click();
-
-    if (window.showSuccessToast) {
-        window.showSuccessToast('QR Code downloaded successfully!');
-    }
-};
 
 /**
  * Copy user link to clipboard
@@ -296,10 +270,7 @@ const loadUser = async (): Promise<void> => {
         if (!user.value) {
             window.showErrorToast('User not found');
             await router.push('/dash/users');
-            return;
         }
-
-        await generateQRCode();
     } catch (error: any) {
         const errorMsg = error?.response?.data?.message || 'Failed to load user';
         window.showErrorToast(errorMsg);

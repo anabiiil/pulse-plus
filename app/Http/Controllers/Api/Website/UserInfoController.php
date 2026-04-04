@@ -22,8 +22,8 @@ class UserInfoController extends Controller
         }
         app()->setLocale($locale);
 
-        // Find user by hash_url (UUID)
-        $user = User::where('hash_url', $uuid)
+        // Find user by the assigned item's UUID
+        $user = User::whereHas('item', fn ($q) => $q->where('uuid', $uuid))
             ->with(['country', 'diseases', 'medicalInfo'])
             ->first();
 

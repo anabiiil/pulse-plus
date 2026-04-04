@@ -43,13 +43,9 @@
                                     </template>
 
                                     <template #item.name="{ item }">
-                                        <router-link :to="`/dash/users/${item.id}/show`" class="text-primary">
+                                        <router-link :to="`/dash/users/${item.id}/show`" class="text-primary fw-semibold">
                                             {{ item.name }}
                                         </router-link>
-                                    </template>
-
-                                    <template #item.email="{ item }">
-                                        {{ item.email }}
                                     </template>
 
                                     <template #item.phone="{ item }">
@@ -130,13 +126,7 @@ const {
 } = useUsers();
 
 const headers = [
-    {
-        align: 'start',
-        key: 'name',
-        sortable: true,
-        title: 'Name',
-    },
-    { key: 'email', title: 'Email', sortable: true },
+    { align: 'start', key: 'name', sortable: true, title: 'Name' },
     { key: 'phone', title: 'Phone', sortable: false },
     { key: 'country', title: 'Country', sortable: false },
     { key: 'created_at', title: 'Created At', sortable: true },

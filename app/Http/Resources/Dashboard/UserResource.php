@@ -36,6 +36,8 @@ class UserResource extends JsonResource
                 'status' => $this->item->status->value,
                 'qr_code_path' => $this->item->qr_code_path,
             ]),
+            'profile_image' => $this->profile_image,
+            'profile_image_url' => $this->profile_image_url,
             'status' => (bool) $this->status,
             'hash_url' => $this->hash_url,
             'qr_code' => $this->qr_code,

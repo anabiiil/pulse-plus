@@ -15,6 +15,23 @@
             </div>
             <div class="card-body">
                 <div class="row">
+                    <!-- Profile Image -->
+                    <div class="col-md-12 mb-4 text-center">
+                        <div v-if="user.profile_image_url">
+                            <img
+                                :src="user.profile_image_url"
+                                :alt="user.name"
+                                class="rounded-circle border shadow"
+                                style="width: 120px; height: 120px; object-fit: cover;"
+                            >
+                        </div>
+                        <div v-else class="d-inline-flex align-items-center justify-content-center rounded-circle bg-secondary text-white border shadow"
+                             style="width: 120px; height: 120px; font-size: 3rem;">
+                            <i class="fe fe-user"></i>
+                        </div>
+                        <p class="mt-2 fw-bold fs-5">{{ user.name }}</p>
+                    </div>
+
                     <!-- Basic Information -->
                     <div class="col-md-12">
                         <h5 class="mb-3">Basic Information</h5>

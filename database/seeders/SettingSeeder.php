@@ -15,17 +15,17 @@ class SettingSeeder extends Seeder
     {
         $settings = [
             // Project Information
-            [
-                'title' => [
-                    'en' => 'Project Title',
-                    'ar' => 'عنوان المشروع',
-                ],
-                'slug' => 'project_title',
-                'content' => [
-                    'en' => 'Pulse - Healthcare Management System',
-                    'ar' => 'بالس - نظام إدارة الرعاية الصحية',
-                ],
-            ],
+//            [
+//                'title' => [
+//                    'en' => 'Project Title',
+//                    'ar' => 'عنوان المشروع',
+//                ],
+//                'slug' => 'project_title',
+//                'content' => [
+//                    'en' => 'Pulse - Healthcare Management System',
+//                    'ar' => 'بالس - نظام إدارة الرعاية الصحية',
+//                ],
+//            ],
 
             // Contact Information
             [
@@ -57,8 +57,8 @@ class SettingSeeder extends Seeder
                 ],
                 'slug' => 'email',
                 'content' => [
-                    'en' => 'contact@pulse.com',
-                    'ar' => 'contact@pulse.com',
+                    'en' => 'info@pulse-plus.com',
+                    'ar' => 'info@pulse-plus.com',
                 ],
             ],
 

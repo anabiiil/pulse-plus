@@ -112,6 +112,26 @@
                                      :style="{ width: profileCompletion + '%' }"></div>
                             </div>
                         </div>
+
+                        <!-- Mobile Tab Switcher -->
+                        <div class="flex gap-3">
+                            <button
+                                @click="activeTab = 'personal'"
+                                :class="activeTab === 'personal' ? 'bg-teal-500 text-white shadow-xl' : 'bg-gray-100 text-[#123057]'"
+                                class="flex-1 flex items-center justify-center gap-2 rounded-2xl px-4 py-3 font-semibold transition-all duration-300"
+                            >
+                                <i class="pi pi-user text-[18px]"></i>
+                                <span class="text-sm">{{ t.profile.personalInfo.title }}</span>
+                            </button>
+                            <button
+                                @click="activeTab = 'medical'"
+                                :class="activeTab === 'medical' ? 'bg-teal-500 text-white shadow-xl' : 'bg-gray-100 text-[#123057]'"
+                                class="flex-1 flex items-center justify-center gap-2 rounded-2xl px-4 py-3 font-semibold transition-all duration-300"
+                            >
+                                <i class="pi pi-heart text-[18px]"></i>
+                                <span class="text-sm">{{ t.profile.medicalData?.title || 'البيانات الطبية' }}</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
 

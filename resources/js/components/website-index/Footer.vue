@@ -32,10 +32,12 @@
           <h3 class="font-semibold mb-2">{{ appStore.t.footer.contactUs }}</h3>
           <!-- Email and Phone with LTR direction -->
           <p class="text-sm" dir="ltr" style="text-align: inherit;">
-            {{ getSettingContent('contact_email') || 'info@pulse-plus.com' }}
+            <i class="pi pi-envelope mx-1 text-[14px]"></i>
+            {{ getSettingContent('email') || 'info@pulse-plus.com' }}
           </p>
           <p class="text-sm" dir="ltr" style="text-align: inherit;">
-            {{ getSettingContent('contact_phone') || '+2 01022335566' }}
+            <i class="pi pi-phone mx-1 text-[14px]"></i>
+            {{ getSettingContent('phone') || '01555227756 / 01550111555' }}
           </p>
         </div>
       </div>

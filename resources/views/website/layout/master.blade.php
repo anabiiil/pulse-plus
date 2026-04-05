@@ -23,7 +23,7 @@
     </div>
 </div>
 <div class="flex items-center text-white font-bold justify-center p-4 gap-10 w-full bg-[#03315A]">
-    <p class="[direction:ltr]"><i class="pi pi-phone text-white mx-2 text-[18px]"></i> +2 01022335566  </p>
+    <p class="[direction:ltr]"><i class="pi pi-phone text-white mx-2 text-[18px]"></i> 01555227756 / 01550111555  </p>
     <p class="[direction:ltr]"><i class="pi pi-envelope text-white mx-2 text-[18px]"></i> info@pulse-plus.com </p>
 </div>
 <!-- nav -->
@@ -261,7 +261,7 @@
             <div>
                 <h3 class="font-semibold mb-2">تواصل معنا</h3>
                 <p class="text-sm">info@pulse-plus.com</p>
-                <p class="text-sm">+2 01022335566</p>
+                <p class="text-sm">01555227756 / 01550111555</p>
             </div>
         </div>
 

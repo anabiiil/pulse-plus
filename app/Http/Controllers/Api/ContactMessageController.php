@@ -189,7 +189,7 @@ class ContactMessageController extends Controller
         return response()->json([
             'success' => true,
             'data' => [
-                'phone' => $phone ? $phone->getTranslation('content', $locale) : '+2 01022335566',
+                'phone' => $phone ? $phone->getTranslation('content', $locale) : '01555227756 / 01550111555',
                 'email' => $email ? $email->getTranslation('content', $locale) : 'info@pulse-plus.com',
                 'address' => $address ? $address->getTranslation('content', $locale) : ($locale === 'ar' ? 'القاهرة، جمهورية مصر العربية' : 'Cairo, Arab Republic of Egypt'),
             ]

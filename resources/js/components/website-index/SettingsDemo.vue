@@ -38,7 +38,7 @@
             {{ appStore.locale === 'ar' ? 'الهاتف:' : 'Phone:' }}
           </span>
           <span dir="ltr" style="text-align: inherit;" class="text-gray-700">
-            {{ getSettingContent('contact_phone') || '+2 01022335566' }}
+            {{ getSettingContent('contact_phone') || '01555227756 / 01550111555' }}
           </span>
         </div>
 

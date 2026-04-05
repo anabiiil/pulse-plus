@@ -185,7 +185,7 @@ const form = reactive({
 const errors = ref<any>({});
 const submitting = ref(false);
 const contactInfo = ref({
-    phone: '+2 01022335566',
+    phone: '01555227756 / 01550111555',
     email: 'info@pulse-plus.com',
     address: websiteStore.locale === 'ar' ? 'القاهرة، جمهورية مصر العربية' : 'Cairo, Arab Republic of Egypt'
 });

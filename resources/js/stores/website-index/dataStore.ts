@@ -105,7 +105,7 @@ export const useDataStore = defineStore('website-index-data', () => {
             console.error('Error fetching settings:', error);
             // Fallback to mock data if API fails
             settings.value = {
-                phone: { content: '+2 01022335566' },
+                phone: { content: '01555227756 / 01550111555' },
                 email: { content: 'info@pulse-plus.com' },
             };
         } finally {

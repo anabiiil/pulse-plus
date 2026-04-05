@@ -2,11 +2,11 @@
   <div class="flex items-center text-white font-bold justify-center p-4 gap-10 w-full bg-[#03315A]">
     <p class="[direction:ltr]">
       <i class="pi pi-phone text-white mx-2 text-[18px]"></i>
-      {{ getSettingContent('contact_phone') || '+2 01022335566' }}
+      {{ getSettingContent('phone') || '01555227756 / 01550111555' }}
     </p>
     <p class="[direction:ltr]">
       <i class="pi pi-envelope text-white mx-2 text-[18px]"></i>
-      {{ getSettingContent('contact_email') || 'info@pulse-plus.com' }}
+      {{ getSettingContent('email') || 'info@pulse-plus.com' }}
     </p>
   </div>
 </template>

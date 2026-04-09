@@ -37,11 +37,20 @@ class ItemController extends Controller
         $search = $request->get('search');
         $forUser = (bool) $request->get('for_user', false);
 
+        $currentItemId = (int) $request->get('current_item_id', 0);
+
         $perPage = $perPage === -1 ? (Item::count() ?: self::DEFAULT_PER_PAGE) : $perPage;
 
         $items = Item::query()
             ->with('user')
-            ->when($forUser, fn ($query) => $query->where('status', ItemStatusEnum::Active))
+            ->when($forUser, function ($query) use ($currentItemId) {
+                $query->where(function ($q) use ($currentItemId) {
+                    $q->where('status', ItemStatusEnum::Active);
+                    if ($currentItemId) {
+                        $q->orWhere('id', $currentItemId);
+                    }
+                });
+            })
             ->when($search, fn ($query) => $query->where('name', 'like', "%{$search}%")
                 ->orWhere('uuid', 'like', "%{$search}%"))
             ->orderBy($sortBy, $sortDesc)

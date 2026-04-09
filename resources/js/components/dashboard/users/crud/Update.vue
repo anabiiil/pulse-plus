@@ -211,15 +211,14 @@ const loadCountries = async () => {
 
 const loadItems = async () => {
     try {
-        const response = await axios.get('/items', { params: { per_page: -1, for_user: 1 } });
-        const activeItems = response.data.data || [];
+        const params: Record<string, any> = { per_page: -1, for_user: 1 };
 
-        // Always include the currently assigned item even if it's 'used'
-        if (user.value?.item && !activeItems.find((i: any) => i.id === user.value!.item_id)) {
-            activeItems.unshift(user.value.item);
+        if (formData.item_id) {
+            params.current_item_id = formData.item_id;
         }
 
-        availableItems.value = activeItems;
+        const response = await axios.get('/items', { params });
+        availableItems.value = response.data.data || [];
     } catch (error) {
         console.error('Failed to load items:', error);
     }

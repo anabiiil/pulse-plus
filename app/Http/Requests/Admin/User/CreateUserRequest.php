@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin\User;
 
+use App\Support\Enums\Item\ItemStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -20,7 +21,9 @@ class CreateUserRequest extends FormRequest
      */
     public function rules(): array
     {
-        $userId = $this->route('user') ? $this->route('user')->id : null;
+        $routeUser = $this->route('user');
+        $userId = $routeUser ? $routeUser->id : null;
+        $currentItemId = $routeUser ? $routeUser->item_id : null;
 
         return [
             'name' => 'required|string|max:250',
@@ -37,7 +40,15 @@ class CreateUserRequest extends FormRequest
             ],
             'password' => $userId ? 'nullable|string|min:8' : 'required|string|min:8',
             'country_id' => 'nullable|exists:countries,id',
-            'item_id' => 'nullable|exists:items,id',
+            'item_id' => [
+                'nullable',
+                Rule::exists('items', 'id')->where(function ($query) use ($currentItemId) {
+                    $query->where('status', ItemStatusEnum::Active->value);
+                    if ($currentItemId) {
+                        $query->orWhere('id', $currentItemId);
+                    }
+                }),
+            ],
             'address' => 'nullable|string',
             'birthdate' => 'nullable|date',
             'gender' => 'nullable|in:male,female',
@@ -61,6 +72,7 @@ class CreateUserRequest extends FormRequest
             'password.required' => 'The password is required.',
             'password.min' => 'The password must be at least 8 characters.',
             'country_id.exists' => 'The selected country is invalid.',
+            'item_id.exists' => 'The selected item is not available or is already assigned to another user.',
             'birthdate.date' => 'Please provide a valid date.',
             'gender.in' => 'Gender must be either male or female.',
         ];

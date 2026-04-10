@@ -105,6 +105,20 @@
                                                         </router-link>
                                                     </v-list-item-title>
                                                 </v-list-item>
+                                                <v-list-item v-if="item.subscription">
+                                                    <v-list-item-title>
+                                                        <a href="#" class="text-warning" @click.prevent="openUpdateDates(item)">
+                                                            <i class="fe fe-calendar me-2"></i> Update Dates
+                                                        </a>
+                                                    </v-list-item-title>
+                                                </v-list-item>
+                                                <v-list-item v-if="item.subscription">
+                                                    <v-list-item-title>
+                                                        <a href="#" class="text-success" @click.prevent="openRenew(item)">
+                                                            <i class="fe fe-refresh-cw me-2"></i> Renew Plan
+                                                        </a>
+                                                    </v-list-item-title>
+                                                </v-list-item>
                                                 <v-list-item>
                                                     <v-list-item-title>
                                                         <router-link :to="{ path: `/dash/users/${item.id}/delete` }" class="text-danger">
@@ -123,15 +137,29 @@
             </div>
         </div>
     </div>
+
+    <UpdateSubscriptionDatesModal
+        v-model="showUpdateDatesModal"
+        :user="selectedUser"
+        @updated="onSubscriptionUpdated"
+    />
+
+    <RenewSubscriptionModal
+        v-model="showRenewModal"
+        :user="selectedUser"
+        @renewed="onSubscriptionUpdated"
+    />
 </template>
 
 <script setup lang="ts">
 
+import { ref, onMounted } from 'vue';
 import { useHead } from "@vueuse/head";
 import { StatusEnum } from "../../../enums/StatusEnum";
 import { useUsers } from "../../../composables/useUsers";
-import { onMounted } from "vue";
 import { formatDate } from "../../../main/date";
+import UpdateSubscriptionDatesModal from "./modals/UpdateSubscriptionDatesModal.vue";
+import RenewSubscriptionModal from "./modals/RenewSubscriptionModal.vue";
 
 useHead({
     title: 'Users',
@@ -146,6 +174,30 @@ const {
     fetchUsers,
     handleTableOptionsChange,
 } = useUsers();
+
+const selectedUser = ref<any>(null);
+const showUpdateDatesModal = ref(false);
+const showRenewModal = ref(false);
+
+const openUpdateDates = (user: any): void => {
+    selectedUser.value = user;
+    showUpdateDatesModal.value = true;
+};
+
+const openRenew = (user: any): void => {
+    selectedUser.value = user;
+    showRenewModal.value = true;
+};
+
+/**
+ * Refresh the updated user row in the table in-place.
+ */
+const onSubscriptionUpdated = (updatedUser: any): void => {
+    const index = users.value.findIndex((u: any) => u.id === updatedUser.id);
+    if (index !== -1) {
+        users.value[index] = updatedUser;
+    }
+};
 
 const headers = [
     { align: 'start', key: 'name', sortable: true, title: 'Name' },

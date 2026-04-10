@@ -35,6 +35,8 @@ Route::group(
         Route::apiResource('sliders', SliderController::class);
         Route::apiResource('items', ItemController::class);
         Route::apiResource('users', UserController::class);
+        Route::patch('users/{user}/subscription/dates', [UserController::class, 'updateSubscriptionDates']);
+        Route::post('users/{user}/subscription/renew', [UserController::class, 'renewSubscription']);
         Route::apiResource('subscriptions', SubscriptionController::class);
         Route::apiResource('settings', SettingController::class);
         Route::get('settings/slug/{slug}', [SettingController::class, 'getBySlug']);

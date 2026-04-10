@@ -237,6 +237,14 @@
                         <router-link :to="`/dash/users/${user.id}/edit`" class="btn btn-primary me-2">
                             <i class="fe fe-edit"></i> Edit User
                         </router-link>
+                        <template v-if="user.subscription">
+                            <button class="btn btn-warning me-2" @click="showUpdateDatesModal = true">
+                                <i class="fe fe-calendar"></i> Update Dates
+                            </button>
+                            <button class="btn btn-success me-2" @click="showRenewModal = true">
+                                <i class="fe fe-refresh-cw"></i> Renew Plan
+                            </button>
+                        </template>
                         <router-link :to="`/dash/users/${user.id}/delete`" class="btn btn-danger">
                             <i class="fe fe-trash"></i> Delete User
                         </router-link>
@@ -249,6 +257,19 @@
     <div v-else-if="loading" class="text-center py-4">
         <v-progress-circular indeterminate color="primary"></v-progress-circular>
     </div>
+
+    <UpdateSubscriptionDatesModal
+        v-model="showUpdateDatesModal"
+        :user="user"
+        @updated="onSubscriptionUpdated"
+    />
+
+    <RenewSubscriptionModal
+        v-model="showRenewModal"
+        :user="user"
+        @renewed="onSubscriptionUpdated"
+    />
+
 </template>
 
 <script setup lang="ts">
@@ -259,6 +280,8 @@ import { useHead } from '@vueuse/head';
 import { useUsers } from '../../../../composables/useUsers';
 import { formatDate } from '../../../../main/date';
 import { StatusEnum } from '../../../../enums/StatusEnum';
+import UpdateSubscriptionDatesModal from '../modals/UpdateSubscriptionDatesModal.vue';
+import RenewSubscriptionModal from '../modals/RenewSubscriptionModal.vue';
 
 declare global {
     interface Window {
@@ -278,6 +301,17 @@ const { getUser, user } = useUsers();
 const loading = ref(true);
 const userId = ref<string | number>(Array.isArray(route.params.id) ? route.params.id[0] : route.params.id);
 const copied = ref(false);
+const showUpdateDatesModal = ref(false);
+const showRenewModal = ref(false);
+
+/**
+ * Merge updated user data (e.g. subscription) into the current user ref.
+ */
+const onSubscriptionUpdated = (updatedUser: any): void => {
+    if (user.value) {
+        user.value = { ...user.value, subscription: updatedUser.subscription };
+    }
+};
 
 /**
  * Get the user link using item UUID

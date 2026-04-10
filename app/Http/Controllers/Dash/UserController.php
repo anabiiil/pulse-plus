@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dash;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\User\CreateUserRequest;
+use App\Http\Requests\Admin\User\UpdateSubscriptionDatesRequest;
 use App\Http\Resources\Dashboard\UserResource;
 use App\Models\Item;
 use App\Models\Subscription;
@@ -168,6 +169,45 @@ class UserController extends Controller
 
             return $this->responseData([], msg: 'user deleted successfully');
         });
+    }
+
+    /**
+     * Manually update the start and end dates of the user's active subscription.
+     */
+    public function updateSubscriptionDates(UpdateSubscriptionDatesRequest $request, User $user): \Illuminate\Http\JsonResponse
+    {
+        $user->load('latestSubscription');
+
+        if (! $user->latestSubscription) {
+            return $this->responseData([], msg: 'User has no subscription to update.', statusCode: 422);
+        }
+
+        $user->latestSubscription->update([
+            'start_date' => $request->validated('start_date'),
+            'end_date' => $request->validated('end_date'),
+        ]);
+
+        $user->load('latestSubscription.subscription');
+
+        return $this->responseData(new UserResource($user));
+    }
+
+    /**
+     * Renew the user's current subscription from today, ending the previous record.
+     */
+    public function renewSubscription(User $user): \Illuminate\Http\JsonResponse
+    {
+        $user->load('latestSubscription');
+
+        if (! $user->latestSubscription) {
+            return $this->responseData([], msg: 'User has no subscription to renew.', statusCode: 422);
+        }
+
+        $this->assignSubscription($user, $user->latestSubscription->subscription_id);
+
+        $user->load('latestSubscription.subscription');
+
+        return $this->responseData(new UserResource($user));
     }
 
     /**

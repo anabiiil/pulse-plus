@@ -10,6 +10,7 @@ use App\Models\Subscription;
 use App\Models\User;
 use App\Models\UserSubscription;
 use App\Support\Enums\Item\ItemStatusEnum;
+use App\Support\Enums\User\UserSubscriptionStatusEnum;
 use App\Support\Traits\Api\ApiResponseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -170,7 +171,8 @@ class UserController extends Controller
     }
 
     /**
-     * Create a new user_subscription record based on subscription months.
+     * Create a new user_subscription record based on subscription months,
+     * ending any previously active subscriptions first.
      */
     private function assignSubscription(User $user, int $subscriptionId): void
     {
@@ -180,6 +182,12 @@ class UserController extends Controller
             return;
         }
 
+        // End all currently active subscriptions for this user
+        UserSubscription::query()
+            ->where('user_id', $user->id)
+            ->where('status', UserSubscriptionStatusEnum::Active)
+            ->update(['status' => UserSubscriptionStatusEnum::Ended->value]);
+
         $startDate = Carbon::today();
         $endDate = $startDate->copy()->addMonths($subscription->months);
 
@@ -188,6 +196,7 @@ class UserController extends Controller
             'subscription_id' => $subscriptionId,
             'start_date' => $startDate,
             'end_date' => $endDate,
+            'status' => UserSubscriptionStatusEnum::Active->value,
         ]);
     }
 }

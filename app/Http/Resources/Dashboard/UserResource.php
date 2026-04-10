@@ -44,6 +44,9 @@ class UserResource extends JsonResource
                     'subscription_name' => $this->latestSubscription->subscription?->name,
                     'start_date' => $this->latestSubscription->start_date?->toDateString(),
                     'end_date' => $this->latestSubscription->end_date?->toDateString(),
+                    'status' => $this->latestSubscription->status->value,
+                    'status_label' => $this->latestSubscription->status->label(),
+                    'status_color' => $this->latestSubscription->status->color(),
                 ]
             ),
             'profile_image' => $this->profile_image,

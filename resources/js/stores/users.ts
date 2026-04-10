@@ -29,6 +29,9 @@ interface User {
         subscription_name: string | null;
         start_date: string;
         end_date: string;
+        status: string;
+        status_label: string;
+        status_color: string;
     } | null;
     status: string;
     hash_url?: string;

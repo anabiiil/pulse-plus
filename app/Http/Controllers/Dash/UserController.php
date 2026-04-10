@@ -45,7 +45,7 @@ class UserController extends Controller
         $perPage = $perPage === -1 ? (User::count() ?: self::DEFAULT_PER_PAGE) : $perPage;
 
         $users = User::query()
-            ->with('country', 'item')
+            ->with('country', 'item', 'latestSubscription.subscription')
             ->when($search, fn ($query) => $query->where('name', 'like', "%{$search}%")
                 ->orWhere('email', 'like', "%{$search}%")
                 ->orWhere('phone', 'like', "%{$search}%"))

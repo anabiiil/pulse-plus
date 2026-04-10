@@ -56,6 +56,31 @@
                                         {{ item.country?.name || '-' }}
                                     </template>
 
+                                    <template #item.item_link="{ item }">
+                                        <a
+                                            v-if="item.item?.uuid"
+                                            :href="`https://pulse-plus.com/user/info/${item.item.uuid}`"
+                                            target="_blank"
+                                            class="text-info fw-semibold text-decoration-none"
+                                        >
+                                            <i class="fe fe-link me-1"></i>Item Link
+                                        </a>
+                                        <span v-else class="text-muted">-</span>
+                                    </template>
+
+                                    <template #item.subscription="{ item }">
+                                        <div v-if="item.subscription">
+                                            <div class="fw-semibold">{{ item.subscription.subscription_name }}</div>
+                                            <div class="text-muted" style="font-size: 0.75rem;">
+                                                {{ item.subscription.start_date }} → {{ item.subscription.end_date }}
+                                            </div>
+                                            <span class="badge" :class="item.subscription.status_color" style="font-size: 0.7rem;">
+                                                {{ item.subscription.status_label }}
+                                            </span>
+                                        </div>
+                                        <span v-else class="text-muted">-</span>
+                                    </template>
+
                                     <template #item.status="{ item }">
                                         <span class="badge" :class="StatusEnum.getClass(item.status)">
                                             {{ StatusEnum.getLabel(item.status) }}
@@ -129,6 +154,8 @@ const headers = [
     { align: 'start', key: 'name', sortable: true, title: 'Name' },
     { key: 'phone', title: 'Phone', sortable: false },
     { key: 'country', title: 'Country', sortable: false },
+    { key: 'item_link', title: 'Item Link', sortable: false },
+    { key: 'subscription', title: 'Subscription', sortable: false },
     { key: 'created_at', title: 'Created At', sortable: true },
     { key: 'status', title: 'Status', sortable: true },
     { key: 'actions', title: 'Actions', sortable: false },

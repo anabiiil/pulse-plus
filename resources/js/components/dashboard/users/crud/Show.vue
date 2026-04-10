@@ -199,6 +199,39 @@
                         </div>
                     </div>
 
+                    <!-- Subscription Details -->
+                    <div class="col-md-12 mt-4">
+                        <h5 class="mb-3">Subscription</h5>
+                    </div>
+
+                    <template v-if="user.subscription">
+                        <div class="col-md-6 mb-3">
+                            <div class="info-item">
+                                <label class="text-muted">Subscription Plan:</label>
+                                <p class="fw-bold">{{ user.subscription.subscription_name || '-' }}</p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <div class="info-item">
+                                <label class="text-muted">Period &amp; Status:</label>
+                                <div class="d-flex align-items-center gap-2 flex-wrap mt-1">
+                                    <span class="fw-bold">{{ user.subscription.start_date }}</span>
+                                    <span class="text-muted">→</span>
+                                    <span class="fw-bold">{{ user.subscription.end_date }}</span>
+                                    <span class="badge" :class="user.subscription.status_color">
+                                        {{ user.subscription.status_label }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                    <div v-else class="col-md-12 mb-3">
+                        <div class="info-item">
+                            <p class="text-muted fst-italic">No active subscription assigned to this user.</p>
+                        </div>
+                    </div>
+
                     <!-- Action Buttons -->
                     <div class="col-md-12 text-center mt-4">
                         <router-link :to="`/dash/users/${user.id}/edit`" class="btn btn-primary me-2">

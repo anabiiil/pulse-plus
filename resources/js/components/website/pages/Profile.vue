@@ -559,7 +559,7 @@
                             <div
                                 v-for="file in medicalFiles"
                                 :key="file.id"
-                                class="bg-gray-50 rounded-3xl p-5 shadow-md flex items-start gap-4 relative group"
+                                class="bg-gray-50 rounded-3xl p-5 shadow-md flex items-start gap-4 relative"
                             >
                                 <!-- File image or icon -->
                                 <div class="shrink-0">
@@ -585,7 +585,13 @@
                                         <i class="pi pi-user me-1"></i>{{ file.doctor }}
                                     </p>
                                     <p class="text-xs text-gray-400 mt-1">{{ file.created_at }}</p>
-                                    <span class="inline-block mt-2 text-xs font-semibold px-3 py-1 rounded-full bg-teal-100 text-teal-700">{{ file.category_label }}</span>
+                                    <span
+                                        :class="file.is_active ? 'bg-teal-100 text-teal-700' : 'bg-gray-200 text-gray-400'"
+                                        class="inline-flex items-center gap-1.5 mt-2 text-xs font-semibold px-3 py-1 rounded-full"
+                                    >
+                                        <span :class="file.is_active ? 'bg-teal-500' : 'bg-gray-400'" class="w-1.5 h-1.5 rounded-full inline-block"></span>
+                                        {{ file.category_label }}
+                                    </span>
                                 </div>
                                 <!-- Actions -->
                                 <div class="flex flex-col gap-2 shrink-0">
@@ -595,14 +601,6 @@
                                         :title="isRTL ? 'تعديل' : 'Edit'"
                                     >
                                         <i class="pi pi-pencil text-xs"></i>
-                                    </button>
-                                    <button
-                                        @click="toggleFileActive(file)"
-                                        :class="file.is_active ? 'bg-yellow-100 text-yellow-600 hover:bg-yellow-200' : 'bg-green-100 text-green-600 hover:bg-green-200'"
-                                        class="w-8 h-8 rounded-full flex items-center justify-center transition"
-                                        :title="file.is_active ? (isRTL ? 'إخفاء' : 'Deactivate') : (isRTL ? 'تفعيل' : 'Activate')"
-                                    >
-                                        <i :class="`pi ${file.is_active ? 'pi-eye-slash' : 'pi-eye'} text-xs`"></i>
                                     </button>
                                     <button
                                         @click="confirmDeleteFile(file)"

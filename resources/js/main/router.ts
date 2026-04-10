@@ -230,6 +230,33 @@ const routes = [
         ],
     },
 
+    // Subscriptions routes with nested CRUD operations
+    {
+        path: '/dash/subscriptions',
+        children: [
+            {
+                path: '',
+                name: 'subscriptions.list',
+                component: () => import('../components/dashboard/subscriptions/List.vue'),
+            },
+            {
+                path: 'create',
+                name: 'subscriptions.create',
+                component: () => import('../components/dashboard/subscriptions/crud/Create.vue'),
+            },
+            {
+                path: ':id/edit',
+                name: 'subscriptions.update',
+                component: () => import('../components/dashboard/subscriptions/crud/Update.vue'),
+            },
+            {
+                path: ':id/delete',
+                name: 'subscriptions.delete',
+                component: () => import('../components/dashboard/subscriptions/crud/Delete.vue'),
+            },
+        ],
+    },
+
     // Contact Messages routes
     {
         path: '/dash/contact-messages',

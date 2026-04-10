@@ -9,6 +9,7 @@ use App\Http\Controllers\Dash\ProductController;
 use App\Http\Controllers\Dash\ServiceController;
 use App\Http\Controllers\Dash\SettingController;
 use App\Http\Controllers\Dash\SliderController;
+use App\Http\Controllers\Dash\SubscriptionController;
 use App\Http\Controllers\Dash\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +35,7 @@ Route::group(
         Route::apiResource('sliders', SliderController::class);
         Route::apiResource('items', ItemController::class);
         Route::apiResource('users', UserController::class);
+        Route::apiResource('subscriptions', SubscriptionController::class);
         Route::apiResource('settings', SettingController::class);
         Route::get('settings/slug/{slug}', [SettingController::class, 'getBySlug']);
 

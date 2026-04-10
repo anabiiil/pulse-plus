@@ -95,6 +95,13 @@
       "_pinia-NF7X4YwP.js"
     ]
   },
+  "_useSubscriptions-BfvEL_D9.js": {
+    "file": "assets/useSubscriptions-BfvEL_D9.js",
+    "name": "useSubscriptions",
+    "imports": [
+      "_pinia-NF7X4YwP.js"
+    ]
+  },
   "_useUsers-ug-mCfSo.js": {
     "file": "assets/useUsers-ug-mCfSo.js",
     "name": "useUsers",
@@ -141,7 +148,7 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-Cs4fssUv.js",
+    "file": "assets/app-Cs1R_zJ5.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -182,10 +189,14 @@
       "resources/js/components/dashboard/items/crud/Show.vue",
       "resources/js/components/dashboard/items/crud/Update.vue",
       "resources/js/components/dashboard/items/crud/Delete.vue",
+      "resources/js/components/dashboard/subscriptions/List.vue",
+      "resources/js/components/dashboard/subscriptions/crud/Create.vue",
+      "resources/js/components/dashboard/subscriptions/crud/Update.vue",
+      "resources/js/components/dashboard/subscriptions/crud/Delete.vue",
       "resources/js/components/admin/pages/ContactMessages/List.vue"
     ],
     "css": [
-      "assets/app-0lPRuMrB.css"
+      "assets/app-BSsodIg1.css"
     ]
   },
   "resources/js/components/admin/pages/ContactMessages/List.vue": {
@@ -461,7 +472,7 @@
     ]
   },
   "resources/js/components/dashboard/slider/crud/Update.vue": {
-    "file": "assets/Update-DhzIiUty.js",
+    "file": "assets/Update-Ctw3iXYF.js",
     "name": "Update",
     "src": "resources/js/components/dashboard/slider/crud/Update.vue",
     "isDynamicEntry": true,
@@ -471,7 +482,7 @@
     ]
   },
   "resources/js/components/dashboard/sliders/List.vue": {
-    "file": "assets/List-D-i8WgtR.js",
+    "file": "assets/List-Bw_2Ypvh.js",
     "name": "List",
     "src": "resources/js/components/dashboard/sliders/List.vue",
     "isDynamicEntry": true,
@@ -512,8 +523,49 @@
       "_useSliders-DMZDVxH_.js"
     ]
   },
+  "resources/js/components/dashboard/subscriptions/List.vue": {
+    "file": "assets/List-CNodHdZ3.js",
+    "name": "List",
+    "src": "resources/js/components/dashboard/subscriptions/List.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_pinia-NF7X4YwP.js",
+      "_StatusEnum-C57FGDSg.js",
+      "_useSubscriptions-BfvEL_D9.js"
+    ]
+  },
+  "resources/js/components/dashboard/subscriptions/crud/Create.vue": {
+    "file": "assets/Create-eyYS5eUv.js",
+    "name": "Create",
+    "src": "resources/js/components/dashboard/subscriptions/crud/Create.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_pinia-NF7X4YwP.js",
+      "_useSubscriptions-BfvEL_D9.js"
+    ]
+  },
+  "resources/js/components/dashboard/subscriptions/crud/Delete.vue": {
+    "file": "assets/Delete-B2S0DTlh.js",
+    "name": "Delete",
+    "src": "resources/js/components/dashboard/subscriptions/crud/Delete.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_pinia-NF7X4YwP.js",
+      "_useSubscriptions-BfvEL_D9.js"
+    ]
+  },
+  "resources/js/components/dashboard/subscriptions/crud/Update.vue": {
+    "file": "assets/Update-CfqfR_Mm.js",
+    "name": "Update",
+    "src": "resources/js/components/dashboard/subscriptions/crud/Update.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_pinia-NF7X4YwP.js",
+      "_useSubscriptions-BfvEL_D9.js"
+    ]
+  },
   "resources/js/components/dashboard/users/List.vue": {
-    "file": "assets/List-BXoOOucH.js",
+    "file": "assets/List-C4sawy_S.js",
     "name": "List",
     "src": "resources/js/components/dashboard/users/List.vue",
     "isDynamicEntry": true,
@@ -545,7 +597,7 @@
     ]
   },
   "resources/js/components/dashboard/users/crud/Show.vue": {
-    "file": "assets/Show-Ct8RZOxI.js",
+    "file": "assets/Show-BANWOCaP.js",
     "name": "Show",
     "src": "resources/js/components/dashboard/users/crud/Show.vue",
     "isDynamicEntry": true,
@@ -560,7 +612,7 @@
     ]
   },
   "resources/js/components/dashboard/users/crud/Update.vue": {
-    "file": "assets/Update-DMRiz4iS.js",
+    "file": "assets/Update-Br7wWfdL.js",
     "name": "Update",
     "src": "resources/js/components/dashboard/users/crud/Update.vue",
     "isDynamicEntry": true,

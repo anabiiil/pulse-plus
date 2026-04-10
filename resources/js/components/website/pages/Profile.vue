@@ -85,6 +85,27 @@
 <!--                                    <i :class="isRTL ? 'pi-angle-left' : 'pi-angle-right'" class="pi"></i>-->
 <!--                                </div>-->
 <!--                            </div>-->
+
+                            <!-- Medical Archive Tab (visible only with active subscription) -->
+                            <div
+                                v-if="hasActiveSubscription"
+                                @click="activeTab = 'archive'"
+                                :class="activeTab === 'archive' ? 'bg-teal-500 text-white shadow-xl' : 'bg-gray-100 text-[#123057]'"
+                                class="cursor-pointer hover:scale-102 transition-transform duration-300 ease-in-out rounded-3xl px-7 py-6 flex items-center justify-between shadow-md"
+                            >
+                                <div class="flex items-center gap-3">
+                                    <div :class="activeTab === 'archive' ? 'bg-white' : 'bg-white shadow-2xl'" class="p-5 rounded-xl flex items-center justify-center">
+                                        <i :class="activeTab === 'archive' ? 'text-teal-500' : 'text-teal-500'" class="pi pi-folder text-[22px]"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold">{{ t.profile.medicalArchive?.title || 'الأرشيف الطبي' }}</p>
+                                        <p class="text-sm opacity-90">{{ t.profile.medicalArchive?.subtitle || 'الأشعة والتقارير والروشتات...' }}</p>
+                                    </div>
+                                </div>
+                                <div class="text-xl" :class="activeTab === 'archive' ? 'text-white' : 'text-gray-400'">
+                                    <i :class="isRTL ? 'pi-angle-left' : 'pi-angle-right'" class="pi"></i>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -130,6 +151,15 @@
                             >
                                 <i class="pi pi-heart text-[18px]"></i>
                                 <span class="text-sm">{{ t.profile.medicalData?.title || 'البيانات الطبية' }}</span>
+                            </button>
+                            <button
+                                v-if="hasActiveSubscription"
+                                @click="activeTab = 'archive'"
+                                :class="activeTab === 'archive' ? 'bg-teal-500 text-white shadow-xl' : 'bg-gray-100 text-[#123057]'"
+                                class="flex-1 flex items-center justify-center gap-2 rounded-2xl px-4 py-3 font-semibold transition-all duration-300"
+                            >
+                                <i class="pi pi-folder text-[18px]"></i>
+                                <span class="text-sm">{{ t.profile.medicalArchive?.title || 'الأرشيف الطبي' }}</span>
                             </button>
                         </div>
                     </div>
@@ -480,13 +510,31 @@
                         </form>
                     </div>
 
-                    <!-- Medical Archive Tab - Commented for future use -->
-                    <!--
-                    <div v-show="activeTab === 'archive'" class="bg-white p-10 rounded-[48px] shadow-xl">
-                        <h3 class="text-2xl font-bold mb-4">{{ t.profile.medicalArchive?.title || 'الأرشيف الطبي' }}</h3>
-                        <p class="text-gray-600">{{ t.profile.medicalArchive?.comingSoon || 'هذا القسم قيد التطوير...' }}</p>
+                    <!-- Medical Archive Tab -->
+                    <div v-show="activeTab === 'archive'" class="bg-white p-10 rounded-[48px] shadow-xl transform transition duration-500 hover:shadow-2xl">
+                        <div class="mb-8">
+                            <h3 class="text-2xl font-bold mb-2">{{ t.profile.medicalArchive?.title || 'الأرشيف الطبي' }}</h3>
+                            <p class="text-gray-500 text-[14px] font-semibold">{{ t.profile.medicalArchive?.subtitle || 'الأشعة والتقارير والروشتات...' }}</p>
+                        </div>
+
+                        <!-- Subscription badge -->
+                        <div class="flex items-center gap-3 bg-teal-50 border border-teal-200 rounded-2xl px-6 py-4 mb-8">
+                            <i class="pi pi-check-circle text-teal-500 text-[22px]"></i>
+                            <div>
+                                <p class="font-semibold text-teal-700">{{ authUser?.subscription?.subscription_name }}</p>
+                                <p class="text-sm text-teal-600">
+                                    {{ authUser?.subscription?.start_date }} — {{ authUser?.subscription?.end_date }}
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Empty state -->
+                        <div class="flex flex-col items-center justify-center py-16 text-center text-gray-400">
+                            <i class="pi pi-folder-open text-[60px] mb-4 text-gray-300"></i>
+                            <p class="text-lg font-semibold">{{ isRTL ? 'لا توجد ملفات حتى الآن' : 'No files yet' }}</p>
+                            <p class="text-sm mt-2">{{ isRTL ? 'سيتم إضافة ملفاتك الطبية هنا قريباً' : 'Your medical files will appear here soon' }}</p>
+                        </div>
                     </div>
-                    -->
                 </div>
 
             </div>
@@ -524,6 +572,8 @@ const websiteStore = useWebsiteStore();
 const t = computed(() => websiteStore.t);
 const currentLocale = computed(() => websiteStore.locale);
 const isRTL = computed(() => websiteStore.isRTL);
+
+const hasActiveSubscription = computed(() => authUser.value?.subscription?.status === 'active');
 
 useHead({
     title: computed(() => `${t.value.profile.title} - Pulse`),

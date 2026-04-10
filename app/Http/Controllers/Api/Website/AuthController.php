@@ -79,7 +79,7 @@ class AuthController extends Controller
             return $this->responseError(['message' => 'Unauthenticated'], code: 401);
         }
 
-        $user->load('medicalInfo', 'diseases');
+        $user->load('medicalInfo', 'diseases', 'latestSubscription.subscription');
 
         return $this->responseData([
             'user' => [
@@ -105,6 +105,12 @@ class AuthController extends Controller
                     'id' => $d->id,
                     'name' => $d->name,
                 ])->values(),
+                'subscription' => $user->latestSubscription ? [
+                    'status' => $user->latestSubscription->status->value,
+                    'subscription_name' => $user->latestSubscription->subscription?->name,
+                    'start_date' => $user->latestSubscription->start_date?->toDateString(),
+                    'end_date' => $user->latestSubscription->end_date?->toDateString(),
+                ] : null,
             ],
         ]);
     }

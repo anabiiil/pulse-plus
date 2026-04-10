@@ -33,10 +33,12 @@ class SubscriptionController extends Controller
         $sortBy = self::SORT_FIELD_MAPPING[$request->get('sortBy', 'id')] ?? 'id';
         $sortDesc = $request->get('sortDesc', 'desc');
         $search = $request->get('search');
+        $forUser = (bool) $request->get('for_user', false);
 
         $perPage = $perPage === -1 ? (Subscription::count() ?: self::DEFAULT_PER_PAGE) : $perPage;
 
         $subscriptions = Subscription::query()
+            ->when($forUser, fn ($query) => $query->where('status', true))
             ->when($search, fn ($query) => $query->where('name', 'like', "%{$search}%"))
             ->orderBy($sortBy, $sortDesc)
             ->paginate($perPage);

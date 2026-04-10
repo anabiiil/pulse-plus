@@ -148,7 +148,7 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-FbSf8a3f.js",
+    "file": "assets/app-lkbj99IB.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -472,7 +472,7 @@
     ]
   },
   "resources/js/components/dashboard/slider/crud/Update.vue": {
-    "file": "assets/Update-BIFysVig.js",
+    "file": "assets/Update-BW07bscH.js",
     "name": "Update",
     "src": "resources/js/components/dashboard/slider/crud/Update.vue",
     "isDynamicEntry": true,
@@ -482,7 +482,7 @@
     ]
   },
   "resources/js/components/dashboard/sliders/List.vue": {
-    "file": "assets/List-B1AqjXUG.js",
+    "file": "assets/List-CobmjliK.js",
     "name": "List",
     "src": "resources/js/components/dashboard/sliders/List.vue",
     "isDynamicEntry": true,
@@ -565,7 +565,7 @@
     ]
   },
   "resources/js/components/dashboard/users/List.vue": {
-    "file": "assets/List-fwhDUa7a.js",
+    "file": "assets/List-CW7EXecs.js",
     "name": "List",
     "src": "resources/js/components/dashboard/users/List.vue",
     "isDynamicEntry": true,
@@ -577,7 +577,7 @@
     ]
   },
   "resources/js/components/dashboard/users/crud/Create.vue": {
-    "file": "assets/Create-TmRwcDYt.js",
+    "file": "assets/Create-CHczaCrN.js",
     "name": "Create",
     "src": "resources/js/components/dashboard/users/crud/Create.vue",
     "isDynamicEntry": true,
@@ -597,7 +597,7 @@
     ]
   },
   "resources/js/components/dashboard/users/crud/Show.vue": {
-    "file": "assets/Show-BXtdHIuq.js",
+    "file": "assets/Show-DcXoTEbi.js",
     "name": "Show",
     "src": "resources/js/components/dashboard/users/crud/Show.vue",
     "isDynamicEntry": true,
@@ -612,7 +612,7 @@
     ]
   },
   "resources/js/components/dashboard/users/crud/Update.vue": {
-    "file": "assets/Update-Br7wWfdL.js",
+    "file": "assets/Update-D-J4zlnm.js",
     "name": "Update",
     "src": "resources/js/components/dashboard/users/crud/Update.vue",
     "isDynamicEntry": true,

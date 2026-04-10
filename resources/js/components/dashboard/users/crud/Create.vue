@@ -164,6 +164,25 @@
                                     </div>
                                 </div>
 
+                                <div class="col-lg-6">
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">Subscription</label>
+                                        <select
+                                            class="form-control"
+                                            :class="{ 'is-invalid': errors['subscription_id'] }"
+                                            v-model="formData.subscription_id"
+                                        >
+                                            <option value="">Select Subscription</option>
+                                            <option v-for="sub in availableSubscriptions" :key="sub.id" :value="sub.id">
+                                                {{ sub.name }} ({{ sub.months }} month{{ sub.months !== 1 ? 's' : '' }})
+                                            </option>
+                                        </select>
+                                        <span class="text-danger d-block mt-2" v-if="errors['subscription_id']">
+                                            {{ Array.isArray(errors['subscription_id']) ? errors['subscription_id'][0] : errors['subscription_id'] }}
+                                        </span>
+                                    </div>
+                                </div>
+
                                 <div class="col-lg-12">
                                     <div class="form-group mb-3">
                                         <label class="form-label">Address</label>
@@ -239,6 +258,7 @@ const loading = ref(false);
 const errors = reactive<Record<string, any>>({});
 const countries = ref<Array<{id: number, name?: any, name_en?: string, name_ar?: string}>>([]);
 const availableItems = ref<Array<{id: number, uuid: string, name: string | null}>>([]);
+const availableSubscriptions = ref<Array<{id: number, name: string, months: number}>>([]);
 
 const formData = reactive({
     name: '',
@@ -250,6 +270,7 @@ const formData = reactive({
     marital_status: '',
     country_id: '' as string | number,
     item_id: '' as string | number,
+    subscription_id: '' as string | number,
     address: '',
     status: true,
 });
@@ -275,6 +296,18 @@ const loadItems = async () => {
         availableItems.value = response.data.data || [];
     } catch (error) {
         console.error('Failed to load items:', error);
+    }
+};
+
+/**
+ * Load active subscriptions
+ */
+const loadSubscriptions = async () => {
+    try {
+        const response = await axios.get('/subscriptions', { params: { per_page: -1, for_user: 1 } });
+        availableSubscriptions.value = response.data.data || [];
+    } catch (error) {
+        console.error('Failed to load subscriptions:', error);
     }
 };
 
@@ -305,6 +338,7 @@ const handleSubmit = async () => {
             marital_status: formData.marital_status || undefined,
             country_id: formData.country_id || undefined,
             item_id: formData.item_id || undefined,
+            subscription_id: formData.subscription_id || undefined,
             address: formData.address || undefined,
             status: formData.status ? '1' : '0',
         };
@@ -330,6 +364,7 @@ const handleSubmit = async () => {
 onMounted(() => {
     loadCountries();
     loadItems();
+    loadSubscriptions();
 });
 
 </script>

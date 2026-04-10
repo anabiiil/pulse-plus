@@ -36,6 +36,16 @@ class UserResource extends JsonResource
                 'status' => $this->item->status->value,
                 'qr_code_path' => $this->item->qr_code_path,
             ]),
+            'subscription' => $this->when(
+                $this->relationLoaded('latestSubscription') && $this->latestSubscription,
+                fn () => [
+                    'id' => $this->latestSubscription->id,
+                    'subscription_id' => $this->latestSubscription->subscription_id,
+                    'subscription_name' => $this->latestSubscription->subscription?->name,
+                    'start_date' => $this->latestSubscription->start_date?->toDateString(),
+                    'end_date' => $this->latestSubscription->end_date?->toDateString(),
+                ]
+            ),
             'profile_image' => $this->profile_image,
             'profile_image_url' => $this->profile_image_url,
             'status' => (bool) $this->status,

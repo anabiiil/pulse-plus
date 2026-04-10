@@ -49,6 +49,7 @@ class CreateUserRequest extends FormRequest
                     }
                 }),
             ],
+            'subscription_id' => 'nullable|exists:subscriptions,id',
             'address' => 'nullable|string',
             'birthdate' => 'nullable|date',
             'gender' => 'nullable|in:male,female',

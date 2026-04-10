@@ -23,6 +23,13 @@ interface User {
     country?: any;
     item_id?: number | null;
     item?: Item | null;
+    subscription?: {
+        id: number;
+        subscription_id: number;
+        subscription_name: string | null;
+        start_date: string;
+        end_date: string;
+    } | null;
     status: string;
     hash_url?: string;
     qr_code?: string;

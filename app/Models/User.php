@@ -7,6 +7,7 @@ use App\Support\Enums\Main\UserStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -106,6 +107,22 @@ class User extends Authenticatable
     public function diseases(): BelongsToMany
     {
         return $this->belongsToMany(Disease::class, 'user_diseases');
+    }
+
+    /**
+     * Get all subscription records for the user.
+     */
+    public function userSubscriptions(): HasMany
+    {
+        return $this->hasMany(UserSubscription::class);
+    }
+
+    /**
+     * Get the latest subscription record for the user.
+     */
+    public function latestSubscription(): HasOne
+    {
+        return $this->hasOne(UserSubscription::class)->latestOfMany();
     }
 
     /**

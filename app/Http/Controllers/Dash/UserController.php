@@ -6,10 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\User\CreateUserRequest;
 use App\Http\Resources\Dashboard\UserResource;
 use App\Models\Item;
+use App\Models\Subscription;
 use App\Models\User;
+use App\Models\UserSubscription;
 use App\Support\Enums\Item\ItemStatusEnum;
 use App\Support\Traits\Api\ApiResponseTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -58,6 +61,9 @@ class UserController extends Controller
     {
         return DB::transaction(function () use ($request) {
             $data = $request->validated();
+            $subscriptionId = $data['subscription_id'] ?? null;
+            unset($data['subscription_id']);
+
             $data['password'] = Hash::make($data['password']);
             $data['hash_url'] = Str::uuid();
 
@@ -72,6 +78,12 @@ class UserController extends Controller
                 Item::where('id', $data['item_id'])->update(['status' => ItemStatusEnum::Used]);
             }
 
+            if ($subscriptionId) {
+                $this->assignSubscription($user, (int) $subscriptionId);
+            }
+
+            $user->load('latestSubscription.subscription');
+
             return $this->responseData(new UserResource($user), 201);
         });
     }
@@ -81,7 +93,7 @@ class UserController extends Controller
      */
     public function show(User $user): \Illuminate\Http\JsonResponse
     {
-        $user->load('country', 'medicalInfo', 'diseases', 'item');
+        $user->load('country', 'medicalInfo', 'diseases', 'item', 'latestSubscription.subscription');
 
         return $this->responseData(new UserResource($user));
     }
@@ -97,6 +109,8 @@ class UserController extends Controller
             $data = $request->validated();
             $oldItemId = $user->item_id;
             $newItemId = $data['item_id'] ?? null;
+            $subscriptionId = $data['subscription_id'] ?? null;
+            unset($data['subscription_id']);
 
             // Only update password if provided
             if (! empty($data['password'])) {
@@ -122,6 +136,17 @@ class UserController extends Controller
                 }
             }
 
+            if ($subscriptionId) {
+                $user->load('latestSubscription');
+                $currentSubscriptionId = $user->latestSubscription?->subscription_id;
+
+                if ((int) $subscriptionId !== (int) $currentSubscriptionId) {
+                    $this->assignSubscription($user, (int) $subscriptionId);
+                }
+            }
+
+            $user->load('latestSubscription.subscription');
+
             return $this->responseData(new UserResource($user));
         });
     }
@@ -142,5 +167,27 @@ class UserController extends Controller
 
             return $this->responseData([], msg: 'user deleted successfully');
         });
+    }
+
+    /**
+     * Create a new user_subscription record based on subscription months.
+     */
+    private function assignSubscription(User $user, int $subscriptionId): void
+    {
+        $subscription = Subscription::find($subscriptionId);
+
+        if (! $subscription) {
+            return;
+        }
+
+        $startDate = Carbon::today();
+        $endDate = $startDate->copy()->addMonths($subscription->months);
+
+        UserSubscription::create([
+            'user_id' => $user->id,
+            'subscription_id' => $subscriptionId,
+            'start_date' => $startDate,
+            'end_date' => $endDate,
+        ]);
     }
 }

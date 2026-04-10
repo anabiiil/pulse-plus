@@ -126,6 +126,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the medical files for the user.
+     */
+    public function medicalFiles(): HasMany
+    {
+        return $this->hasMany(MedicalFile::class);
+    }
+
+    /**
      * Get the full file system path of the QR code.
      */
     public function getQrCodePathAttribute(): ?string

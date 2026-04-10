@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\Website\AuthController;
 use App\Http\Controllers\Api\Website\ContactController;
 use App\Http\Controllers\Api\Website\EnumController;
 use App\Http\Controllers\Api\Website\HomeController;
+use App\Http\Controllers\Api\Website\MedicalFileController;
 use App\Http\Controllers\Api\Website\MedicalInfoController;
 use App\Http\Controllers\Api\Website\NationalityController;
 use App\Http\Controllers\Api\Website\ProductController;
@@ -45,6 +46,12 @@ Route::prefix('website')->group(function () {
 
         // Medical Info (blood type, emergency number, notes, diseases sync)
         Route::put('/medical-info', [MedicalInfoController::class, 'updateMedicalInfo']);
+
+        // Medical Files (archive)
+        Route::get('/medical-files', [MedicalFileController::class, 'index']);
+        Route::post('/medical-files', [MedicalFileController::class, 'store']);
+        Route::post('/medical-files/{medicalFile}', [MedicalFileController::class, 'update']);
+        Route::delete('/medical-files/{medicalFile}', [MedicalFileController::class, 'destroy']);
     });
 
     // Chronic Diseases (public list by language)
@@ -73,6 +80,7 @@ Route::prefix('website')->group(function () {
 
     // Enums
     Route::get('/enums/marital-status', [EnumController::class, 'maritalStatus']);
+    Route::get('/medical-files/categories', [MedicalFileController::class, 'categories']);
 
     // Contact Form (Public - No Auth Required)
     Route::post('/contact-messages', [ContactMessageController::class, 'store']);

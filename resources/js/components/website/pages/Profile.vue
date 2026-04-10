@@ -511,30 +511,215 @@
                     </div>
 
                     <!-- Medical Archive Tab -->
-                    <div v-show="activeTab === 'archive'" class="bg-white p-10 rounded-[48px] shadow-xl transform transition duration-500 hover:shadow-2xl">
-                        <div class="mb-8">
-                            <h3 class="text-2xl font-bold mb-2">{{ t.profile.medicalArchive?.title || 'الأرشيف الطبي' }}</h3>
-                            <p class="text-gray-500 text-[14px] font-semibold">{{ t.profile.medicalArchive?.subtitle || 'الأشعة والتقارير والروشتات...' }}</p>
+                    <div v-show="activeTab === 'archive'" class="bg-white p-6 lg:p-10 rounded-[48px] shadow-xl transform transition duration-500 hover:shadow-2xl">
+                        <div class="mb-6 flex items-center justify-between flex-wrap gap-3">
+                            <div>
+                                <h3 class="text-2xl font-bold mb-1">{{ t.profile.medicalArchive?.title || 'الأرشيف الطبي' }}</h3>
+                                <p class="text-gray-500 text-[14px] font-semibold">{{ t.profile.medicalArchive?.subtitle || 'الأشعة والتقارير والروشتات...' }}</p>
+                            </div>
+                            <button
+                                @click="openAddFileModal"
+                                class="flex items-center gap-2 py-3 px-6 rounded-2xl bg-[#123057] text-white font-bold hover:bg-[#0e2540] transition duration-150"
+                            >
+                                <i class="pi pi-plus text-[14px]"></i>
+                                <span>{{ isRTL ? 'إضافة ملف' : 'Add File' }}</span>
+                            </button>
                         </div>
 
-                        <!-- Subscription badge -->
-                        <div class="flex items-center gap-3 bg-teal-50 border border-teal-200 rounded-2xl px-6 py-4 mb-8">
-                            <i class="pi pi-check-circle text-teal-500 text-[22px]"></i>
-                            <div>
-                                <p class="font-semibold text-teal-700">{{ authUser?.subscription?.subscription_name }}</p>
-                                <p class="text-sm text-teal-600">
-                                    {{ authUser?.subscription?.start_date }} — {{ authUser?.subscription?.end_date }}
-                                </p>
+                        <!-- Category Tabs -->
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
+                            <div
+                                v-for="cat in fileCategories"
+                                :key="cat.value"
+                                @click="activeFileCategory = cat.value; fetchMedicalFiles(1)"
+                                :class="activeFileCategory === cat.value
+                                    ? 'bg-[#123057] text-white shadow-xl'
+                                    : 'bg-gray-100 text-gray-500 hover:text-teal-500'"
+                                class="flex flex-col items-center justify-center gap-2 rounded-3xl py-5 cursor-pointer font-semibold transition"
+                            >
+                                <i :class="`pi ${cat.icon} text-2xl`"></i>
+                                <span class="text-sm">{{ cat.label }}</span>
                             </div>
                         </div>
 
-                        <!-- Empty state -->
-                        <div class="flex flex-col items-center justify-center py-16 text-center text-gray-400">
-                            <i class="pi pi-folder-open text-[60px] mb-4 text-gray-300"></i>
-                            <p class="text-lg font-semibold">{{ isRTL ? 'لا توجد ملفات حتى الآن' : 'No files yet' }}</p>
-                            <p class="text-sm mt-2">{{ isRTL ? 'سيتم إضافة ملفاتك الطبية هنا قريباً' : 'Your medical files will appear here soon' }}</p>
+                        <!-- Loading -->
+                        <div v-if="filesLoading" class="flex justify-center py-10">
+                            <div class="w-8 h-8 border-4 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
+                        </div>
+
+                        <!-- Empty State -->
+                        <div v-else-if="!medicalFiles.length" class="flex flex-col items-center justify-center py-14 text-center text-gray-400">
+                            <i class="pi pi-folder-open text-[55px] mb-4 text-gray-300"></i>
+                            <p class="text-lg font-semibold">{{ isRTL ? 'لا توجد ملفات في هذا القسم' : 'No files in this category' }}</p>
+                            <p class="text-sm mt-2">{{ isRTL ? 'اضغط على "إضافة ملف" لرفع أول ملف' : 'Click "Add File" to upload your first file' }}</p>
+                        </div>
+
+                        <!-- Files Grid -->
+                        <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div
+                                v-for="file in medicalFiles"
+                                :key="file.id"
+                                class="bg-gray-50 rounded-3xl p-5 shadow-md flex items-start gap-4 relative group"
+                            >
+                                <!-- File image or icon -->
+                                <div class="shrink-0">
+                                    <a v-if="file.file_url" :href="file.file_url" target="_blank">
+                                        <img
+                                            v-if="isImage(file.file_url)"
+                                            :src="file.file_url"
+                                            :alt="file.title"
+                                            class="w-16 h-16 rounded-2xl object-cover border border-gray-200"
+                                        >
+                                        <div v-else class="w-16 h-16 rounded-2xl bg-teal-50 flex items-center justify-center border border-teal-200">
+                                            <i class="pi pi-file-pdf text-teal-500 text-2xl"></i>
+                                        </div>
+                                    </a>
+                                    <div v-else class="w-16 h-16 rounded-2xl bg-gray-200 flex items-center justify-center">
+                                        <i :class="`pi ${file.category_icon} text-gray-400 text-2xl`"></i>
+                                    </div>
+                                </div>
+                                <!-- Info -->
+                                <div class="flex-1 min-w-0">
+                                    <p class="font-bold text-[#123057] truncate">{{ file.title }}</p>
+                                    <p v-if="file.doctor" class="text-sm text-gray-500 mt-0.5">
+                                        <i class="pi pi-user me-1"></i>{{ file.doctor }}
+                                    </p>
+                                    <p class="text-xs text-gray-400 mt-1">{{ file.created_at }}</p>
+                                    <span class="inline-block mt-2 text-xs font-semibold px-3 py-1 rounded-full bg-teal-100 text-teal-700">{{ file.category_label }}</span>
+                                </div>
+                                <!-- Actions -->
+                                <div class="flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition">
+                                    <button @click="openEditFileModal(file)" class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center hover:bg-blue-200 transition">
+                                        <i class="pi pi-pencil text-xs"></i>
+                                    </button>
+                                    <button @click="confirmDeleteFile(file)" class="w-8 h-8 rounded-full bg-red-100 text-red-500 flex items-center justify-center hover:bg-red-200 transition">
+                                        <i class="pi pi-trash text-xs"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pagination -->
+                        <div v-if="filesMeta.lastPage > 1" class="flex items-center justify-center gap-2 mt-8">
+                            <button
+                                v-for="p in filesMeta.lastPage"
+                                :key="p"
+                                @click="fetchMedicalFiles(p)"
+                                :class="p === filesMeta.currentPage
+                                    ? 'bg-[#123057] text-white'
+                                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'"
+                                class="w-9 h-9 rounded-full font-semibold text-sm transition"
+                            >{{ p }}</button>
                         </div>
                     </div>
+
+                    <!-- Medical File Modal (Add / Edit) -->
+                    <Teleport to="body">
+                        <div v-if="showFileModal" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+                            <div class="absolute inset-0 bg-black/40" @click="closeFileModal"></div>
+                            <div class="relative bg-white rounded-[40px] shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto p-8 z-10">
+                                <h3 class="text-xl font-bold mb-6">
+                                    {{ editingFile ? (isRTL ? 'تعديل الملف' : 'Edit File') : (isRTL ? 'إضافة ملف جديد' : 'Add New File') }}
+                                </h3>
+
+                                <!-- Category selector -->
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-6">
+                                    <div
+                                        v-for="cat in fileCategories"
+                                        :key="cat.value"
+                                        @click="fileForm.category = cat.value"
+                                        :class="fileForm.category === cat.value
+                                            ? 'bg-[#123057] text-white'
+                                            : 'bg-gray-100 text-gray-500 hover:text-teal-500'"
+                                        class="flex flex-col items-center gap-1 rounded-2xl py-3 cursor-pointer transition text-xs font-semibold"
+                                    >
+                                        <i :class="`pi ${cat.icon} text-lg`"></i>
+                                        <span>{{ cat.label }}</span>
+                                    </div>
+                                </div>
+
+                                <!-- Title -->
+                                <div class="mb-4">
+                                    <label class="font-bold mb-2 block">{{ isRTL ? 'عنوان المستند' : 'Document Title' }} <span class="text-red-500">*</span></label>
+                                    <div class="relative">
+                                        <input v-model="fileForm.title" type="text"
+                                            :class="fileErrors.title ? 'border border-red-400' : ''"
+                                            class="bg-gray-50 border-0 shadow-md font-semibold rounded-[20px] w-full p-4 pr-12 focus:ring-0 focus:outline-none"
+                                            :placeholder="isRTL ? 'عنوان المستند (الفحص)' : 'Document title'"
+                                        >
+                                        <i class="pi pi-file absolute top-1/2 right-5 -translate-y-1/2 text-gray-400 text-[16px]"></i>
+                                    </div>
+                                    <p v-if="fileErrors.title" class="text-red-500 text-xs mt-1">{{ fileErrors.title }}</p>
+                                </div>
+
+                                <!-- Doctor -->
+                                <div class="mb-4">
+                                    <label class="font-bold mb-2 block">{{ isRTL ? 'الطبيب المعالج' : 'Treating Doctor' }}</label>
+                                    <div class="relative">
+                                        <input v-model="fileForm.doctor" type="text"
+                                            class="bg-gray-50 border-0 shadow-md font-semibold rounded-[20px] w-full p-4 pr-12 focus:ring-0 focus:outline-none"
+                                            :placeholder="isRTL ? 'الطبيب المعالج' : 'Treating doctor'"
+                                        >
+                                        <i class="pi pi-user absolute top-1/2 right-5 -translate-y-1/2 text-gray-400 text-[16px]"></i>
+                                    </div>
+                                </div>
+
+                                <!-- File upload -->
+                                <div class="mb-4">
+                                    <label class="font-bold mb-2 block">{{ isRTL ? 'صورة / ملف المستند' : 'Document File' }}</label>
+                                    <label class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-[20px] p-4 flex items-center justify-center gap-3 shadow-md cursor-pointer hover:border-teal-400 transition">
+                                        <i class="pi pi-camera text-gray-400 text-xl"></i>
+                                        <span class="text-gray-400 font-semibold text-sm">
+                                            {{ selectedFileName || (isRTL ? 'رفع صورة التقرير (jpg, png, pdf)' : 'Upload report file (jpg, png, pdf)') }}
+                                        </span>
+                                        <input type="file" class="hidden" accept=".jpg,.jpeg,.png,.gif,.pdf" @change="handleFileSelect">
+                                    </label>
+                                    <p v-if="fileErrors.file" class="text-red-500 text-xs mt-1">{{ fileErrors.file }}</p>
+                                </div>
+
+                                <!-- Notes -->
+                                <div class="mb-6">
+                                    <label class="font-bold mb-2 block">{{ isRTL ? 'ملاحظاتك الإضافية' : 'Additional Notes' }}</label>
+                                    <textarea v-model="fileForm.notes" rows="3"
+                                        :placeholder="isRTL ? 'اكتب أي ملاحظة تريد تذكرها...' : 'Any additional notes...'"
+                                        class="bg-gray-50 border-0 shadow-md font-semibold rounded-[20px] w-full p-4 resize-none focus:ring-0 focus:outline-none"
+                                    ></textarea>
+                                </div>
+
+                                <div class="flex flex-col items-center gap-3">
+                                    <button @click="submitFileForm" :disabled="fileSaving"
+                                        class="py-3 px-20 rounded-xl bg-[#123057] text-white font-bold hover:bg-[#0e2540] transition duration-150 disabled:opacity-50"
+                                    >
+                                        <span v-if="!fileSaving">{{ isRTL ? 'حفظ' : 'Save' }}</span>
+                                        <span v-else>{{ isRTL ? 'جارٍ الحفظ...' : 'Saving...' }}</span>
+                                    </button>
+                                    <button @click="closeFileModal" class="py-3 px-20 text-gray-400 font-semibold">
+                                        {{ isRTL ? 'إلغاء' : 'Cancel' }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </Teleport>
+
+                    <!-- Delete Confirmation Modal -->
+                    <Teleport to="body">
+                        <div v-if="showDeleteFileModal" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+                            <div class="absolute inset-0 bg-black/40" @click="showDeleteFileModal = false"></div>
+                            <div class="relative bg-white rounded-[32px] shadow-2xl w-full max-w-sm p-8 z-10 text-center">
+                                <i class="pi pi-trash text-red-500 text-4xl mb-4"></i>
+                                <h3 class="text-lg font-bold mb-2">{{ isRTL ? 'حذف الملف' : 'Delete File' }}</h3>
+                                <p class="text-gray-500 text-sm mb-6">{{ isRTL ? 'هل أنت متأكد من حذف هذا الملف؟' : 'Are you sure you want to delete this file?' }}</p>
+                                <div class="flex gap-3 justify-center">
+                                    <button @click="showDeleteFileModal = false" class="py-2 px-6 rounded-xl bg-gray-100 text-gray-600 font-semibold">
+                                        {{ isRTL ? 'إلغاء' : 'Cancel' }}
+                                    </button>
+                                    <button @click="deleteFile" :disabled="fileSaving" class="py-2 px-6 rounded-xl bg-red-500 text-white font-bold hover:bg-red-600 transition disabled:opacity-50">
+                                        {{ isRTL ? 'حذف' : 'Delete' }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </Teleport>
                 </div>
 
             </div>
@@ -546,7 +731,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, computed } from 'vue';
+import { ref, reactive, onMounted, computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useHead } from '@vueuse/head';
 import { useAuth } from '../../../composables/useAuth';
@@ -574,6 +759,166 @@ const currentLocale = computed(() => websiteStore.locale);
 const isRTL = computed(() => websiteStore.isRTL);
 
 const hasActiveSubscription = computed(() => authUser.value?.subscription?.status === 'active');
+
+// ─── Medical Archive ──────────────────────────────────────────────────────────
+
+const fileCategories = ref<Array<{ value: string; label: string; icon: string }>>([]);
+const activeFileCategory = ref('analyses');
+const medicalFiles = ref<any[]>([]);
+const filesLoading = ref(false);
+const filesMeta = ref({ currentPage: 1, lastPage: 1 });
+
+const showFileModal = ref(false);
+const showDeleteFileModal = ref(false);
+const editingFile = ref<any>(null);
+const deletingFile = ref<any>(null);
+const fileSaving = ref(false);
+const selectedFileName = ref('');
+const selectedFileObject = ref<File | null>(null);
+const fileErrors = ref<Record<string, string>>({});
+
+const fileForm = reactive({
+    title: '',
+    category: 'analyses',
+    doctor: '',
+    notes: '',
+});
+
+const fetchFileCategories = async (): Promise<void> => {
+    try {
+        const response = await axios.get('/api/website/medical-files/categories', {
+            params: { lang: currentLocale.value },
+        });
+        fileCategories.value = response.data.data?.categories || [];
+    } catch (e) {
+        console.error('Failed to fetch file categories', e);
+    }
+};
+
+const fetchMedicalFiles = async (page = 1): Promise<void> => {
+    filesLoading.value = true;
+    try {
+        const response = await axios.get('/api/website/medical-files', {
+            params: {
+                category: activeFileCategory.value,
+                per_page: 12,
+                page,
+                lang: currentLocale.value,
+            },
+        });
+        medicalFiles.value = response.data.data || [];
+        const meta = response.data.pagination?.meta?.page;
+        filesMeta.value = {
+            currentPage: meta?.current ?? 1,
+            lastPage: meta?.last ?? 1,
+        };
+    } catch (e) {
+        console.error('Failed to fetch medical files', e);
+    } finally {
+        filesLoading.value = false;
+    }
+};
+
+const openAddFileModal = (): void => {
+    editingFile.value = null;
+    fileForm.title = '';
+    fileForm.category = activeFileCategory.value;
+    fileForm.doctor = '';
+    fileForm.notes = '';
+    selectedFileName.value = '';
+    selectedFileObject.value = null;
+    fileErrors.value = {};
+    showFileModal.value = true;
+};
+
+const openEditFileModal = (file: any): void => {
+    editingFile.value = file;
+    fileForm.title = file.title;
+    fileForm.category = file.category;
+    fileForm.doctor = file.doctor || '';
+    fileForm.notes = file.notes || '';
+    selectedFileName.value = '';
+    selectedFileObject.value = null;
+    fileErrors.value = {};
+    showFileModal.value = true;
+};
+
+const closeFileModal = (): void => {
+    showFileModal.value = false;
+};
+
+const handleFileSelect = (e: Event): void => {
+    const target = e.target as HTMLInputElement;
+    const file = target.files?.[0];
+    if (file) {
+        selectedFileObject.value = file;
+        selectedFileName.value = file.name;
+    }
+};
+
+const isImage = (url: string): boolean => /\.(jpg|jpeg|png|gif)(\?|$)/i.test(url);
+
+const submitFileForm = async (): Promise<void> => {
+    fileErrors.value = {};
+    fileSaving.value = true;
+
+    const formData = new FormData();
+    formData.append('title', fileForm.title);
+    formData.append('category', fileForm.category);
+    if (fileForm.doctor) { formData.append('doctor', fileForm.doctor); }
+    if (fileForm.notes) { formData.append('notes', fileForm.notes); }
+    if (selectedFileObject.value) { formData.append('file', selectedFileObject.value); }
+
+    try {
+        if (editingFile.value) {
+            const response = await axios.post(
+                `/api/website/medical-files/${editingFile.value.id}`,
+                formData,
+                { headers: { 'Content-Type': 'multipart/form-data' } }
+            );
+            const idx = medicalFiles.value.findIndex((f: any) => f.id === editingFile.value.id);
+            if (idx !== -1) { medicalFiles.value[idx] = response.data.data; }
+        } else {
+            const response = await axios.post('/api/website/medical-files', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            });
+            medicalFiles.value.unshift(response.data.data);
+        }
+        closeFileModal();
+        toast.success(isRTL.value ? 'تم حفظ الملف بنجاح' : 'File saved successfully');
+    } catch (err: any) {
+        if (err.response?.status === 422) {
+            const errs = err.response.data?.errors || {};
+            fileErrors.value = Object.fromEntries(
+                Object.entries(errs).map(([k, v]) => [k, (v as string[])[0]])
+            );
+        } else {
+            toast.error(isRTL.value ? 'حدث خطأ أثناء الحفظ' : 'Failed to save file');
+        }
+    } finally {
+        fileSaving.value = false;
+    }
+};
+
+const confirmDeleteFile = (file: any): void => {
+    deletingFile.value = file;
+    showDeleteFileModal.value = true;
+};
+
+const deleteFile = async (): Promise<void> => {
+    if (!deletingFile.value) { return; }
+    fileSaving.value = true;
+    try {
+        await axios.delete(`/api/website/medical-files/${deletingFile.value.id}`);
+        medicalFiles.value = medicalFiles.value.filter((f: any) => f.id !== deletingFile.value.id);
+        showDeleteFileModal.value = false;
+        toast.success(isRTL.value ? 'تم حذف الملف' : 'File deleted');
+    } catch {
+        toast.error(isRTL.value ? 'حدث خطأ أثناء الحذف' : 'Failed to delete file');
+    } finally {
+        fileSaving.value = false;
+    }
+};
 
 useHead({
     title: computed(() => `${t.value.profile.title} - Pulse`),
@@ -920,5 +1265,12 @@ onMounted(async () => {
     fetchNationalities();
     fetchMaritalStatus();
     fetchDiseases();
+    fetchFileCategories();
+});
+
+watch(activeTab, (tab) => {
+    if (tab === 'archive' && !medicalFiles.value.length) {
+        fetchMedicalFiles(1);
+    }
 });
 </script>

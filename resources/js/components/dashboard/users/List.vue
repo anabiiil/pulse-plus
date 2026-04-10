@@ -73,18 +73,15 @@
                                             <div class="fw-semibold">{{ item.subscription.subscription_name }}</div>
                                             <div class="text-muted" style="font-size: 0.75rem;">
                                                 {{ item.subscription.start_date }} → {{ item.subscription.end_date }}
-                                            </div>
-                                            <span class="badge" :class="item.subscription.status_color" style="font-size: 0.7rem;">
+
+                                                <span class="badge" :class="item.subscription.status_color" style="font-size: 0.7rem;">
                                                 {{ item.subscription.status_label }}
                                             </span>
+                                            </div>
+
                                         </div>
                                         <span v-else class="text-muted">-</span>
-                                    </template>
 
-                                    <template #item.status="{ item }">
-                                        <span class="badge" :class="StatusEnum.getClass(item.status)">
-                                            {{ StatusEnum.getLabel(item.status) }}
-                                        </span>
                                     </template>
 
                                     <template #item.actions="{ item }">

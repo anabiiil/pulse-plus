@@ -588,11 +588,27 @@
                                     <span class="inline-block mt-2 text-xs font-semibold px-3 py-1 rounded-full bg-teal-100 text-teal-700">{{ file.category_label }}</span>
                                 </div>
                                 <!-- Actions -->
-                                <div class="flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition">
-                                    <button @click="openEditFileModal(file)" class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center hover:bg-blue-200 transition">
+                                <div class="flex flex-col gap-2 shrink-0">
+                                    <button
+                                        @click="openEditFileModal(file)"
+                                        class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center hover:bg-blue-200 transition"
+                                        :title="isRTL ? 'تعديل' : 'Edit'"
+                                    >
                                         <i class="pi pi-pencil text-xs"></i>
                                     </button>
-                                    <button @click="confirmDeleteFile(file)" class="w-8 h-8 rounded-full bg-red-100 text-red-500 flex items-center justify-center hover:bg-red-200 transition">
+                                    <button
+                                        @click="toggleFileActive(file)"
+                                        :class="file.is_active ? 'bg-yellow-100 text-yellow-600 hover:bg-yellow-200' : 'bg-green-100 text-green-600 hover:bg-green-200'"
+                                        class="w-8 h-8 rounded-full flex items-center justify-center transition"
+                                        :title="file.is_active ? (isRTL ? 'إخفاء' : 'Deactivate') : (isRTL ? 'تفعيل' : 'Activate')"
+                                    >
+                                        <i :class="`pi ${file.is_active ? 'pi-eye-slash' : 'pi-eye'} text-xs`"></i>
+                                    </button>
+                                    <button
+                                        @click="confirmDeleteFile(file)"
+                                        class="w-8 h-8 rounded-full bg-red-100 text-red-500 flex items-center justify-center hover:bg-red-200 transition"
+                                        :title="isRTL ? 'حذف' : 'Delete'"
+                                    >
                                         <i class="pi pi-trash text-xs"></i>
                                     </button>
                                 </div>

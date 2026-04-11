@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Website;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Dashboard\ItemResource;
 use App\Models\User;
 use App\Support\Traits\Api\ApiResponseTrait;
 use Illuminate\Http\Request;
@@ -96,6 +97,7 @@ class AuthController extends Controller
                 'marital_status' => $user->marital_status,
                 'profile_image_url' => $user->profile_image_url,
                 'hash_url' => $user->hash_url,
+                'item' => new ItemResource($user->item),
                 'medical_info' => $user->medicalInfo ? [
                     'blood_type' => $user->medicalInfo->blood_type?->value,
                     'emergency_number' => $user->medicalInfo->emergency_number,

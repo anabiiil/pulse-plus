@@ -47,12 +47,12 @@
                     <div class="hidden lg:block p-5">
                         <div class="bg-white rounded-[48px] flex flex-col items-center justify-center gap-2 shadow-2xl px-5 lg:px-12 py-8 my-5">
                             <!-- Profile Image -->
-                        <div class="bg-[#FF6760] my-4 rounded-[28px] p-7 shadow-[inset_0_4px_4px_0_rgba(0,0,0,0.25)] w-fit">
+                        <div class="bg-[#FF6760] my-4 rounded-[28px] shadow-[inset_0_4px_4px_0_rgba(0,0,0,0.25)] w-20 h-20 overflow-hidden flex items-center justify-center">
                             <img
                                 v-if="user.profile_image_url"
                                 :src="user.profile_image_url"
                                 :alt="user.name"
-                                class="w-20 h-20 rounded-full object-cover"
+                                class="w-full h-full object-cover"
                             >
                             <i v-else class="pi pi-user font-bold text-5xl text-white"></i>
                         </div>
@@ -93,12 +93,12 @@
                     <div class="lg:hidden bg-white rounded-[48px] shadow-2xl px-5 py-8 mb-5">
                         <div class="flex flex-col items-center justify-center gap-4">
                             <!-- Profile Image -->
-                            <div class="bg-[#FF6760] rounded-[28px] p-5 shadow-[inset_0_4px_4px_0_rgba(0,0,0,0.25)]">
+                            <div class="bg-[#FF6760] rounded-[28px] shadow-[inset_0_4px_4px_0_rgba(0,0,0,0.25)] w-16 h-16 overflow-hidden flex items-center justify-center">
                                 <img
                                     v-if="user.profile_image_url"
                                     :src="user.profile_image_url"
                                     :alt="user.name"
-                                    class="w-16 h-16 rounded-full object-cover"
+                                    class="w-full h-full object-cover"
                                 >
                                 <i v-else class="pi pi-user font-bold text-4xl text-white"></i>
                             </div>

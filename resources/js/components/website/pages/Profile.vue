@@ -181,11 +181,11 @@
                         <div
                             class="bg-[#1BB2B1] shadow-[inset_0_4px_4px_0_#12305766] p-10 w-full rounded-3xl flex items-center justify-center mb-6">
                             <div class="flex flex-col items-center">
-                                <div class="p-3 w-fit rounded-[32px] bg-white relative shadow-2xl cursor-pointer">
+                                <div class="w-20 h-20 rounded-[32px] bg-white relative shadow-2xl cursor-pointer overflow-hidden">
                                     <img v-if="!profileImage" :src="userVectorImg" alt="User"
-                                         class="rounded-2xl w-20 h-20">
+                                         class="w-full h-full object-cover">
                                     <img v-else :src="profileImage" alt="Profile"
-                                         class="rounded-2xl object-cover w-20 h-20">
+                                         class="w-full h-full object-cover">
                                     <input @change="handleImageUpload"
                                            class="opacity-0 w-full h-full absolute top-0 left-0 cursor-pointer rounded-[32px]"
                                            type="file" accept="image/*">
@@ -451,7 +451,7 @@
                                             </div>
                                             <div class="flex-shrink-0 ml-4">
                                                 <a
-                                                    :href="`/user/info/${authUser.hash_url}`"
+                                                    :href="`/user/info/${authUser?.item?.uuid}`"
                                                     target="_blank"
                                                     class="inline-flex items-center gap-2 bg-white text-[#FF6760] font-bold px-6 py-3 rounded-full hover:bg-gray-100 transition duration-150 shadow-lg"
                                                 >

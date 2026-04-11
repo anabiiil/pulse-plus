@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dash\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Auth\LoginRequest;
+use App\Http\Resources\Dashboard\UserResource;
 use App\Models\Admin;
 use App\Support\Traits\Api\ApiResponseTrait;
 
@@ -28,7 +29,7 @@ class LoginController extends Controller
             \Auth::guard('admin')->login($admin);
 
             return $this->responseData([
-                'user' => auth('admin')->user(),
+                'user' => new UserResource(auth('admin')->user()),
             ], msg: 'Login successful');
 
         }

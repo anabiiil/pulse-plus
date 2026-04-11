@@ -114,12 +114,17 @@
                                 <div class="col-lg-6">
                                     <div class="form-group mb-3">
                                         <label class="form-label">Marital Status</label>
-                                        <input
-                                            type="text"
+                                        <select
                                             class="form-control"
                                             :class="{ 'is-invalid': errors['marital_status'] }"
                                             v-model="formData.marital_status"
                                         >
+                                            <option value="">Select Marital Status</option>
+                                            <option value="single">Single</option>
+                                            <option value="married">Married</option>
+                                            <option value="divorced">Divorced</option>
+                                            <option value="widowed">Widowed</option>
+                                        </select>
                                         <span class="text-danger d-block mt-2" v-if="errors['marital_status']">
                                             {{ Array.isArray(errors['marital_status']) ? errors['marital_status'][0] : errors['marital_status'] }}
                                         </span>

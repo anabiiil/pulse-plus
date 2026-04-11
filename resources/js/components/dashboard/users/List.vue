@@ -48,6 +48,10 @@
                                         </router-link>
                                     </template>
 
+                                    <template #item.email="{ item }">
+                                        {{ item.email || '-' }}
+                                    </template>
+
                                     <template #item.phone="{ item }">
                                         {{ item.phone || '-' }}
                                     </template>
@@ -201,6 +205,7 @@ const onSubscriptionUpdated = (updatedUser: any): void => {
 
 const headers = [
     { align: 'start', key: 'name', sortable: true, title: 'Name' },
+    { key: 'email', title: 'Email', sortable: false },
     { key: 'phone', title: 'Phone', sortable: false },
     { key: 'country', title: 'Country', sortable: false },
     { key: 'item_link', title: 'Item Link', sortable: false },

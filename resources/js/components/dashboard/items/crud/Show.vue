@@ -62,11 +62,23 @@
 
                     <!-- QR Code -->
                     <div class="col-lg-6 d-flex flex-column align-items-center justify-content-center py-4">
-                        <p class="text-muted mb-3">Scan this QR code to get the item UUID</p>
-                        <canvas ref="qrCanvas" class="mb-4 border rounded p-2 shadow-sm" style="max-width: 300px  !important;height:300px;"></canvas>
-                        <button class="btn btn-success" @click="downloadQr">
-                            <i class="fe fe-download me-1"></i> Download QR Code
-                        </button>
+                        <template v-if="item.qr_code_path">
+                            <p class="text-muted mb-3">Scan this QR code to open the user emergency profile</p>
+                            <img
+                                :src="item.qr_code_path"
+                                alt="Item QR Code"
+                                class="mb-4 border rounded p-2 shadow-sm"
+                                style="width: 300px; height: 300px; object-fit: contain;"
+                            >
+                            <a
+                                :href="item.qr_code_path"
+                                :download="`item-qr-${item.uuid}.png`"
+                                class="btn btn-success"
+                            >
+                                <i class="fe fe-download me-1"></i> Download QR Code
+                            </a>
+                        </template>
+                        <p v-else class="text-muted fst-italic">No QR code available</p>
                     </div>
                 </div>
             </div>
@@ -75,43 +87,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from 'vue';
+import { onMounted } from 'vue';
 import { useHead } from '@vueuse/head';
 import { useItems } from '../../../../composables/useItems';
-import QRCode from 'qrcode';
 
 const props = defineProps<{ id: string }>();
 
 useHead({ title: 'Item QR Code' });
 
 const { loading, getItem, item } = useItems();
-const qrCanvas = ref<HTMLCanvasElement | null>(null);
-
-const generateQr = async () => {
-    await nextTick();
-    if (qrCanvas.value && item.value?.uuid) {
-        await QRCode.toCanvas(qrCanvas.value, item.value.uuid, {
-            width: 220,
-            margin: 2,
-            color: { dark: '#000000', light: '#ffffff' },
-        });
-    }
-};
-
-const downloadQr = () => {
-    if (!qrCanvas.value || !item.value) {
-        return;
-    }
-    const link = document.createElement('a');
-    link.download = `${item.value.qr_code_path}`;
-    link.href = qrCanvas.value.toDataURL('image/png');
-    link.click();
-};
 
 onMounted(async () => {
     await getItem(Number(props.id));
-    await generateQr();
 });
 </script>
-
 

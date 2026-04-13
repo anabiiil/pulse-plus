@@ -33,10 +33,6 @@
       "assets/TiptapMenuBar-BKPKH4vJ.css"
     ]
   },
-  "_browser-COI8Ulb7.js": {
-    "file": "assets/browser-COI8Ulb7.js",
-    "name": "browser"
-  },
   "_footer-logo-CP2ms-Bv.js": {
     "file": "assets/footer-logo-CP2ms-Bv.js",
     "name": "footer-logo",
@@ -155,7 +151,7 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-UxAG7Vjg.js",
+    "file": "assets/app-CS2Hxdpi.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -261,25 +257,23 @@
     ]
   },
   "resources/js/components/dashboard/items/crud/Show.vue": {
-    "file": "assets/Show-ECJmqGaV.js",
+    "file": "assets/Show-C4RWn6oU.js",
     "name": "Show",
     "src": "resources/js/components/dashboard/items/crud/Show.vue",
     "isDynamicEntry": true,
     "imports": [
       "_pinia-BcttEiJA.js",
-      "_useItems-DFvvB7d-.js",
-      "_browser-COI8Ulb7.js"
+      "_useItems-DFvvB7d-.js"
     ]
   },
   "resources/js/components/dashboard/items/crud/Update.vue": {
-    "file": "assets/Update-Bxk_h8VZ.js",
+    "file": "assets/Update-DzYhFX1N.js",
     "name": "Update",
     "src": "resources/js/components/dashboard/items/crud/Update.vue",
     "isDynamicEntry": true,
     "imports": [
       "_pinia-BcttEiJA.js",
-      "_useItems-DFvvB7d-.js",
-      "_browser-COI8Ulb7.js"
+      "_useItems-DFvvB7d-.js"
     ]
   },
   "resources/js/components/dashboard/nationality/List.vue": {
@@ -479,7 +473,7 @@
     ]
   },
   "resources/js/components/dashboard/slider/crud/Update.vue": {
-    "file": "assets/Update-CilBuZJg.js",
+    "file": "assets/Update-BUfp-T2F.js",
     "name": "Update",
     "src": "resources/js/components/dashboard/slider/crud/Update.vue",
     "isDynamicEntry": true,
@@ -489,7 +483,7 @@
     ]
   },
   "resources/js/components/dashboard/sliders/List.vue": {
-    "file": "assets/List-CYdBSS7F.js",
+    "file": "assets/List-Bgqp-OC7.js",
     "name": "List",
     "src": "resources/js/components/dashboard/sliders/List.vue",
     "isDynamicEntry": true,
@@ -572,7 +566,7 @@
     ]
   },
   "resources/js/components/dashboard/users/List.vue": {
-    "file": "assets/List-D4BxDJ-d.js",
+    "file": "assets/List-BWk5r249.js",
     "name": "List",
     "src": "resources/js/components/dashboard/users/List.vue",
     "isDynamicEntry": true,
@@ -604,7 +598,7 @@
     ]
   },
   "resources/js/components/dashboard/users/crud/Show.vue": {
-    "file": "assets/Show-CSKQoYOM.js",
+    "file": "assets/Show-DGIE_vAK.js",
     "name": "Show",
     "src": "resources/js/components/dashboard/users/crud/Show.vue",
     "isDynamicEntry": true,

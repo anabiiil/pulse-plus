@@ -103,7 +103,7 @@ const downloadQr = () => {
         return;
     }
     const link = document.createElement('a');
-    link.download = `item-qr-${item.value.uuid}.png`;
+    link.download = `${item.value.qr_code_path}`;
     link.href = qrCanvas.value.toDataURL('image/png');
     link.click();
 };

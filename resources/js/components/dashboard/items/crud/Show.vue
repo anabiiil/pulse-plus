@@ -72,7 +72,7 @@
                             >
                             <a
                                 :href="item.qr_code_path"
-                                :download="`item-qr-${item.uuid}.png`"
+                                :download="`${item.qr_code_path}`"
                                 class="btn btn-success"
                             >
                                 <i class="fe fe-download me-1"></i> Download QR Code

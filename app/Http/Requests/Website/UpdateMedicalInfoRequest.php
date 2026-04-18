@@ -24,12 +24,15 @@ class UpdateMedicalInfoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'blood_type'        => ['nullable', Rule::enum(BloodTypeEnum::class)],
-            'emergency_phone'   => ['nullable', 'string', 'max:20'],
+            'blood_type' => ['nullable', Rule::enum(BloodTypeEnum::class)],
+            'emergency_phone' => ['nullable', 'string', 'max:20'],
             'display_emergency' => ['nullable', 'boolean'],
-            'notes'             => ['nullable', 'string', 'max:1000'],
-            'disease_ids'       => ['nullable', 'array'],
-            'disease_ids.*'     => ['integer', 'exists:diseases,id'],
+            'display_medical_profile' => ['nullable', 'boolean'],
+            'display_medical_archive' => ['nullable', 'boolean'],
+            'display_medical_profile' => ['nullable', 'boolean'],
+            'notes' => ['nullable', 'string', 'max:1000'],
+            'disease_ids' => ['nullable', 'array'],
+            'disease_ids.*' => ['integer', 'exists:diseases,id'],
         ];
     }
 
@@ -41,8 +44,8 @@ class UpdateMedicalInfoRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'blood_type.enum'      => 'Invalid blood type. Accepted values: '.implode(', ', BloodTypeEnum::values()),
-            'disease_ids.array'    => 'The disease_ids must be an array.',
+            'blood_type.enum' => 'Invalid blood type. Accepted values: '.implode(', ', BloodTypeEnum::values()),
+            'disease_ids.array' => 'The disease_ids must be an array.',
             'disease_ids.*.exists' => 'One or more selected diseases do not exist.',
         ];
     }

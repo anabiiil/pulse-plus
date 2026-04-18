@@ -38,10 +38,12 @@ class MedicalInfoController extends Controller
         /** @var \App\Models\User $user */
         $user = auth('web')->user();
 
-        // Update emergency phone and display toggle on the User record
+        // Update emergency phone and display toggles on the User record
         $userFields = array_filter([
-            'emergency_phone'   => $request->input('emergency_phone'),
+            'emergency_phone' => $request->input('emergency_phone'),
             'display_emergency' => $request->input('display_emergency'),
+            'display_medical_profile' => $request->input('display_medical_profile'),
+            'display_medical_archive' => $request->input('display_medical_archive'),
         ], fn ($v) => ! is_null($v));
 
         if (! empty($userFields)) {
@@ -64,14 +66,16 @@ class MedicalInfoController extends Controller
         app()->setLocale($lang);
 
         return $this->responseData([
-            'emergency_phone'   => $user->emergency_phone,
+            'emergency_phone' => $user->emergency_phone,
             'display_emergency' => (bool) $user->display_emergency,
-            'medical_info'      => [
+            'display_medical_profile' => (bool) $user->display_medical_profile,
+            'display_medical_archive' => (bool) $user->display_medical_archive,
+            'medical_info' => [
                 'blood_type' => $medicalInfo->blood_type?->value,
-                'notes'      => $medicalInfo->notes,
+                'notes' => $medicalInfo->notes,
             ],
             'diseases' => DiseaseResource::collection($user->diseases),
-            'message'  => 'Medical information updated successfully.',
+            'message' => 'Medical information updated successfully.',
         ]);
     }
 }

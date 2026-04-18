@@ -24,7 +24,7 @@ class UserInfoController extends Controller
 
         // Find user by the assigned item's UUID
         $user = User::whereHas('item', fn ($q) => $q->where('uuid', $uuid))
-            ->with(['country', 'diseases', 'medicalInfo'])
+            ->with(['country', 'diseases', 'medicalInfo', 'medicalFiles'])
             ->first();
 
         if (! $user) {
@@ -42,6 +42,8 @@ class UserInfoController extends Controller
             'phone' => $user->phone,
             'emergency_phone' => $user->emergency_phone,
             'display_emergency' => $user->display_emergency,
+            'display_medical_profile' => $user->display_medical_profile,
+            'display_medical_archive' => $user->display_medical_archive,
             'address' => $user->address,
             'birthdate' => $user->birthdate,
             'gender' => $user->gender,
@@ -52,14 +54,26 @@ class UserInfoController extends Controller
                 'id' => $user->country->id,
                 'name' => $user->country->name,
             ] : null,
-            'diseases' => $user->diseases->map(fn ($disease) => [
-                'id' => $disease->id,
-                'name' => $disease->getTranslation('name', app()->getLocale(), useFallbackLocale: true),
-            ])->values(),
-            'medical_info' => $user->medicalInfo ? [
+            'diseases' => $user->display_medical_profile
+                ? $user->diseases->map(fn ($disease) => [
+                    'id' => $disease->id,
+                    'name' => $disease->getTranslation('name', app()->getLocale(), useFallbackLocale: true),
+                ])->values()
+                : [],
+            'medical_info' => $user->display_medical_profile && $user->medicalInfo ? [
                 'blood_type' => $user->medicalInfo->blood_type?->value,
                 'notes' => $user->medicalInfo->notes,
             ] : null,
+            'medical_files' => $user->display_medical_archive
+                ? $user->medicalFiles->map(fn ($file) => [
+                    'id' => $file->id,
+                    'title' => $file->title,
+                    'category' => $file->category?->value,
+                    'doctor' => $file->doctor,
+                    'notes' => $file->notes,
+                    'file_url' => $file->file_url,
+                ])->values()
+                : [],
         ];
 
         return response()->json([

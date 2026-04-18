@@ -90,6 +90,8 @@ class AuthController extends Controller
                 'phone' => $user->phone,
                 'emergency_phone' => $user->emergency_phone,
                 'display_emergency' => (bool) $user->display_emergency,
+                'display_medical_profile' => (bool) $user->display_medical_profile,
+                'display_medical_archive' => (bool) $user->display_medical_archive,
                 'birthdate' => $user->birthdate,
                 'gender' => $user->gender,
                 'address' => $user->address,

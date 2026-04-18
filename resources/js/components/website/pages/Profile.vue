@@ -526,6 +526,31 @@
                             </button>
                         </div>
 
+                        <!-- Display Medical Archive Toggle -->
+                        <div class="mb-6 bg-gray-50 border-0 shadow-xl rounded-[30px] p-6">
+                            <div class="flex items-center justify-between">
+                                <div class="flex-1">
+                                    <label class="font-bold text-lg cursor-pointer text-[#123057]">
+                                        {{ isRTL ? 'عرض الأرشيف الطبي للزوار' : 'Display Medical Archive to Visitors' }}
+                                    </label>
+                                    <p class="text-sm text-gray-600 mt-1">
+                                        {{ isRTL ? 'السماح بعرض ملفاتك الطبية لمن يمسح رمز QR' : 'Allow your medical files to be visible to anyone scanning the QR code' }}
+                                    </p>
+                                </div>
+                                <div class="flex-shrink-0 ml-4">
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            v-model="archiveDisplayToggle"
+                                            @change="saveArchiveDisplayToggle"
+                                            class="sr-only peer"
+                                        >
+                                        <div class="w-14 h-7 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-teal-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-teal-500"></div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Category Tabs -->
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
                             <div
@@ -773,6 +798,21 @@ const currentLocale = computed(() => websiteStore.locale);
 const isRTL = computed(() => websiteStore.isRTL);
 
 const hasActiveSubscription = computed(() => authUser.value?.subscription?.status === 'active');
+
+// ─── Medical Archive display toggle ──────────────────────────────────────────
+const archiveDisplayToggle = ref(false);
+
+const saveArchiveDisplayToggle = async (): Promise<void> => {
+    try {
+        await axios.put('/api/website/medical-info', {
+            display_medical_archive: archiveDisplayToggle.value,
+        }, { params: { lang: currentLocale.value } });
+        toast.success(isRTL.value ? 'تم الحفظ' : 'Saved');
+    } catch {
+        toast.error(isRTL.value ? 'حدث خطأ' : 'An error occurred');
+        archiveDisplayToggle.value = !archiveDisplayToggle.value; // revert on error
+    }
+};
 
 // ─── Medical Archive ──────────────────────────────────────────────────────────
 
@@ -1069,6 +1109,7 @@ const loadUser = async () => {
             // Populate medical form
             medicalFormData.emergency_phone   = authUser.value.emergency_phone || '';
             medicalFormData.display_emergency = authUser.value.display_emergency || false;
+            archiveDisplayToggle.value = authUser.value.display_medical_archive || false;
             if (authUser.value.medical_info) {
                 medicalFormData.blood_type = authUser.value.medical_info.blood_type || '';
                 medicalFormData.notes      = authUser.value.medical_info.notes || '';
@@ -1263,6 +1304,7 @@ const resetMedicalForm = () => {
     medicalFormData.emergency_phone   = authUser.value?.emergency_phone || '';
     medicalFormData.display_emergency = authUser.value?.display_emergency || false;
     medicalFormData.notes             = authUser.value?.medical_info?.notes || '';
+    archiveDisplayToggle.value        = authUser.value?.display_medical_archive || false;
     selectedDiseases.value            = (authUser.value?.diseases || []).map(d => ({
         id: d.id,
         name: typeof d.name === 'object'

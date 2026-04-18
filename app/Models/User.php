@@ -31,6 +31,8 @@ class User extends Authenticatable
         'phone',
         'emergency_phone',
         'display_emergency',
+        'display_medical_profile',
+        'display_medical_archive',
         'birthdate',
         'gender',
         'country_id',
@@ -75,6 +77,8 @@ class User extends Authenticatable
             'password' => 'hashed',
             'status' => UserStatusEnum::class,
             'display_emergency' => 'boolean',
+            'display_medical_profile' => 'boolean',
+            'display_medical_archive' => 'boolean',
         ];
     }
 

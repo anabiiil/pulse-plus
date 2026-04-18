@@ -228,6 +228,52 @@
                         </div>
                     </a>
 
+                    <!-- Medical Archive Card -->
+                    <div v-if="user.display_medical_archive && user.medical_files && user.medical_files.length > 0" class="bg-white rounded-[48px] shadow-2xl px-5 lg:px-10 py-5 my-5">
+                        <div class="p-2 font-bold text-[#FF6760] text-2xl lg:text-[32px] mb-5">
+                            {{ currentLocale === 'ar' ? 'الأرشيف الطبي' : 'Medical Archive' }}
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div
+                                v-for="file in user.medical_files"
+                                :key="file.id"
+                                class="bg-gray-50 rounded-3xl p-5 shadow-md flex items-start gap-4"
+                            >
+                                <!-- File thumbnail or icon -->
+                                <div class="shrink-0">
+                                    <a v-if="file.file_url" :href="file.file_url" target="_blank">
+                                        <img
+                                            v-if="isImageUrl(file.file_url)"
+                                            :src="file.file_url"
+                                            :alt="file.title"
+                                            class="w-14 h-14 rounded-2xl object-cover border border-gray-200"
+                                        >
+                                        <div v-else class="w-14 h-14 rounded-2xl bg-red-50 flex items-center justify-center border border-red-200">
+                                            <i class="pi pi-file-pdf text-red-400 text-2xl"></i>
+                                        </div>
+                                    </a>
+                                    <div v-else class="w-14 h-14 rounded-2xl bg-gray-200 flex items-center justify-center">
+                                        <i class="pi pi-file text-gray-400 text-2xl"></i>
+                                    </div>
+                                </div>
+                                <!-- Info -->
+                                <div class="flex-1 min-w-0">
+                                    <p class="font-bold text-[#123057] truncate">{{ file.title }}</p>
+                                    <p v-if="file.doctor" class="text-sm text-gray-500 mt-0.5">
+                                        <i class="pi pi-user me-1"></i>{{ file.doctor }}
+                                    </p>
+                                    <span class="inline-block mt-2 text-xs font-semibold px-3 py-1 rounded-full bg-teal-100 text-teal-700">
+                                        {{ file.category }}
+                                    </span>
+                                </div>
+                                <a v-if="file.file_url" :href="file.file_url" target="_blank"
+                                    class="shrink-0 w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-teal-100 hover:text-teal-600 transition">
+                                    <i class="pi pi-external-link text-sm"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Footer Text (Mobile) -->
                     <div class="lg:hidden block py-4 px-18 mt-4 text-center text-gray-400 font-semibold mb-30">
                         {{ t.userInfo.disclaimer }}
@@ -302,6 +348,8 @@ const getMaritalStatusLabel = (status: string) => {
     };
     return labels[status] || status;
 };
+
+const isImageUrl = (url: string): boolean => /\.(jpg|jpeg|png|gif|webp)(\?|$)/i.test(url);
 
 // Fetch user information
 const fetchUserInfo = async (uuid: string) => {

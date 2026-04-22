@@ -16,16 +16,20 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group mb-3">
-                                <label class="form-label">Name <span class="text-muted">(optional)</span></label>
-                                <input
-                                    type="text"
-                                    class="form-control"
-                                    :class="{ 'is-invalid': errors['name'] }"
-                                    v-model="formData.name"
-                                    placeholder="Enter item name"
+                                <label class="form-label">Type <span class="text-danger">*</span></label>
+                                <select
+                                    class="form-select"
+                                    :class="{ 'is-invalid': errors['type'] }"
+                                    v-model="formData.type"
                                 >
-                                <span class="text-danger d-block mt-2" v-if="errors['name']">
-                                    {{ Array.isArray(errors['name']) ? errors['name'][0] : errors['name'] }}
+                                    <option value="">— Select Type —</option>
+                                    <option v-for="t in itemTypes" :key="t" :value="t">{{ t }}</option>
+                                </select>
+                                <small class="text-muted">
+                                    Code will be auto-generated (e.g. {{ formData.type || 'C' }}-1, {{ formData.type || 'C' }}-2 …)
+                                </small>
+                                <span class="text-danger d-block mt-2" v-if="errors['type']">
+                                    {{ Array.isArray(errors['type']) ? errors['type'][0] : errors['type'] }}
                                 </span>
                             </div>
                         </div>
@@ -68,8 +72,10 @@ useHead({ title: 'Create Item' });
 const router = useRouter();
 const { loading, create } = useItems();
 
+const itemTypes = ['C', 'N', 'B', 'D'];
+
 const formData = ref({
-    name: '',
+    type: '',
     status: true,
 });
 
@@ -80,7 +86,7 @@ const handleSubmit = async (): Promise<void> => {
 
     try {
         await create({
-            name: formData.value.name || null,
+            type: formData.value.type,
             status: formData.value.status ? 1 : 0,
         });
 

@@ -22,35 +22,49 @@
                     <!-- Item Details -->
                     <div class="col-lg-6">
                         <table class="table table-bordered">
-                            <tbody>
-                                <tr>
-                                    <th>ID</th>
-                                    <td>{{ item.id }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Name</th>
-                                    <td>
-                                        <span v-if="item.name">{{ item.name }}</span>
-                                        <span v-else class="text-muted fst-italic">—</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>UUID</th>
-                                    <td><code class="fs-12">{{ item.uuid }}</code></td>
-                                </tr>
-                                <tr>
-                                    <th>Status</th>
-                                    <td>
-                                        <span class="badge" :class="item.status ? 'bg-success' : 'bg-danger'">
-                                            {{ item.status ? 'Active' : 'Inactive' }}
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Created At</th>
-                                    <td>{{ $formatDate(item.created_at) }}</td>
-                                </tr>
-                            </tbody>
+                                <tbody>
+                                    <tr>
+                                        <th>ID</th>
+                                        <td>{{ item.id }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Type</th>
+                                        <td>
+                                            <span v-if="item.type" class="badge bg-secondary fs-13">{{ item.type }}</span>
+                                            <span v-else class="text-muted fst-italic">—</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Code</th>
+                                        <td>
+                                            <code v-if="item.code" class="fw-bold text-primary fs-14">{{ item.code }}</code>
+                                            <span v-else class="text-muted fst-italic">—</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Name</th>
+                                        <td>
+                                            <span v-if="item.name">{{ item.name }}</span>
+                                            <span v-else class="text-muted fst-italic">—</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>UUID</th>
+                                        <td><code class="fs-12">{{ item.uuid }}</code></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Status</th>
+                                        <td>
+                                            <span class="badge" :class="item.status ? 'bg-success' : 'bg-danger'">
+                                                {{ item.status ? 'Active' : 'Inactive' }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Created At</th>
+                                        <td>{{ $formatDate(item.created_at) }}</td>
+                                    </tr>
+                                </tbody>
                         </table>
 
                         <div class="mt-3 d-flex gap-2">

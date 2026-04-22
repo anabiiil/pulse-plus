@@ -6,9 +6,13 @@ interface Item {
     id: number;
     uuid: string;
     name: string | null;
+    type: 'C' | 'N' | 'B' | 'D' | null;
+    code: string | null;
     status: 'active' | 'inactive' | 'used';
     status_label: string;
     status_color: string;
+    qr_code: string | null;
+    qr_code_path: string | null;
     user?: { id: number; name: string } | null;
     created_at: string;
     updated_at: string;

@@ -40,8 +40,13 @@
                                         {{ $formatDate(item.created_at) }}
                                     </template>
 
-                                    <template #item.name="{ item }">
-                                        <span v-if="item.name">{{ item.name }}</span>
+                                    <template #item.type="{ item }">
+                                        <span v-if="item.type" class="badge bg-secondary">{{ item.type }}</span>
+                                        <span v-else class="text-muted fst-italic">—</span>
+                                    </template>
+
+                                    <template #item.code="{ item }">
+                                        <code v-if="item.code" class="fw-bold text-primary">{{ item.code }}</code>
                                         <span v-else class="text-muted fst-italic">—</span>
                                     </template>
 
@@ -119,7 +124,8 @@ const {
 
 const headers = [
     { key: 'id', title: 'ID', sortable: true },
-    { key: 'name', title: 'Name', sortable: true },
+    { key: 'code', title: 'Code', sortable: true },
+    { key: 'type', title: 'Type', sortable: true },
     { key: 'uuid', title: 'UUID', sortable: false },
     { key: 'status', title: 'Status', sortable: true },
     { key: 'user', title: 'Assigned To', sortable: false },

@@ -19,6 +19,8 @@ class ItemController extends Controller
     private const array SORT_FIELD_MAPPING = [
         'id' => 'id',
         'name' => 'name',
+        'type' => 'type',
+        'code' => 'code',
         'status' => 'status',
         'uuid' => 'uuid',
         'created_at' => 'created_at',
@@ -52,7 +54,9 @@ class ItemController extends Controller
                 });
             })
             ->when($search, fn ($query) => $query->where('name', 'like', "%{$search}%")
-                ->orWhere('uuid', 'like', "%{$search}%"))
+                ->orWhere('uuid', 'like', "%{$search}%")
+                ->orWhere('code', 'like', "%{$search}%")
+                ->orWhere('type', 'like', "%{$search}%"))
             ->orderBy($sortBy, $sortDesc)
             ->paginate($perPage);
 

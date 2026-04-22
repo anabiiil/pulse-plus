@@ -151,7 +151,7 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-CfGWmTQq.js",
+    "file": "assets/app-FoLRZ5Zr.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -227,7 +227,7 @@
     ]
   },
   "resources/js/components/dashboard/items/List.vue": {
-    "file": "assets/List-CfEyK0qu.js",
+    "file": "assets/List-r7rYmno3.js",
     "name": "List",
     "src": "resources/js/components/dashboard/items/List.vue",
     "isDynamicEntry": true,
@@ -237,7 +237,7 @@
     ]
   },
   "resources/js/components/dashboard/items/crud/Create.vue": {
-    "file": "assets/Create-D0HWiQAE.js",
+    "file": "assets/Create-CYbSWlR8.js",
     "name": "Create",
     "src": "resources/js/components/dashboard/items/crud/Create.vue",
     "isDynamicEntry": true,
@@ -257,7 +257,7 @@
     ]
   },
   "resources/js/components/dashboard/items/crud/Show.vue": {
-    "file": "assets/Show-DPntUnyz.js",
+    "file": "assets/Show-oWJld7Uw.js",
     "name": "Show",
     "src": "resources/js/components/dashboard/items/crud/Show.vue",
     "isDynamicEntry": true,
@@ -267,7 +267,7 @@
     ]
   },
   "resources/js/components/dashboard/items/crud/Update.vue": {
-    "file": "assets/Update-DzYhFX1N.js",
+    "file": "assets/Update-vzfWcu-Y.js",
     "name": "Update",
     "src": "resources/js/components/dashboard/items/crud/Update.vue",
     "isDynamicEntry": true,
@@ -473,7 +473,7 @@
     ]
   },
   "resources/js/components/dashboard/slider/crud/Update.vue": {
-    "file": "assets/Update-It3H-XQM.js",
+    "file": "assets/Update-PFILDgAq.js",
     "name": "Update",
     "src": "resources/js/components/dashboard/slider/crud/Update.vue",
     "isDynamicEntry": true,
@@ -483,7 +483,7 @@
     ]
   },
   "resources/js/components/dashboard/sliders/List.vue": {
-    "file": "assets/List-B4nb7Gra.js",
+    "file": "assets/List-1tFh66mF.js",
     "name": "List",
     "src": "resources/js/components/dashboard/sliders/List.vue",
     "isDynamicEntry": true,
@@ -566,7 +566,7 @@
     ]
   },
   "resources/js/components/dashboard/users/List.vue": {
-    "file": "assets/List-BTjSrs3s.js",
+    "file": "assets/List-CNk-J3q3.js",
     "name": "List",
     "src": "resources/js/components/dashboard/users/List.vue",
     "isDynamicEntry": true,
@@ -598,7 +598,7 @@
     ]
   },
   "resources/js/components/dashboard/users/crud/Show.vue": {
-    "file": "assets/Show-DCF_4XVH.js",
+    "file": "assets/Show-CQBk9HwX.js",
     "name": "Show",
     "src": "resources/js/components/dashboard/users/crud/Show.vue",
     "isDynamicEntry": true,

@@ -35,17 +35,19 @@
 
                         <div class="col-lg-6">
                             <div class="form-group mb-3">
-                                <label class="form-label">Name <span class="text-muted">(optional)</span></label>
-                                <input
-                                    type="text"
-                                    class="form-control"
-                                    :class="{ 'is-invalid': errors['name'] }"
-                                    v-model="formData.name"
-                                    placeholder="Enter item name"
-                                >
-                                <span class="text-danger d-block mt-2" v-if="errors['name']">
-                                    {{ Array.isArray(errors['name']) ? errors['name'][0] : errors['name'] }}
-                                </span>
+                                <label class="form-label">Code</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <span v-if="item?.type" class="badge bg-secondary">{{ item.type }}</span>
+                                    </span>
+                                    <input
+                                        type="text"
+                                        class="form-control bg-light fw-bold text-primary"
+                                        :value="item?.code ?? '—'"
+                                        readonly
+                                    >
+                                </div>
+                                <small class="text-muted">Code is auto-generated and cannot be changed.</small>
                             </div>
                         </div>
 
@@ -64,13 +66,25 @@
                             </div>
                         </div>
 
-                        <!-- QR Code Preview -->
+                        <!-- QR Code Preview (from backend) -->
                         <div class="col-lg-6 d-flex flex-column align-items-center py-2">
                             <label class="form-label w-100">QR Code</label>
-                            <canvas ref="qrCanvas" class="border rounded p-2 shadow-sm mb-2" style="max-width: 300px  !important;height:300px;"></canvas>
-                            <button type="button" class="btn btn-sm btn-success" @click="downloadQr">
-                                <i class="fe fe-download me-1"></i> Download QR
-                            </button>
+                            <template v-if="item?.qr_code_path">
+                                <img
+                                    :src="item.qr_code_path"
+                                    alt="QR Code"
+                                    class="border rounded p-2 shadow-sm mb-2"
+                                    style="width: 200px; height: 200px; object-fit: contain;"
+                                >
+                                <a
+                                    :href="item.qr_code_path"
+                                    :download="`item-qr-${item.code ?? item.uuid}.svg`"
+                                    class="btn btn-sm btn-success"
+                                >
+                                    <i class="fe fe-download me-1"></i> Download QR
+                                </a>
+                            </template>
+                            <span v-else class="text-muted fst-italic">No QR code available</span>
                         </div>
 
                         <div class="col-md-12 text-center my-4">
@@ -86,11 +100,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, nextTick, watch } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { useHead } from '@vueuse/head';
 import { useRouter } from 'vue-router';
 import { useItems } from '../../../../composables/useItems';
-import QRCode from 'qrcode';
 // @ts-ignore
 import { useToast } from 'vue-toastification';
 
@@ -102,36 +115,12 @@ const router = useRouter();
 const toast = useToast();
 const { loading, getItem, update, item } = useItems();
 
-const formData = ref({ name: '', status: true });
+const formData = ref({ status: true });
 const errors = ref<Record<string, string | string[]>>({});
-const qrCanvas = ref<HTMLCanvasElement | null>(null);
 
-const generateQr = async () => {
-    await nextTick();
-    if (qrCanvas.value && item.value?.uuid) {
-        await QRCode.toCanvas(qrCanvas.value, item.value.uuid, {
-            width: 180,
-            margin: 2,
-            color: { dark: '#000000', light: '#ffffff' },
-        });
-    }
-};
-
-const downloadQr = () => {
-    if (!qrCanvas.value || !item.value) {
-        return;
-    }
-    const link = document.createElement('a');
-    link.download = `item-qr-${item.value.uuid}.png`;
-    link.href = qrCanvas.value.toDataURL('image/png');
-    link.click();
-};
-
-watch(item, async (newItem) => {
+watch(item, (newItem) => {
     if (newItem) {
-        formData.value.name = newItem.name ?? '';
-        formData.value.status = newItem.status;
-        await generateQr();
+        formData.value.status = newItem.status === 'active';
     }
 });
 
@@ -140,7 +129,6 @@ const handleSubmit = async () => {
 
     try {
         await update(Number(props.id), {
-            name: formData.value.name || null,
             status: formData.value.status ? 1 : 0,
         });
 

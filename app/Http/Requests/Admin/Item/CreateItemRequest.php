@@ -22,7 +22,7 @@ class CreateItemRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'nullable|string|max:255',
+            'type' => 'required|in:C,N,B,D',
             'status' => 'nullable|in:0,1,true,false',
         ];
     }

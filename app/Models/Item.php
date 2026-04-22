@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Support\Enums\Item\ItemStatusEnum;
+use App\Support\Enums\Item\ItemTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -19,7 +20,8 @@ class Item extends Model
      */
     protected $fillable = [
         'uuid',
-        'name',
+        'type',
+        'code',
         'status',
         'qr_code',
     ];
@@ -36,6 +38,7 @@ class Item extends Model
     {
         return [
             'status' => ItemStatusEnum::class,
+            'type' => ItemTypeEnum::class,
         ];
     }
 
@@ -88,6 +91,16 @@ class Item extends Model
         static::creating(function (Item $item): void {
             if (empty($item->uuid)) {
                 $item->uuid = (string) Str::uuid();
+            }
+
+            if (empty($item->code) && $item->type instanceof ItemTypeEnum) {
+                $prefix = $item->type->value;
+                $lastCode = Item::where('type', $prefix)
+                    ->orderBy('id', 'desc')
+                    ->value('code');
+                $lastNumber = $lastCode ? (int) (explode('-', $lastCode)[1] ?? 0) : 0;
+                $number = $lastNumber + 1;
+                $item->code = $prefix.'-'.$number;
             }
 
             if (empty($item->qr_code)) {

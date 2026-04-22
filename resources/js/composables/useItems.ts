@@ -71,6 +71,10 @@ export const useItems = () => {
         fetchItems();
     });
 
+    const bulkCreate = async (data: { type: string; count: number }) => {
+        return await store.bulkCreateItems(data);
+    };
+
     return {
         page,
         itemsPerPage,
@@ -88,6 +92,7 @@ export const useItems = () => {
         create,
         update,
         delete_,
+        bulkCreate,
         handleTableOptionsChange,
     };
 };

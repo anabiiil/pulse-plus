@@ -160,6 +160,25 @@ export const useItemsStore = defineStore('items', () => {
         }
     };
 
+    /**
+     * Bulk create items
+     */
+    const bulkCreateItems = async (data: { type: string; count: number }) => {
+        try {
+            loading.value = true;
+            error.value = null;
+
+            const response = await axios.post('/items/bulk', data);
+            return response.data.data || [];
+        } catch (err: any) {
+            error.value = err.response?.data?.message || 'Failed to bulk create items';
+            console.error('Error bulk creating items:', err);
+            throw err;
+        } finally {
+            loading.value = false;
+        }
+    };
+
     return {
         items,
         item,
@@ -177,6 +196,7 @@ export const useItemsStore = defineStore('items', () => {
         createItem,
         updateItem,
         deleteItem,
+        bulkCreateItems,
     };
 });
 

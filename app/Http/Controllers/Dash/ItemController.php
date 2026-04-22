@@ -64,8 +64,32 @@ class ItemController extends Controller
     }
 
     /**
-     * Store a newly created item.
+     * Bulk create items of a given type.
      */
+    public function bulkStore(Request $request): JsonResponse
+    {
+        $data = $request->validate([
+            'type' => 'required|in:C,N,B,D',
+            'count' => 'required|integer|min:1|max:500',
+        ]);
+
+        $status = ItemStatusEnum::Active->value;
+        $created = [];
+
+        for ($i = 0; $i < $data['count']; $i++) {
+            $created[] = Item::create([
+                'type' => $data['type'],
+                'status' => $status,
+            ]);
+        }
+
+        $items = Item::whereIn('id', array_column($created, 'id'))
+            ->with('user')
+            ->get();
+
+        return $this->responseData(ItemResource::collection($items), 201);
+    }
+
     public function store(CreateItemRequest $request): JsonResponse
     {
         $data = $request->validated();

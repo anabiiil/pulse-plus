@@ -1,6 +1,16 @@
 <template>
     <div class="col-xl-12">
-        <div class="text-end my-4">
+        <div class="text-end my-4 d-flex align-items-center justify-content-end gap-2 flex-wrap">
+            <button
+                v-if="selected.length > 0"
+                class="btn btn-success btn-b"
+                :disabled="downloading"
+                @click="downloadSelected"
+            >
+                <i class="fe fe-download me-1"></i>
+                {{ downloading ? 'Downloading...' : `Download QR (${selected.length})` }}
+            </button>
+            <BulkCreate @created="fetchItems" />
             <router-link to="/dash/items/create" class="btn btn-info me-2 btn-b">
                 Create Item
             </router-link>
@@ -27,12 +37,14 @@
                             <div class="col-sm-12">
                                 <v-data-table-server
                                     v-model:items-per-page="itemsPerPage"
+                                    v-model="selected"
                                     :headers="headers"
                                     :items="items"
                                     :items-length="totalCount"
                                     :loading="loading"
                                     :search="searchQuery"
                                     item-value="id"
+                                    show-select
                                     :items-per-page-options="[50, 100, 200, 300, 500, -1]"
                                     @update:options="handleTableOptionsChange"
                                 >
@@ -108,7 +120,8 @@
 <script setup lang="ts">
 import { useHead } from '@vueuse/head';
 import { useItems } from '../../../composables/useItems';
-import { onMounted } from 'vue';
+import { onMounted, ref, computed } from 'vue';
+import BulkCreate from './crud/BulkCreate.vue';
 
 useHead({ title: 'Items' });
 
@@ -121,6 +134,34 @@ const {
     fetchItems,
     handleTableOptionsChange,
 } = useItems();
+
+const selected = ref<number[]>([]);
+const downloading = ref(false);
+
+const selectedItems = computed(() =>
+    items.value.filter((item: any) => selected.value.includes(item.id))
+);
+
+const downloadSelected = async () => {
+    downloading.value = true;
+    for (const item of selectedItems.value) {
+        if (!item.qr_code_path) continue;
+        try {
+            const res = await fetch(item.qr_code_path);
+            const blob = await res.blob();
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `item-qr-${item.code ?? item.uuid}.svg`;
+            a.click();
+            URL.revokeObjectURL(url);
+            await new Promise(r => setTimeout(r, 150));
+        } catch {
+            // skip
+        }
+    }
+    downloading.value = false;
+};
 
 const headers = [
     { key: 'id', title: 'ID', sortable: true },

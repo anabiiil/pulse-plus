@@ -34,6 +34,7 @@ Route::group(
         Route::apiResource('products', ProductController::class);
         Route::apiResource('sliders', SliderController::class);
         Route::apiResource('items', ItemController::class);
+        Route::post('items/bulk', [ItemController::class, 'bulkStore']);
         Route::apiResource('users', UserController::class);
         Route::patch('users/{user}/subscription/dates', [UserController::class, 'updateSubscriptionDates']);
         Route::post('users/{user}/subscription/renew', [UserController::class, 'renewSubscription']);

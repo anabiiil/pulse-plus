@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Website;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Support\Enums\User\UserSubscriptionStatusEnum;
 use Illuminate\Http\Request;
 
 class UserInfoController extends Controller
@@ -24,7 +25,7 @@ class UserInfoController extends Controller
 
         // Find user by the assigned item's UUID
         $user = User::whereHas('item', fn ($q) => $q->where('uuid', $uuid))
-            ->with(['country', 'diseases', 'medicalInfo', 'medicalFiles'])
+            ->with(['country', 'diseases', 'medicalInfo', 'medicalFiles', 'latestSubscription'])
             ->first();
 
         if (! $user) {
@@ -34,13 +35,15 @@ class UserInfoController extends Controller
             ], 404);
         }
 
+        $hasActiveSubscription = $user->latestSubscription?->status === UserSubscriptionStatusEnum::Active;
+
         // Prepare user data
         $userData = [
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
             'phone' => $user->phone,
-            'emergency_phone' => $user->emergency_phone,
+            'emergency_phone' => $user->display_emergency ? $user->emergency_phone : null,
             'display_emergency' => $user->display_emergency,
             'display_medical_profile' => $user->display_medical_profile,
             'display_medical_archive' => $user->display_medical_archive,
@@ -54,17 +57,15 @@ class UserInfoController extends Controller
                 'id' => $user->country->id,
                 'name' => $user->country->name,
             ] : null,
-            'diseases' => $user->display_medical_profile
-                ? $user->diseases->map(fn ($disease) => [
-                    'id' => $disease->id,
-                    'name' => $disease->getTranslation('name', app()->getLocale(), useFallbackLocale: true),
-                ])->values()
-                : [],
-            'medical_info' => $user->display_medical_profile && $user->medicalInfo ? [
+            'diseases' => $user->diseases->map(fn ($disease) => [
+                'id' => $disease->id,
+                'name' => $disease->getTranslation('name', app()->getLocale(), useFallbackLocale: true),
+            ])->values(),
+            'medical_info' => $user->medicalInfo ? [
                 'blood_type' => $user->medicalInfo->blood_type?->value,
                 'notes' => $user->medicalInfo->notes,
             ] : null,
-            'medical_files' => $user->display_medical_archive
+            'medical_files' => ($hasActiveSubscription && $user->display_medical_archive)
                 ? $user->medicalFiles->map(fn ($file) => [
                     'id' => $file->id,
                     'title' => $file->title,

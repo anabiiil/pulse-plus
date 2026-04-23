@@ -178,4 +178,3 @@ onMounted(() => {
     fetchItems();
 });
 </script>
-

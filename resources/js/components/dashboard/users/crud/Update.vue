@@ -113,7 +113,7 @@
                                         <select class="form-control" :class="{ 'is-invalid': errors['item_id'] }" v-model="formData.item_id">
                                             <option value="">Select Item</option>
                                             <option v-for="item in availableItems" :key="item.id" :value="item.id">
-                                                {{ item.name || item.uuid }}
+                                                {{ item.code }}
                                             </option>
                                         </select>
                                         <span class="text-danger d-block mt-2" v-if="errors['item_id']">
@@ -203,7 +203,7 @@ const loading = ref(true);
 const errors = reactive<Record<string, any>>({});
 const userId = ref<string | number>(Array.isArray(route.params.id) ? route.params.id[0] : route.params.id);
 const countries = ref<Array<{id: number, name?: any, name_en?: string, name_ar?: string}>>([]);
-const availableItems = ref<Array<{id: number, uuid: string, name: string | null}>>([]);
+const availableItems = ref<Array<{id: number, uuid: string, name: string | null,code:string|null}>>([]);
 const availableSubscriptions = ref<Array<{id: number, name: string, months: number}>>([]);
 const currentSubscription = ref<{subscription_id: number, subscription_name: string | null, start_date: string, end_date: string} | null>(null);
 

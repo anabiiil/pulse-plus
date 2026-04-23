@@ -155,7 +155,7 @@
                                         >
                                             <option value="">Select Item</option>
                                             <option v-for="item in availableItems" :key="item.id" :value="item.id">
-                                                {{ item.code || item.uuid }}
+                                                {{ item.code }}
                                             </option>
                                         </select>
                                         <span class="text-danger d-block mt-2" v-if="errors['item_id']">
@@ -257,7 +257,7 @@ const { create } = useUsers();
 const loading = ref(false);
 const errors = reactive<Record<string, any>>({});
 const countries = ref<Array<{id: number, name?: any, name_en?: string, name_ar?: string}>>([]);
-const availableItems = ref<Array<{id: number, uuid: string, name: string | null}>>([]);
+const availableItems = ref<Array<{id: number, uuid: string, name: string | null,code: string| null}>>([]);
 const availableSubscriptions = ref<Array<{id: number, name: string, months: number}>>([]);
 
 const formData = reactive({

@@ -100,6 +100,22 @@
 
                                 <div class="col-lg-6">
                                     <div class="form-group mb-3">
+                                        <label class="form-label">YouTube Video Link</label>
+                                        <input
+                                            type="url"
+                                            class="form-control"
+                                            :class="{ 'is-invalid': errors['video_url'] }"
+                                            v-model="formData.video_url"
+                                            placeholder="https://www.youtube.com/watch?v=... (optional)"
+                                        >
+                                        <span class="text-danger d-block mt-2" v-if="errors['video_url']">
+                                            {{ Array.isArray(errors['video_url']) ? errors['video_url'][0] : errors['video_url'] }}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group mb-3">
                                         <label class="form-label">Status</label>
                                         <v-switch
                                             v-model="formData.status"
@@ -188,6 +204,7 @@ const formData = reactive({
         ar: '',
     },
     price: null as number | null,
+    video_url: '',
     status: true,
     image: null,
 });
@@ -268,6 +285,10 @@ const handleSubmit = async () => {
 
         if (formData.price !== null && formData.price !== undefined) {
             data.append('price', formData.price.toString());
+        }
+
+        if (formData.video_url) {
+            data.append('video_url', formData.video_url);
         }
 
         data.append('status', formData.status ? '1' : '0');

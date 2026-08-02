@@ -20,6 +20,17 @@ const baseRoutes = [
         }
     },
     {
+        path: 'products/:id',
+        name: 'product-detail',
+        component: () => import('../components/website-index/pages/ProductDetail.vue'),
+        meta: {
+            title: {
+                ar: 'تفاصيل المنتج',
+                en: 'Product Details'
+            }
+        }
+    },
+    {
         path: 'login',
         name: 'login',
         component: () => import('../components/website/pages/Login.vue'),

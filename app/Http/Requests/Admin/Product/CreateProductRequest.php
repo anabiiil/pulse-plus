@@ -25,6 +25,7 @@ class CreateProductRequest extends FormRequest
             'description.en' => 'nullable|string',
             'description.ar' => 'nullable|string',
             'price' => 'nullable|numeric|min:0|max:9999999.99',
+            'video_url' => 'nullable|url|max:255',
             'status' => 'nullable|in:0,1,true,false',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
         ];
@@ -47,6 +48,8 @@ class CreateProductRequest extends FormRequest
             'price.numeric' => 'The price must be a number.',
             'price.min' => 'The price must be at least 0.',
             'price.max' => 'The price must not exceed 9999999.99.',
+            'video_url.url' => 'The video link must be a valid URL.',
+            'video_url.max' => 'The video link must not exceed 255 characters.',
             'status.boolean' => 'The status must be a boolean value (true/false).',
             'image.image' => 'The image must be a valid image file.',
             'image.mimes' => 'The image must be a file of type: jpeg, png, jpg, gif, webp.',

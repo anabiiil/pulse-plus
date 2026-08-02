@@ -21,6 +21,16 @@ export default {
     title: 'Choose the Security That Suits You',
     currency: 'EGP',
   },
+  productDetail: {
+    back: 'Back',
+    price: 'Price',
+    playVideo: 'Watch Video',
+    description: 'Product Details',
+    notFound: 'Product not found',
+    loadError: 'An error occurred while loading the product',
+    related: 'Our Other Products',
+    home: 'Home',
+  },
   features: {
     title: 'Why Choose Pulse+?',
   },

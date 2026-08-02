@@ -4,10 +4,12 @@
       <h2 class="text-3xl font-bold text-gray-800">{{ t.products.title }}</h2>
     </div>
     <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-8 px-4">
-      <div
+      <component
+        :is="product.id ? 'router-link' : 'div'"
         v-for="(product, index) in displayProducts"
         :key="product.id || index"
-        class="p-10"
+        :to="product.id ? `/${appStore.locale}/products/${product.id}` : undefined"
+        class="p-10 block"
       >
         <div class="bg-gray-50 flex items-center justify-center h-[320px] p-10 rounded-3xl shadow-xl transform transition duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer relative overflow-hidden">
           <img :src="product.image_url || product.image" class="w-[240px]" :alt="product.name">
@@ -21,7 +23,7 @@
           </p>
           <p v-if="product.description" class="text-gray-600 mt-2 text-sm" v-html="product.description"></p>
         </div>
-      </div>
+      </component>
     </div>
   </section>
 </template>

@@ -21,6 +21,16 @@ export default {
     title: 'اختر الأمان الذي يناسبك',
     currency: 'جنيه',
   },
+  productDetail: {
+    back: 'رجوع',
+    price: 'السعر',
+    playVideo: 'شاهد الفيديو',
+    description: 'تفاصيل المنتج',
+    notFound: 'المنتج غير موجود',
+    loadError: 'حدث خطأ أثناء تحميل المنتج',
+    related: 'منتجاتنا الأخرى',
+    home: 'الرئيسية',
+  },
   features: {
     title: 'لماذا تختار Pulse+ ؟',
   },

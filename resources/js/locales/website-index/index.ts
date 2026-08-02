@@ -27,6 +27,16 @@ export interface TranslationSchema {
     title: string;
     currency: string;
   };
+  productDetail: {
+    back: string;
+    price: string;
+    playVideo: string;
+    description: string;
+    notFound: string;
+    loadError: string;
+    related: string;
+    home: string;
+  };
   features: {
     title: string;
   };

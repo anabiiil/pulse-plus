@@ -9,6 +9,8 @@ export const useDataStore = defineStore('website-index-data', () => {
     const services = ref([]);
     const settings = ref({});
     const isDataLoading = ref(false);
+    const product = ref<any>(null);
+    const isProductLoading = ref(false);
 
     // Actions
     /**
@@ -64,11 +66,12 @@ export const useDataStore = defineStore('website-index-data', () => {
         }
     }
 
-    async function fetchProducts() {
+    async function fetchProducts(locale?: string) {
         try {
             isDataLoading.value = true;
             const response = await axios.get('/api/website/products', {
-                params: { limit: 10 }  // Get limited products for homepage
+                params: { limit: 10 },  // Get limited products for homepage
+                headers: locale ? { 'Accept-Language': locale } : undefined,
             });
             products.value = response.data.data || [];
         } catch (error) {
@@ -76,6 +79,28 @@ export const useDataStore = defineStore('website-index-data', () => {
             products.value = [];
         } finally {
             isDataLoading.value = false;
+        }
+    }
+
+    /**
+     * Fetch a single product by id for the product details page.
+     * Sends the Accept-Language header so translatable fields return the current locale.
+     */
+    async function fetchProduct(id: string | number, locale: string = 'ar') {
+        try {
+            isProductLoading.value = true;
+            product.value = null;
+            const response = await axios.get(`/api/website/products/${id}`, {
+                headers: { 'Accept-Language': locale },
+            });
+            product.value = response.data.data || response.data || null;
+            return product.value;
+        } catch (error) {
+            console.error('Error fetching product:', error);
+            product.value = null;
+            throw error;
+        } finally {
+            isProductLoading.value = false;
         }
     }
 
@@ -131,10 +156,13 @@ export const useDataStore = defineStore('website-index-data', () => {
         services,
         settings,
         isDataLoading,
+        product,
+        isProductLoading,
         // Actions
         fetchHomeData,
         fetchSliders,
         fetchProducts,
+        fetchProduct,
         fetchServices,
         fetchSettings,
         initData,

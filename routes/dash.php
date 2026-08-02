@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\ContactMessageController;
 use App\Http\Controllers\Dash\AdminsController;
 use App\Http\Controllers\Dash\Auth\LoginController;
 use App\Http\Controllers\Dash\CountryController;
+use App\Http\Controllers\Dash\GovernorateController;
 use App\Http\Controllers\Dash\ItemController;
 use App\Http\Controllers\Dash\ProductController;
 use App\Http\Controllers\Dash\ServiceController;
@@ -30,6 +31,7 @@ Route::group(
         });
 
         Route::apiResource('countries', CountryController::class);
+        Route::apiResource('governorates', GovernorateController::class);
         Route::apiResource('services', ServiceController::class);
         Route::apiResource('products', ProductController::class);
         Route::apiResource('sliders', SliderController::class);

@@ -19,6 +19,8 @@ class ProductResource extends JsonResource
             'name' => $this->getTranslations('name'),
             'description' => $this->getTranslations('description'),
             'price' => $this->price,
+            'video_url' => $this->video_url,
+            'video_embed_url' => $this->video_embed_url,
             'status' => (bool) $this->status,
             'image_url' => $this->image?->url,
             'created_at' => $this->created_at,

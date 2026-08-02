@@ -65,6 +65,33 @@ const routes = [
         ],
     },
 
+    // Governorate routes with nested CRUD operations
+    {
+        path: '/dash/governorate',
+        children: [
+            {
+                path: '',
+                name: 'governorate.list',
+                component: () => import('../components/dashboard/governorate/List.vue'),
+            },
+            {
+                path: 'create',
+                name: 'governorate.create',
+                component: () => import('../components/dashboard/governorate/crud/Create.vue'),
+            },
+            {
+                path: ':id/update',
+                name: 'governorate.update',
+                component: () => import('../components/dashboard/governorate/crud/Update.vue'),
+            },
+            {
+                path: ':id/delete',
+                name: 'governorate.delete',
+                component: () => import('../components/dashboard/governorate/crud/Delete.vue'),
+            },
+        ],
+    },
+
     // Services routes with nested CRUD operations
     {
         path: '/dash/services',

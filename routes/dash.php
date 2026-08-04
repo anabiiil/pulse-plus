@@ -6,6 +6,8 @@ use App\Http\Controllers\Dash\Auth\LoginController;
 use App\Http\Controllers\Dash\CountryController;
 use App\Http\Controllers\Dash\GovernorateController;
 use App\Http\Controllers\Dash\ItemController;
+use App\Http\Controllers\Dash\OrderController;
+use App\Http\Controllers\Dash\PaymentMethodController;
 use App\Http\Controllers\Dash\ProductController;
 use App\Http\Controllers\Dash\ServiceController;
 use App\Http\Controllers\Dash\SettingController;
@@ -32,6 +34,13 @@ Route::group(
 
         Route::apiResource('countries', CountryController::class);
         Route::apiResource('governorates', GovernorateController::class);
+        Route::apiResource('payment-methods', PaymentMethodController::class);
+
+        // Orders (read + status update)
+        Route::get('orders/statistics', [OrderController::class, 'statistics']);
+        Route::get('orders', [OrderController::class, 'index']);
+        Route::get('orders/{order}', [OrderController::class, 'show']);
+        Route::patch('orders/{order}/status', [OrderController::class, 'updateStatus']);
         Route::apiResource('services', ServiceController::class);
         Route::apiResource('products', ProductController::class);
         Route::apiResource('sliders', SliderController::class);

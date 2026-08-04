@@ -26,6 +26,7 @@ class CreateProductRequest extends FormRequest
             'description.ar' => 'nullable|string',
             'price' => 'nullable|numeric|min:0|max:9999999.99',
             'video_url' => 'nullable|url|max:255',
+            'is_featured' => 'nullable|in:0,1,true,false',
             'status' => 'nullable|in:0,1,true,false',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
         ];

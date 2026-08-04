@@ -2,12 +2,17 @@
 
 use App\Http\Controllers\Api\ContactMessageController;
 use App\Http\Controllers\Api\Website\AuthController;
+use App\Http\Controllers\Api\Website\CartController;
+use App\Http\Controllers\Api\Website\CheckoutController;
 use App\Http\Controllers\Api\Website\ContactController;
 use App\Http\Controllers\Api\Website\EnumController;
+use App\Http\Controllers\Api\Website\GovernorateController;
 use App\Http\Controllers\Api\Website\HomeController;
 use App\Http\Controllers\Api\Website\MedicalFileController;
 use App\Http\Controllers\Api\Website\MedicalInfoController;
 use App\Http\Controllers\Api\Website\NationalityController;
+use App\Http\Controllers\Api\Website\OrderController;
+use App\Http\Controllers\Api\Website\PaymentMethodController;
 use App\Http\Controllers\Api\Website\ProductController;
 use App\Http\Controllers\Api\Website\ServiceController;
 use App\Http\Controllers\Api\Website\SettingController;
@@ -52,6 +57,20 @@ Route::prefix('website')->group(function () {
         Route::post('/medical-files', [MedicalFileController::class, 'store']);
         Route::post('/medical-files/{medicalFile}', [MedicalFileController::class, 'update']);
         Route::delete('/medical-files/{medicalFile}', [MedicalFileController::class, 'destroy']);
+
+        // Cart
+        Route::get('/cart', [CartController::class, 'index']);
+        Route::post('/cart', [CartController::class, 'store']);
+        Route::patch('/cart/{cartItem}', [CartController::class, 'update']);
+        Route::delete('/cart/{cartItem}', [CartController::class, 'destroy']);
+        Route::delete('/cart', [CartController::class, 'clear']);
+
+        // Checkout
+        Route::post('/checkout', [CheckoutController::class, 'store']);
+
+        // Orders (user's own)
+        Route::get('/orders', [OrderController::class, 'index']);
+        Route::get('/orders/{order}', [OrderController::class, 'show']);
     });
 
     // Chronic Diseases (public list by language)
@@ -77,6 +96,12 @@ Route::prefix('website')->group(function () {
 
     // Nationalities (Countries)
     Route::get('/nationalities', [NationalityController::class, 'index']);
+
+    // Governorates (active, with delivery price — for checkout)
+    Route::get('/governorates', [GovernorateController::class, 'index']);
+
+    // Payment methods (active — for checkout)
+    Route::get('/payment-methods', [PaymentMethodController::class, 'index']);
 
     // Enums
     Route::get('/enums/marital-status', [EnumController::class, 'maritalStatus']);

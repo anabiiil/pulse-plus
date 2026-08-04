@@ -90,12 +90,32 @@
               </div>
             </div>
 
-            <!-- Price -->
-            <div v-if="product.price" class="mt-8 flex items-center justify-center gap-3">
-              <span class="inline-flex items-baseline gap-2 bg-teal-50 text-teal-700 rounded-2xl px-6 py-3 shadow-sm">
+            <!-- Price + add to cart -->
+            <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+              <span v-if="product.price" class="inline-flex items-baseline gap-2 bg-teal-50 text-teal-700 rounded-2xl px-6 py-3 shadow-sm">
                 <span class="text-4xl font-extrabold">{{ product.price }}</span>
                 <span class="text-lg font-semibold">{{ t.products.currency }}</span>
               </span>
+
+              <!-- Quantity stepper -->
+              <div class="inline-flex items-center border border-gray-200 rounded-full overflow-hidden select-none">
+                <button type="button" class="px-4 py-2 text-xl text-gray-600 hover:bg-gray-100 transition" @click="quantity > 1 && quantity--">−</button>
+                <span class="px-5 font-bold text-gray-800 min-w-[2.5rem] text-center">{{ quantity }}</span>
+                <button type="button" class="px-4 py-2 text-xl text-gray-600 hover:bg-gray-100 transition" @click="quantity++">+</button>
+              </div>
+
+              <!-- Add to cart -->
+              <button
+                type="button"
+                class="inline-flex items-center gap-2 bg-teal-500 hover:bg-teal-600 text-white font-semibold px-8 py-3 rounded-full shadow-lg transition disabled:opacity-60"
+                :disabled="cartStore.loading"
+                @click="handleAddToCart"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                {{ cartItem ? t.cart.updateCart : t.cart.addToCart }}
+              </button>
             </div>
 
             <!-- Details -->
@@ -154,22 +174,68 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useHead } from '@vueuse/head';
 import { useToast } from 'vue-toastification';
 import { useDataStore } from '../../../stores/website-index/dataStore';
 import { useAppStore } from '../../../stores/website-index/appStore';
+import { useCartStore } from '../../../stores/website-index/cartStore';
+import { useAuth } from '../../../composables/useAuth';
 import Navigation from '../../website/Navigation.vue';
 import Footer from '../Footer.vue';
 
 const route = useRoute();
+const router = useRouter();
 const dataStore = useDataStore();
 const appStore = useAppStore();
+const cartStore = useCartStore();
+const { isAuthenticated } = useAuth();
 const toast = useToast();
 
 const t = computed(() => appStore.t);
 const product = computed(() => dataStore.product);
 const showVideo = ref(false);
+const quantity = ref(1);
+
+// The matching cart line for this product (if it's already in the cart)
+const cartItem = computed(() =>
+  product.value ? cartStore.items.find((i: any) => i.product_id === product.value.id) : undefined
+);
+
+/**
+ * Keep the quantity stepper in sync with the cart:
+ * show the existing quantity if the product is already in the cart.
+ */
+watch(
+  [() => product.value?.id, cartItem],
+  () => {
+    quantity.value = cartItem.value ? cartItem.value.quantity : 1;
+  },
+  { immediate: true }
+);
+
+/**
+ * Add the product to the cart, or update its quantity if it's already there
+ * (never silently increments an existing line). Requires login.
+ */
+async function handleAddToCart() {
+  if (!isAuthenticated.value) {
+    toast.info(t.value.cart.loginRequired);
+    router.push(`/${appStore.locale}/login`);
+    return;
+  }
+  try {
+    if (cartItem.value) {
+      await cartStore.updateItem(cartItem.value.id, quantity.value);
+      toast.success(t.value.cart.updated);
+    } else {
+      await cartStore.addItem(product.value.id, quantity.value);
+      toast.success(t.value.cart.added);
+    }
+  } catch (error) {
+    toast.error(t.value.productDetail.loadError);
+  }
+}
 
 const homePath = computed(() => `/${appStore.locale}`);
 const imageSrc = computed(() => product.value?.image_url || product.value?.image || null);

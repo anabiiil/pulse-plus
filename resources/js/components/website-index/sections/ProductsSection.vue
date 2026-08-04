@@ -21,17 +21,35 @@
           <p v-if="product.price" class="text-teal-600 font-bold text-lg mt-2">
             {{ product.price }} {{ t.products.currency }}
           </p>
-          <p v-if="product.description" class="text-gray-600 mt-2 text-sm" v-html="product.description"></p>
+          <div v-if="product.id" class="mt-4 flex justify-center">
+            <AddToCartControl :product="product" />
+          </div>
         </div>
       </component>
+    </div>
+
+    <!-- Go to store -->
+    <div class="text-center mt-12">
+      <router-link
+        :to="`/${appStore.locale}/products`"
+        class="inline-flex items-center gap-2 bg-teal-500 text-white font-semibold px-10 py-3 rounded-full shadow-lg hover:bg-teal-600 transition"
+      >
+        {{ t.products.viewAll }}
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" :class="{ 'rotate-180': appStore.isRTL }" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </router-link>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useDataStore } from '../../../stores/website-index/dataStore';
 import { useAppStore } from '../../../stores/website-index/appStore';
+import { useCartStore } from '../../../stores/website-index/cartStore';
+import { useAuth } from '../../../composables/useAuth';
+import AddToCartControl from '../AddToCartControl.vue';
 import product1 from '../../../images/website/product-1.png';
 import product2 from '../../../images/website/product-2.png';
 
@@ -46,6 +64,8 @@ interface Product {
 
 const dataStore = useDataStore();
 const appStore = useAppStore();
+const cartStore = useCartStore();
+const { isAuthenticated } = useAuth();
 
 // Get translations
 const t = computed(() => appStore.t);
@@ -62,9 +82,16 @@ const fallbackProducts: Product[] = [
   }
 ];
 
-// Use products from store, or fallback to static products
+// Use products from store, or fallback to static products — show at most 4 on the home page
 const displayProducts = computed(() => {
-  return dataStore.products.length > 0 ? dataStore.products : fallbackProducts;
+  const list = dataStore.products.length > 0 ? dataStore.products : fallbackProducts;
+  return list.slice(0, 4);
+});
+
+onMounted(() => {
+  if (isAuthenticated.value && !cartStore.loaded) {
+    cartStore.fetchCart();
+  }
 });
 </script>
 

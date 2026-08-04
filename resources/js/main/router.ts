@@ -284,6 +284,45 @@ const routes = [
         ],
     },
 
+    // Payment methods routes
+    {
+        path: '/dash/payment-methods',
+        children: [
+            {
+                path: '',
+                name: 'payment-methods.list',
+                component: () => import('../components/dashboard/payment-methods/List.vue'),
+            },
+            {
+                path: 'create',
+                name: 'payment-methods.create',
+                component: () => import('../components/dashboard/payment-methods/crud/Create.vue'),
+            },
+            {
+                path: ':id/edit',
+                name: 'payment-methods.update',
+                component: () => import('../components/dashboard/payment-methods/crud/Update.vue'),
+            },
+        ],
+    },
+
+    // Orders routes (list + details page)
+    {
+        path: '/dash/orders',
+        children: [
+            {
+                path: '',
+                name: 'orders.list',
+                component: () => import('../components/dashboard/orders/List.vue'),
+            },
+            {
+                path: ':id',
+                name: 'orders.show',
+                component: () => import('../components/dashboard/orders/Show.vue'),
+            },
+        ],
+    },
+
     // Contact Messages routes
     {
         path: '/dash/contact-messages',

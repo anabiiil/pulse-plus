@@ -131,6 +131,18 @@
 
                                 <div class="col-lg-6">
                                     <div class="form-group mb-3">
+                                        <label class="form-label">Featured (show on home page)</label>
+                                        <v-switch
+                                            v-model="formData.is_featured"
+                                            density="compact"
+                                            :color="formData.is_featured ? 'success' : ''"
+                                            label=""
+                                        ></v-switch>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group mb-3">
                                         <label class="form-label">Image</label>
                                         <input
                                             type="file"
@@ -206,6 +218,7 @@ const formData = reactive({
     price: null as number | null,
     video_url: '',
     status: true,
+    is_featured: false,
     image: null,
 });
 
@@ -292,6 +305,7 @@ const handleSubmit = async () => {
         }
 
         data.append('status', formData.status ? '1' : '0');
+        data.append('is_featured', formData.is_featured ? '1' : '0');
 
         if (formData.image) {
             data.append('image', formData.image);

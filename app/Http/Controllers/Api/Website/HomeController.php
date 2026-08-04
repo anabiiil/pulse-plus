@@ -33,8 +33,9 @@ class HomeController extends Controller
             ->limit($sliderLimit)
             ->get();
 
-        // Get active products (enum status)
+        // Get active products (featured first, then newest)
         $products = Product::where('status', StatusEnum::ACTIVE)
+            ->orderByDesc('is_featured')
             ->orderBy('created_at', 'desc')
             ->limit($productLimit)
             ->get();
@@ -53,4 +54,3 @@ class HomeController extends Controller
         ]);
     }
 }
-

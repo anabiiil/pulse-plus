@@ -106,6 +106,26 @@
                                     <i :class="isRTL ? 'pi-angle-left' : 'pi-angle-right'" class="pi"></i>
                                 </div>
                             </div>
+
+                            <!-- Orders Tab -->
+                            <div
+                                @click="activeTab = 'orders'"
+                                :class="activeTab === 'orders' ? 'bg-teal-500 text-white shadow-xl' : 'bg-gray-100 text-[#123057]'"
+                                class="cursor-pointer hover:scale-102 transition-transform duration-300 ease-in-out rounded-3xl px-7 py-6 flex items-center justify-between shadow-md"
+                            >
+                                <div class="flex items-center gap-3">
+                                    <div :class="activeTab === 'orders' ? 'bg-white' : 'bg-white shadow-2xl'" class="p-5 rounded-xl flex items-center justify-center">
+                                        <i class="text-teal-500 pi pi-shopping-cart text-[22px]"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold">{{ isRTL ? 'طلباتي' : 'My Orders' }}</p>
+                                        <p class="text-sm opacity-90">{{ isRTL ? 'متابعة ومراجعة طلباتك' : 'Track your orders' }}</p>
+                                    </div>
+                                </div>
+                                <div class="text-xl" :class="activeTab === 'orders' ? 'text-white' : 'text-gray-400'">
+                                    <i :class="isRTL ? 'pi-angle-left' : 'pi-angle-right'" class="pi"></i>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -161,12 +181,26 @@
                                 <i class="pi pi-folder text-[18px]"></i>
                                 <span class="text-sm">{{ t.profile.medicalArchive?.title || 'الأرشيف الطبي' }}</span>
                             </button>
+                            <button
+                                @click="activeTab = 'orders'"
+                                :class="activeTab === 'orders' ? 'bg-teal-500 text-white shadow-xl' : 'bg-gray-100 text-[#123057]'"
+                                class="flex-1 flex items-center justify-center gap-2 rounded-2xl px-4 py-3 font-semibold transition-all duration-300"
+                            >
+                                <i class="pi pi-shopping-cart text-[18px]"></i>
+                                <span class="text-sm">{{ isRTL ? 'طلباتي' : 'My Orders' }}</span>
+                            </button>
                         </div>
                     </div>
                 </div>
 
                 <!-- Main Content -->
                 <div class="col-span-2">
+                    <!-- Orders Tab -->
+                    <div v-show="activeTab === 'orders'" class="bg-white p-6 lg:p-10 rounded-[48px] shadow-xl">
+                        <h3 class="text-2xl font-bold mb-6">{{ isRTL ? 'طلباتي' : 'My Orders' }}</h3>
+                        <OrdersList />
+                    </div>
+
                     <!-- Personal Information Tab -->
                     <div v-show="activeTab === 'personal'"
                          class="bg-white p-10 rounded-[48px] shadow-xl transform transition duration-500 hover:shadow-2xl">
@@ -771,7 +805,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted, computed, watch } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { useHead } from '@vueuse/head';
 import { useAuth } from '../../../composables/useAuth';
 import { useToast } from 'vue-toastification';
@@ -782,12 +816,14 @@ import userVectorImg from '../../../images/website/user-vector.png';
 // Import layout components
 import Navigation from '../Navigation.vue';
 import Footer from '../Footer.vue';
+import OrdersList from '../../website-index/OrdersList.vue';
 import MultiSelect, { type SelectOption } from '../forms/MultiSelect.vue';
 
 // window.location.origin غير متاح مباشرة في الـ template في Vue 3
 const origin = window.location.origin;
 
 const router = useRouter();
+const route = useRoute();
 const { user: authUser, fetchUser } = useAuth();
 const toast = useToast();
 const websiteStore = useWebsiteStore();
@@ -1317,6 +1353,10 @@ const resetMedicalForm = () => {
 // Load user on mount
 onMounted(async () => {
     websiteStore.setRouter(router);
+    const queryTab = route.query.tab;
+    if (typeof queryTab === 'string' && ['personal', 'medical', 'archive', 'orders'].includes(queryTab)) {
+        activeTab.value = queryTab;
+    }
     await loadUser();
     fetchNationalities();
     fetchMaritalStatus();
@@ -1325,6 +1365,10 @@ onMounted(async () => {
 });
 
 watch(activeTab, (tab) => {
+    // Keep the active tab in the URL so a refresh restores it
+    if (route.query.tab !== tab) {
+        router.replace({ query: { ...route.query, tab } }).catch(() => {});
+    }
     if (tab === 'archive' && !medicalFiles.value.length) {
         fetchMedicalFiles(1);
     }

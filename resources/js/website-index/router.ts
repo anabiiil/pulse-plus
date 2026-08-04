@@ -20,6 +20,44 @@ const baseRoutes = [
         }
     },
     {
+        path: 'products',
+        name: 'products',
+        component: () => import('../components/website-index/pages/Products.vue'),
+        meta: {
+            title: {
+                ar: 'المنتجات',
+                en: 'Products'
+            }
+        }
+    },
+    {
+        path: 'cart',
+        name: 'cart',
+        component: () => import('../components/website-index/pages/Cart.vue'),
+        meta: {
+            title: { ar: 'سلة التسوق', en: 'Cart' },
+            requiresAuth: true
+        }
+    },
+    {
+        path: 'checkout',
+        name: 'checkout',
+        component: () => import('../components/website-index/pages/Checkout.vue'),
+        meta: {
+            title: { ar: 'إتمام الطلب', en: 'Checkout' },
+            requiresAuth: true
+        }
+    },
+    {
+        path: 'orders',
+        name: 'orders',
+        component: () => import('../components/website-index/pages/Orders.vue'),
+        meta: {
+            title: { ar: 'طلباتي', en: 'My Orders' },
+            requiresAuth: true
+        }
+    },
+    {
         path: 'products/:id',
         name: 'product-detail',
         component: () => import('../components/website-index/pages/ProductDetail.vue'),

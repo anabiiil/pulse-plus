@@ -13,7 +13,7 @@
             </router-link>
             <div>
                 <router-link :to="homePath" class="mx-4 transition duration-150 font-semibold" :class="$route.path === '/ar' || $route.path === '/en' ? 'text-teal-500 before:w-full before:h-0.5 before:bg-teal-500 before:absolute before:-bottom-2 before:left-0 relative' : 'hover:text-teal-500'">{{ t.nav.home }}</router-link>
-                <button @click="scrollToSection('products')" class="relative transition duration-150 font-semibold mx-4 hover:text-teal-500 cursor-pointer">{{ t.nav.store }}</button>
+                <router-link :to="productsPath" class="mx-4 transition duration-150 font-semibold" :class="$route.path.includes('/products') ? 'text-teal-500' : 'hover:text-teal-500'">{{ t.nav.store }}</router-link>
                 <button @click="scrollToSection('features')" class="hover:text-teal-500 transition duration-150 font-semibold mx-4 cursor-pointer">{{ t.nav.services }}</button>
                 <button @click="scrollToSection('about')" class="hover:text-teal-500 transition duration-150 font-semibold mx-4 cursor-pointer">{{ t.nav.about }}</button>
                 <router-link :to="contactPath" class="hover:text-teal-500 transition duration-150 font-semibold mx-4 cursor-pointer" :class="$route.path.includes('/contact') ? 'text-teal-500' : ''">{{ t.nav.contact }}</router-link>
@@ -26,6 +26,8 @@
             <button @click="toggleLanguage" class="flex items-center justify-center w-[50px] h-[50px] text-[18px] rounded-full shadow-xl font-semibold">
                 {{ t.nav.language }}
             </button>
+            <!-- Cart -->
+            <CartWidget />
             <!-- Login button when not authenticated -->
             <router-link v-if="!isAuthenticated" :to="loginPath" class="bg-teal-500 text-white px-5 py-2 rounded-[30px] shadow-lg font-semibold hover:bg-teal-600 transition duration-150">
                 {{ t.nav.login }}
@@ -51,6 +53,7 @@
             </router-link>
         </div>
         <div class="flex items-center justify-center gap-4">
+            <CartWidget />
             <router-link v-if="isAuthenticated" :to="profilePath" class="w-9 h-9 rounded-full flex items-center justify-center bg-[#1BB2B1] cursor-pointer text-white shadow-xl">
                 <i class="pi pi-user"></i>
             </router-link>
@@ -68,7 +71,7 @@
             <div>
                 <ul class="p-2 flex flex-col gap-2 text-center" >
                     <li><router-link :to="homePath" @click="toggleMenu" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all">{{ t.nav.home }}</router-link></li>
-                    <li><button @click="scrollToSection('products')" class="block py-2 rounded hover:bg-[#123057] hover:text-white transition-all w-full cursor-pointer">{{ t.nav.store }}</button></li>
+                    <li><router-link :to="productsPath" @click="toggleMenu" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all">{{ t.nav.store }}</router-link></li>
                     <li><button @click="scrollToSection('features')" class="block py-2 rounded hover:bg-[#123057] hover:text-white transition-all w-full cursor-pointer">{{ t.nav.services }}</button></li>
                     <li><button @click="scrollToSection('about')" class="block py-2 rounded hover:bg-[#123057] hover:text-white transition-all w-full cursor-pointer">{{ t.nav.about }}</button></li>
                     <li><router-link :to="contactPath" @click="toggleMenu" class="block py-2 px-3 rounded hover:bg-[#123057] hover:text-white transition-all">{{ t.nav.contact }}</router-link></li>
@@ -98,6 +101,7 @@ import { useAuth } from '../../composables/useAuth';
 import { useToast } from 'vue-toastification';
 import axios from 'axios';
 import logoImg from '../../images/website/logo.png';
+import CartWidget from '../website-index/CartWidget.vue';
 
 const router = useRouter();
 const websiteStore = useWebsiteStore();
@@ -121,6 +125,7 @@ const homePath = computed(() => currentLocale.value === 'en' ? '/en' : '/ar');
 const loginPath = computed(() => currentLocale.value === 'en' ? '/en/login' : '/ar/login');
 const profilePath = computed(() => currentLocale.value === 'en' ? '/en/profile' : '/ar/profile');
 const contactPath = computed(() => currentLocale.value === 'en' ? '/en/contact' : '/ar/contact');
+const productsPath = computed(() => currentLocale.value === 'en' ? '/en/products' : '/ar/products');
 
 // Fetch contact information from API
 const fetchContactInfo = async () => {

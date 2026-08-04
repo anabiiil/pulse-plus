@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             CountryTableSeeder::class,
             GovernorateTableSeeder::class,
+            PaymentMethodSeeder::class,
             AdminTableSeeder::class,
 
         ]);

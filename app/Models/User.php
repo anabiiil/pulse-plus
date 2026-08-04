@@ -138,6 +138,22 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the user's shopping cart.
+     */
+    public function cart(): HasOne
+    {
+        return $this->hasOne(Cart::class);
+    }
+
+    /**
+     * Get the user's orders.
+     */
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    /**
      * Get the full file system path of the QR code.
      */
     public function getQrCodePathAttribute(): ?string

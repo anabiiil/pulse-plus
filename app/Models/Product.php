@@ -22,6 +22,7 @@ class Product extends Model
         'description',
         'price',
         'video_url',
+        'is_featured',
         'status',
     ];
 
@@ -46,6 +47,7 @@ class Product extends Model
             'name' => 'array',
             'description' => 'array',
             'price' => 'decimal:2',
+            'is_featured' => 'boolean',
         ];
     }
 

@@ -21,6 +21,7 @@ class ProductResource extends JsonResource
             'price' => $this->price,
             'video_url' => $this->video_url,
             'video_embed_url' => $this->video_embed_url,
+            'is_featured' => (bool) $this->is_featured,
             'image_url' => $this->image?->file_url,
             'status' => $this->status?->value ?? $this->status,
             'created_at' => $this->created_at?->format('Y-m-d H:i:s'),

@@ -26,6 +26,11 @@ export interface TranslationSchema {
   products: {
     title: string;
     currency: string;
+    allTitle: string;
+    empty: string;
+    prev: string;
+    next: string;
+    viewAll: string;
   };
   productDetail: {
     back: string;
@@ -36,6 +41,82 @@ export interface TranslationSchema {
     loadError: string;
     related: string;
     home: string;
+  };
+  cart: {
+    title: string;
+    empty: string;
+    addToCart: string;
+    updateCart: string;
+    updated: string;
+    added: string;
+    quantity: string;
+    remove: string;
+    clear: string;
+    subtotal: string;
+    total: string;
+    checkout: string;
+    continueShopping: string;
+    viewCart: string;
+    loginRequired: string;
+    itemsCount: string;
+    currency: string;
+  };
+  checkout: {
+    title: string;
+    customerName: string;
+    phone: string;
+    address: string;
+    addressPlaceholder: string;
+    governorate: string;
+    selectGovernorate: string;
+    notes: string;
+    notesPlaceholder: string;
+    orderSummary: string;
+    shipping: string;
+    subtotal: string;
+    total: string;
+    paymentMethod: string;
+    selectPayment: string;
+    receipt: string;
+    receiptHint: string;
+    placeOrder: string;
+    placing: string;
+    success: string;
+    emptyCart: string;
+    selectGovFirst: string;
+    successTitle: string;
+    successHint: string;
+    orderNo: string;
+    viewOrders: string;
+  };
+  orders: {
+    title: string;
+    empty: string;
+    orderNumber: string;
+    date: string;
+    status: string;
+    total: string;
+    viewDetails: string;
+    details: string;
+    items: string;
+    product: string;
+    price: string;
+    quantity: string;
+    lineTotal: string;
+    shippingInfo: string;
+    shipping: string;
+    subtotal: string;
+    back: string;
+    myOrders: string;
+    statuses: {
+      pending: string;
+      confirmed: string;
+      in_progress: string;
+      on_way: string;
+      completed: string;
+      canceled: string;
+      canceled_by_client: string;
+    };
   };
   features: {
     title: string;

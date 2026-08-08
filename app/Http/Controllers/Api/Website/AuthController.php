@@ -99,7 +99,7 @@ class AuthController extends Controller
                 'marital_status' => $user->marital_status,
                 'profile_image_url' => $user->profile_image_url,
                 'hash_url' => $user->hash_url,
-                'item' => new ItemResource($user->item),
+                'item' => $user->item ? new ItemResource($user->item) : null,
                 'medical_info' => $user->medicalInfo ? [
                     'blood_type' => $user->medicalInfo->blood_type?->value,
                     'emergency_number' => $user->medicalInfo->emergency_number,

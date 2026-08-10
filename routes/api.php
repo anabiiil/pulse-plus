@@ -58,20 +58,18 @@ Route::prefix('website')->group(function () {
         Route::post('/medical-files/{medicalFile}', [MedicalFileController::class, 'update']);
         Route::delete('/medical-files/{medicalFile}', [MedicalFileController::class, 'destroy']);
 
-        // Cart
-        Route::get('/cart', [CartController::class, 'index']);
-        Route::post('/cart', [CartController::class, 'store']);
-        Route::patch('/cart/{cartItem}', [CartController::class, 'update']);
-        Route::delete('/cart/{cartItem}', [CartController::class, 'destroy']);
-        Route::delete('/cart', [CartController::class, 'clear']);
-
-        // Checkout
-        Route::post('/checkout', [CheckoutController::class, 'store']);
-
-        // Orders (user's own)
+        // Orders (user's own — requires an account)
         Route::get('/orders', [OrderController::class, 'index']);
         Route::get('/orders/{order}', [OrderController::class, 'show']);
     });
+
+    // Cart & checkout (available to guests — session based, no account needed)
+    Route::get('/cart', [CartController::class, 'index']);
+    Route::post('/cart', [CartController::class, 'store']);
+    Route::patch('/cart/{cartItem}', [CartController::class, 'update']);
+    Route::delete('/cart/{cartItem}', [CartController::class, 'destroy']);
+    Route::delete('/cart', [CartController::class, 'clear']);
+    Route::post('/checkout', [CheckoutController::class, 'store']);
 
     // Chronic Diseases (public list by language)
     Route::get('/diseases', [MedicalInfoController::class, 'diseases']);

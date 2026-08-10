@@ -174,22 +174,19 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import { useHead } from '@vueuse/head';
 import { useToast } from 'vue-toastification';
 import { useDataStore } from '../../../stores/website-index/dataStore';
 import { useAppStore } from '../../../stores/website-index/appStore';
 import { useCartStore } from '../../../stores/website-index/cartStore';
-import { useAuth } from '../../../composables/useAuth';
 import Navigation from '../../website/Navigation.vue';
 import Footer from '../Footer.vue';
 
 const route = useRoute();
-const router = useRouter();
 const dataStore = useDataStore();
 const appStore = useAppStore();
 const cartStore = useCartStore();
-const { isAuthenticated } = useAuth();
 const toast = useToast();
 
 const t = computed(() => appStore.t);
@@ -219,11 +216,6 @@ watch(
  * (never silently increments an existing line). Requires login.
  */
 async function handleAddToCart() {
-  if (!isAuthenticated.value) {
-    toast.info(t.value.cart.loginRequired);
-    router.push(`/${appStore.locale}/login`);
-    return;
-  }
   try {
     if (cartItem.value) {
       await cartStore.updateItem(cartItem.value.id, quantity.value);

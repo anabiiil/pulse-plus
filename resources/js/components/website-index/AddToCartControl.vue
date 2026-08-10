@@ -25,18 +25,14 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
 import { useAppStore } from '../../stores/website-index/appStore';
 import { useCartStore } from '../../stores/website-index/cartStore';
-import { useAuth } from '../../composables/useAuth';
 
 const props = defineProps<{ product: any }>();
 
 const appStore = useAppStore();
 const cartStore = useCartStore();
-const { isAuthenticated } = useAuth();
-const router = useRouter();
 const toast = useToast();
 
 const t = computed(() => appStore.t);
@@ -49,11 +45,6 @@ watch(cartItem, (item) => {
 }, { immediate: true });
 
 async function submit() {
-  if (!isAuthenticated.value) {
-    toast.info(t.value.cart.loginRequired);
-    router.push(`/${appStore.locale}/login`);
-    return;
-  }
   try {
     if (cartItem.value) {
       await cartStore.updateItem(cartItem.value.id, quantity.value);

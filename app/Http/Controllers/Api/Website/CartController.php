@@ -88,19 +88,37 @@ class CartController extends Controller
     }
 
     /**
-     * Get or create the authenticated user's cart.
+     * Get or create the cart for the current visitor.
+     *
+     * Logged-in users get a cart keyed by their id; guests get one keyed by
+     * their session id so they can shop without an account.
      */
     private function userCart(): Cart
     {
-        return Cart::firstOrCreate(['user_id' => auth('web')->id()]);
+        $userId = auth('web')->id();
+
+        if ($userId) {
+            return Cart::firstOrCreate(['user_id' => $userId]);
+        }
+
+        return Cart::firstOrCreate([
+            'session_id' => session()->getId(),
+            'user_id' => null,
+        ]);
     }
 
     /**
-     * Ensure the cart item belongs to the current user.
+     * Ensure the cart item belongs to the current visitor (user or guest session).
      */
     private function authorizeItem(CartItem $cartItem): void
     {
-        abort_unless($cartItem->cart->user_id === auth('web')->id(), 403, 'Forbidden');
+        $cart = $cartItem->cart;
+        $userId = auth('web')->id();
+
+        $ownsByUser = $userId && (int) $cart->user_id === (int) $userId;
+        $ownsBySession = $cart->session_id && $cart->session_id === session()->getId();
+
+        abort_unless($ownsByUser || $ownsBySession, 403, 'Forbidden');
     }
 
     /**

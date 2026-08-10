@@ -35,8 +35,7 @@ const baseRoutes = [
         name: 'cart',
         component: () => import('../components/website-index/pages/Cart.vue'),
         meta: {
-            title: { ar: 'سلة التسوق', en: 'Cart' },
-            requiresAuth: true
+            title: { ar: 'سلة التسوق', en: 'Cart' }
         }
     },
     {
@@ -44,8 +43,7 @@ const baseRoutes = [
         name: 'checkout',
         component: () => import('../components/website-index/pages/Checkout.vue'),
         meta: {
-            title: { ar: 'إتمام الطلب', en: 'Checkout' },
-            requiresAuth: true
+            title: { ar: 'إتمام الطلب', en: 'Checkout' }
         }
     },
     {

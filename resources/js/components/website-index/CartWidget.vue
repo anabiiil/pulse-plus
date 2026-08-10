@@ -24,8 +24,7 @@
       <div class="fixed inset-0 z-40" @click="open = false"></div>
 
       <div
-        class="absolute z-50 mt-3 w-80 max-w-[90vw] bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden"
-        :class="appStore.isRTL ? 'start-0' : 'end-0'"
+        class="absolute end-0 z-50 mt-3 w-80 max-w-[90vw] bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden"
         style="top: 100%"
       >
         <div class="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
@@ -86,24 +85,16 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
-import { useRouter } from 'vue-router';
 import { useAppStore } from '../../stores/website-index/appStore';
 import { useCartStore } from '../../stores/website-index/cartStore';
-import { useAuth } from '../../composables/useAuth';
 
 const appStore = useAppStore();
 const cartStore = useCartStore();
-const { isAuthenticated } = useAuth();
-const router = useRouter();
 
 const t = computed(() => appStore.t);
 const open = ref(false);
 
 function onIconClick() {
-  if (!isAuthenticated.value) {
-    router.push(`/${appStore.locale}/login`);
-    return;
-  }
   open.value = !open.value;
   if (open.value && !cartStore.loaded) {
     cartStore.fetchCart();
@@ -115,8 +106,6 @@ async function remove(itemId: number) {
 }
 
 onMounted(() => {
-  if (isAuthenticated.value) {
-    cartStore.fetchCart();
-  }
+  cartStore.fetchCart();
 });
 </script>

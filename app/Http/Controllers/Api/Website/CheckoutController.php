@@ -34,7 +34,11 @@ class CheckoutController extends Controller
     {
         $userId = auth('web')->id();
 
-        $cart = Cart::with('items.product')->firstOrCreate(['user_id' => $userId]);
+        // Resolve the cart for a logged-in user or a guest session
+        $cart = $userId
+            ? Cart::with('items.product')->firstOrCreate(['user_id' => $userId])
+            : Cart::with('items.product')->firstOrCreate(['session_id' => session()->getId(), 'user_id' => null]);
+
         $items = $cart->items->filter(fn ($item) => $item->product !== null);
 
         if ($items->isEmpty()) {

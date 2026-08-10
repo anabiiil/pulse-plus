@@ -35,6 +35,7 @@
 
           <div class="flex flex-wrap items-center justify-center gap-3 mt-8">
             <router-link
+              v-if="isLoggedIn"
               :to="`/${appStore.locale}/profile?tab=orders`"
               class="inline-flex items-center gap-2 bg-teal-500 text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:bg-teal-600 transition"
             >
@@ -45,7 +46,8 @@
             </router-link>
             <router-link
               :to="`/${appStore.locale}/products`"
-              class="inline-flex items-center gap-2 border border-teal-500 text-teal-600 font-semibold px-8 py-3 rounded-full hover:bg-teal-50 transition"
+              class="inline-flex items-center gap-2 font-semibold px-8 py-3 rounded-full transition"
+              :class="isLoggedIn ? 'border border-teal-500 text-teal-600 hover:bg-teal-50' : 'bg-teal-500 text-white shadow-lg hover:bg-teal-600'"
             >
               {{ t.cart.continueShopping }}
             </router-link>
@@ -210,6 +212,7 @@ const router = useRouter();
 const toast = useToast();
 
 const t = computed(() => appStore.t);
+const isLoggedIn = computed(() => !!sessionStorage.getItem('user'));
 
 const governorateOptions = computed(() =>
   governorates.value.map((g: any) => ({

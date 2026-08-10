@@ -48,7 +48,6 @@ import { computed, onMounted } from 'vue';
 import { useDataStore } from '../../../stores/website-index/dataStore';
 import { useAppStore } from '../../../stores/website-index/appStore';
 import { useCartStore } from '../../../stores/website-index/cartStore';
-import { useAuth } from '../../../composables/useAuth';
 import AddToCartControl from '../AddToCartControl.vue';
 import product1 from '../../../images/website/product-1.png';
 import product2 from '../../../images/website/product-2.png';
@@ -65,7 +64,6 @@ interface Product {
 const dataStore = useDataStore();
 const appStore = useAppStore();
 const cartStore = useCartStore();
-const { isAuthenticated } = useAuth();
 
 // Get translations
 const t = computed(() => appStore.t);
@@ -89,7 +87,7 @@ const displayProducts = computed(() => {
 });
 
 onMounted(() => {
-  if (isAuthenticated.value && !cartStore.loaded) {
+  if (!cartStore.loaded) {
     cartStore.fetchCart();
   }
 });

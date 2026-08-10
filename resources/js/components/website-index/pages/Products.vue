@@ -92,14 +92,12 @@ import axios from 'axios';
 import { useHead } from '@vueuse/head';
 import { useAppStore } from '../../../stores/website-index/appStore';
 import { useCartStore } from '../../../stores/website-index/cartStore';
-import { useAuth } from '../../../composables/useAuth';
 import Navigation from '../../website/Navigation.vue';
 import Footer from '../Footer.vue';
 import AddToCartControl from '../AddToCartControl.vue';
 
 const appStore = useAppStore();
 const cartStore = useCartStore();
-const { isAuthenticated } = useAuth();
 const t = computed(() => appStore.t);
 
 const PER_PAGE = 4;
@@ -137,7 +135,7 @@ function goTo(p: number) {
 watch([page, () => appStore.locale], fetchProducts, { immediate: true });
 
 onMounted(() => {
-  if (isAuthenticated.value && !cartStore.loaded) {
+  if (!cartStore.loaded) {
     cartStore.fetchCart();
   }
 });

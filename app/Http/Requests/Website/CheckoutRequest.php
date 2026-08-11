@@ -28,6 +28,7 @@ class CheckoutRequest extends FormRequest
             'payment_method_id' => 'required|integer|exists:payment_methods,id',
             'address' => 'required|string|max:1000',
             'notes' => 'nullable|string|max:1000',
+            'coupon_code' => 'nullable|string|max:100',
             'receipt' => 'nullable|file|mimes:jpeg,png,jpg,webp,pdf|max:10240',
         ];
     }

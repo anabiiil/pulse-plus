@@ -29,7 +29,9 @@ class OrderResource extends JsonResource
             'payment_method_code' => $this->payment_method_code,
             'payment_method_image' => $this->payment_method_image,
             'receipt_url' => $this->receipt_url,
+            'coupon_code' => $this->coupon_code,
             'subtotal' => (float) $this->subtotal,
+            'discount' => (float) $this->discount,
             'total' => (float) $this->total,
             'items' => $this->whenLoaded('items', fn () => $this->items->map(fn ($item) => [
                 'id' => (int) $item->id,

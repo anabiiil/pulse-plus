@@ -8,5 +8,8 @@ return [
     'contact_message_marked_as_read' => 'تم وضع علامة مقروءة على الرسالة',
     'contact_message_deleted' => 'تم حذف رسالة الاتصال بنجاح',
     'user_not_found' => 'المستخدم غير موجود',
+    'coupon_invalid' => 'كود الخصم غير صالح أو موقوف أو منتهي',
+    'coupon_applied' => 'تم تطبيق كود الخصم',
+    'cart_empty' => 'سلتك فارغة',
 ];
 

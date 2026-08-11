@@ -66,6 +66,10 @@
                                 </a>
                             </div>
                             <p class="mb-1 d-flex justify-content-between"><span>Subtotal</span><span>{{ order.subtotal }} EGP</span></p>
+                            <p class="mb-1 d-flex justify-content-between text-success" v-if="Number(order.discount) > 0">
+                                <span>Discount <span v-if="order.coupon_code" class="badge bg-light text-dark ms-1">{{ order.coupon_code }}</span></span>
+                                <span>- {{ order.discount }} EGP</span>
+                            </p>
                             <p class="mb-1 d-flex justify-content-between"><span>Shipping</span><span>{{ order.shipping_price }} EGP</span></p>
                             <p class="mb-0 d-flex justify-content-between fw-bold fs-5"><span>Total</span><span>{{ order.total }} EGP</span></p>
                         </div>

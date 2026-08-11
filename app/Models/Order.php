@@ -15,6 +15,8 @@ class Order extends Model
     protected $fillable = [
         'order_number',
         'user_id',
+        'coupon_id',
+        'coupon_code',
         'customer_name',
         'customer_phone',
         'governorate_id',
@@ -28,6 +30,7 @@ class Order extends Model
         'payment_method_image',
         'receipt_url',
         'subtotal',
+        'discount',
         'total',
         'status',
         'notes',
@@ -38,6 +41,7 @@ class Order extends Model
         return [
             'shipping_price' => 'decimal:2',
             'subtotal' => 'decimal:2',
+            'discount' => 'decimal:2',
             'total' => 'decimal:2',
             'status' => OrderStatusEnum::class,
             'payment_method_name' => 'array',
@@ -47,6 +51,11 @@ class Order extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function coupon(): BelongsTo
+    {
+        return $this->belongsTo(Coupon::class);
     }
 
     public function items(): HasMany

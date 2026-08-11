@@ -8,5 +8,8 @@ return [
     'contact_message_marked_as_read' => 'Message marked as read',
     'contact_message_deleted' => 'Contact message deleted successfully',
     'user_not_found' => 'User not found',
+    'coupon_invalid' => 'Invalid, inactive or expired coupon code',
+    'coupon_applied' => 'Coupon applied',
+    'cart_empty' => 'Your cart is empty',
 ];
 

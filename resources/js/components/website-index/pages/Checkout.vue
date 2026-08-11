@@ -161,10 +161,44 @@
                 </div>
               </div>
 
+              <!-- Promo code -->
+              <div class="border-t border-gray-100 pt-4 mb-2">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">{{ t.checkout.promoTitle }}</label>
+                <div v-if="!appliedCoupon" class="flex gap-2">
+                  <input
+                    v-model="couponCode"
+                    type="text"
+                    :placeholder="t.checkout.promoPlaceholder"
+                    class="flex-1 min-w-0 border border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-teal-500"
+                    :class="{ 'border-red-400': couponError }"
+                    @keyup.enter.prevent="applyCoupon"
+                  >
+                  <button
+                    type="button"
+                    class="shrink-0 bg-gray-800 text-white font-semibold px-4 py-2.5 rounded-xl hover:bg-gray-900 transition disabled:opacity-60"
+                    :disabled="applyingCoupon || !couponCode.trim()"
+                    @click="applyCoupon"
+                  >
+                    {{ t.checkout.promoApply }}
+                  </button>
+                </div>
+                <div v-else class="flex items-center justify-between bg-teal-50 rounded-xl px-4 py-2.5">
+                  <span class="font-semibold text-teal-700">{{ appliedCoupon.code }}</span>
+                  <button type="button" class="text-sm text-red-500 hover:text-red-600 font-semibold" @click="removeCoupon">
+                    {{ t.checkout.promoRemove }}
+                  </button>
+                </div>
+                <span v-if="couponError" class="text-red-500 text-sm">{{ couponError }}</span>
+              </div>
+
               <div class="border-t border-gray-100 pt-4 space-y-2">
                 <div class="flex justify-between text-gray-600">
                   <span>{{ t.checkout.subtotal }}</span>
                   <span class="font-semibold">{{ cartStore.subtotal }} {{ t.cart.currency }}</span>
+                </div>
+                <div v-if="discount > 0" class="flex justify-between text-teal-600">
+                  <span>{{ t.checkout.discount }}</span>
+                  <span class="font-semibold">- {{ discount }} {{ t.cart.currency }}</span>
                 </div>
                 <div class="flex justify-between text-gray-600">
                   <span>{{ t.checkout.shipping }}</span>
@@ -251,7 +285,47 @@ function onReceipt(event: any) {
   receiptName.value = file ? file.name : '';
 }
 const shippingPrice = computed(() => selectedGovernorate.value ? Number(selectedGovernorate.value.delivery_price) : 0);
-const total = computed(() => Number((Number(cartStore.subtotal) + shippingPrice.value).toFixed(2)));
+
+// Promo code
+const couponCode = ref('');
+const appliedCoupon = ref<{ code: string; discount: number } | null>(null);
+const applyingCoupon = ref(false);
+const couponError = ref('');
+
+const discount = computed(() => appliedCoupon.value ? Number(appliedCoupon.value.discount) : 0);
+const total = computed(() =>
+  Number(Math.max(0, Number(cartStore.subtotal) - discount.value + shippingPrice.value).toFixed(2))
+);
+
+async function applyCoupon() {
+  const code = couponCode.value.trim();
+  if (!code) {
+    return;
+  }
+  applyingCoupon.value = true;
+  couponError.value = '';
+  try {
+    const response = await axios.post('/api/website/coupons/validate', { code }, {
+      headers: { 'Accept-Language': appStore.locale },
+    });
+    appliedCoupon.value = {
+      code: response.data.data.code,
+      discount: Number(response.data.data.discount),
+    };
+    toast.success(t.value.checkout.promoApplied);
+  } catch (error: any) {
+    appliedCoupon.value = null;
+    couponError.value = error?.response?.data?.message || t.value.checkout.promoInvalid;
+  } finally {
+    applyingCoupon.value = false;
+  }
+}
+
+function removeCoupon() {
+  appliedCoupon.value = null;
+  couponCode.value = '';
+  couponError.value = '';
+}
 
 useHead({ title: computed(() => t.value.checkout.title) });
 
@@ -302,10 +376,15 @@ async function submit() {
         data.append(key, value as string);
       }
     });
+    if (appliedCoupon.value) {
+      data.append('coupon_code', appliedCoupon.value.code);
+    }
     if (receiptFile.value) {
       data.append('receipt', receiptFile.value);
     }
-    const response = await axios.post('/api/website/checkout', data);
+    const response = await axios.post('/api/website/checkout', data, {
+      headers: { 'Accept-Language': appStore.locale },
+    });
     cartStore.reset();
     placedOrder.value = response.data.data;
     toast.success(t.value.checkout.success);

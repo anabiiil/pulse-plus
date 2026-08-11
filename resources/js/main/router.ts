@@ -1,9 +1,10 @@
 import {createRouter, createWebHistory} from 'vue-router';
 
 const routes = [
-    // Dashboard Index
+    // Dashboard Index (both /dash and the post-login /dash/index land here)
     {
         path: '/dash',
+        alias: '/dash/index',
         name: 'dashboard.index',
         component: () => import('../components/dashboard/Dashboard.vue'),
     },
@@ -319,6 +320,41 @@ const routes = [
                 path: ':id',
                 name: 'orders.show',
                 component: () => import('../components/dashboard/orders/Show.vue'),
+            },
+        ],
+    },
+
+    // Coupons routes with nested CRUD operations + statistics page
+    {
+        path: '/dash/coupons',
+        children: [
+            {
+                path: '',
+                name: 'coupons.list',
+                component: () => import('../components/dashboard/coupons/List.vue'),
+            },
+            {
+                path: 'create',
+                name: 'coupons.create',
+                component: () => import('../components/dashboard/coupons/crud/Create.vue'),
+            },
+            {
+                path: ':id/edit',
+                name: 'coupons.update',
+                component: () => import('../components/dashboard/coupons/crud/Update.vue'),
+                props: true,
+            },
+            {
+                path: ':id/delete',
+                name: 'coupons.delete',
+                component: () => import('../components/dashboard/coupons/crud/Delete.vue'),
+                props: true,
+            },
+            {
+                path: ':id',
+                name: 'coupons.show',
+                component: () => import('../components/dashboard/coupons/Show.vue'),
+                props: true,
             },
         ],
     },

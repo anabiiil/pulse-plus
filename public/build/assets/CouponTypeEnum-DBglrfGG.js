@@ -1,0 +1,1 @@
+const E={PERCENTAGE:{label:"Percentage",class:"bg-info",value:"percentage"},FIXED:{label:"Fixed Amount",class:"bg-primary",value:"fixed"},getLabel(e){return e===this.PERCENTAGE.value?this.PERCENTAGE.label:this.FIXED.label},getClass(e){return e===this.PERCENTAGE.value?this.PERCENTAGE.class:this.FIXED.class},isPercentage(e){return e===this.PERCENTAGE.value}};export{E as C};

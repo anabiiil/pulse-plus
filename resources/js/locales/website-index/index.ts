@@ -75,6 +75,13 @@ export interface TranslationSchema {
     shipping: string;
     subtotal: string;
     total: string;
+    discount: string;
+    promoTitle: string;
+    promoPlaceholder: string;
+    promoApply: string;
+    promoRemove: string;
+    promoApplied: string;
+    promoInvalid: string;
     paymentMethod: string;
     selectPayment: string;
     receipt: string;

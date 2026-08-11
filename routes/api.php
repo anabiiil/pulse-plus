@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\Website\AuthController;
 use App\Http\Controllers\Api\Website\CartController;
 use App\Http\Controllers\Api\Website\CheckoutController;
 use App\Http\Controllers\Api\Website\ContactController;
+use App\Http\Controllers\Api\Website\CouponController;
 use App\Http\Controllers\Api\Website\EnumController;
 use App\Http\Controllers\Api\Website\GovernorateController;
 use App\Http\Controllers\Api\Website\HomeController;
@@ -69,6 +70,7 @@ Route::prefix('website')->group(function () {
     Route::patch('/cart/{cartItem}', [CartController::class, 'update']);
     Route::delete('/cart/{cartItem}', [CartController::class, 'destroy']);
     Route::delete('/cart', [CartController::class, 'clear']);
+    Route::post('/coupons/validate', [CouponController::class, 'validateCode']);
     Route::post('/checkout', [CheckoutController::class, 'store']);
 
     // Chronic Diseases (public list by language)

@@ -4,6 +4,8 @@ use App\Http\Controllers\Api\ContactMessageController;
 use App\Http\Controllers\Dash\AdminsController;
 use App\Http\Controllers\Dash\Auth\LoginController;
 use App\Http\Controllers\Dash\CountryController;
+use App\Http\Controllers\Dash\CouponController;
+use App\Http\Controllers\Dash\DashboardController;
 use App\Http\Controllers\Dash\GovernorateController;
 use App\Http\Controllers\Dash\ItemController;
 use App\Http\Controllers\Dash\OrderController;
@@ -32,9 +34,17 @@ Route::group(
             Route::delete('/delete/{id}', [AdminsController::class, 'destroy']);
         });
 
+        // Dashboard home statistics (system-wide)
+        Route::get('dashboard/statistics', [DashboardController::class, 'statistics']);
+
         Route::apiResource('countries', CountryController::class);
         Route::apiResource('governorates', GovernorateController::class);
         Route::apiResource('payment-methods', PaymentMethodController::class);
+
+        // Coupons (CRUD + per-coupon statistics and order list — completed only)
+        Route::get('coupons/{coupon}/statistics', [CouponController::class, 'statistics']);
+        Route::get('coupons/{coupon}/orders', [CouponController::class, 'orders']);
+        Route::apiResource('coupons', CouponController::class);
 
         // Orders (read + status update)
         Route::get('orders/statistics', [OrderController::class, 'statistics']);

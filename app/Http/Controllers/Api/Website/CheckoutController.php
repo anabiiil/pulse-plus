@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Website\CheckoutRequest;
 use App\Http\Resources\Website\OrderResource;
 use App\Models\Cart;
+use App\Models\Coupon;
 use App\Models\Governorate;
 use App\Models\Order;
 use App\Models\PaymentMethod;
@@ -62,13 +63,23 @@ class CheckoutController extends Controller
             );
         }
 
+        // Resolve an optional coupon; an invalid or inactive code is rejected
+        $coupon = null;
+        if ($couponCode = $request->validated('coupon_code')) {
+            $coupon = Coupon::where('code', $couponCode)->first();
+
+            if (! $coupon || ! $coupon->isRedeemable()) {
+                return $this->responseError([], 422, __('messages.coupon_invalid'));
+            }
+        }
+
         $receiptUrl = null;
         if ($request->hasFile('receipt')) {
             $path = $request->file('receipt')->store('receipts', 'public');
             $receiptUrl = Storage::disk('public')->url($path);
         }
 
-        $order = DB::transaction(function () use ($cart, $items, $governorate, $paymentMethod, $receiptUrl, $request, $userId) {
+        $order = DB::transaction(function () use ($cart, $items, $governorate, $paymentMethod, $receiptUrl, $request, $userId, $coupon) {
             $subtotal = 0;
             $lines = [];
 
@@ -88,11 +99,14 @@ class CheckoutController extends Controller
 
             $shippingPrice = (float) $governorate->delivery_price;
             $subtotal = round($subtotal, 2);
-            $total = round($subtotal + $shippingPrice, 2);
+            $discount = $coupon ? $coupon->discountFor($subtotal) : 0.0;
+            $total = round($subtotal - $discount + $shippingPrice, 2);
 
             $order = Order::create([
                 'order_number' => 'ORD-'.now()->format('ymd').'-'.Str::upper(Str::random(5)),
                 'user_id' => $userId,
+                'coupon_id' => $coupon?->id,
+                'coupon_code' => $coupon?->code,
                 'customer_name' => $request->validated('customer_name'),
                 'customer_phone' => $request->validated('customer_phone'),
                 'governorate_id' => $governorate->id,
@@ -106,6 +120,7 @@ class CheckoutController extends Controller
                 'payment_method_image' => $paymentMethod->image?->file_url,
                 'receipt_url' => $receiptUrl,
                 'subtotal' => $subtotal,
+                'discount' => $discount,
                 'total' => $total,
                 'status' => OrderStatusEnum::Pending,
                 'notes' => $request->validated('notes'),

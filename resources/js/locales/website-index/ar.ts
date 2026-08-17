@@ -59,6 +59,7 @@ export default {
     title: 'إتمام الطلب',
     customerName: 'الاسم بالكامل',
     phone: 'رقم الهاتف',
+    invalidPhone: 'من فضلك أدخل رقم موبايل مصري صحيح (مثال: 01012345678)',
     address: 'العنوان بالتفصيل',
     addressPlaceholder: 'الشارع، رقم المبنى، علامة مميزة...',
     governorate: 'المحافظة',

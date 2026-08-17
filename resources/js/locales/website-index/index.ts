@@ -65,6 +65,7 @@ export interface TranslationSchema {
     title: string;
     customerName: string;
     phone: string;
+    invalidPhone: string;
     address: string;
     addressPlaceholder: string;
     governorate: string;

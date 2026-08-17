@@ -59,6 +59,7 @@ export default {
     title: 'Checkout',
     customerName: 'Full Name',
     phone: 'Phone Number',
+    invalidPhone: 'Please enter a valid Egyptian mobile number (e.g. 01012345678)',
     address: 'Full Address',
     addressPlaceholder: 'Street, building no., landmark...',
     governorate: 'Governorate',

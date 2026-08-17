@@ -1,9 +1,12 @@
 <template>
     <div class="col-xl-12">
-        <div class="text-start my-4">
+        <div class="text-start my-4 d-flex flex-wrap gap-2">
             <router-link to="/dash/orders" class="btn btn-secondary btn-b">
                 <i class="las la-arrow-alt-circle-left"></i> Back to Orders
             </router-link>
+            <button v-if="order" class="btn btn-primary btn-b" @click="printWaybill">
+                <i class="fe fe-printer me-1"></i> Print Waybill
+            </button>
         </div>
 
         <div v-if="loading" class="text-center py-5">
@@ -137,6 +140,139 @@ async function fetchOrder() {
     } finally {
         loading.value = false;
     }
+}
+
+function escapeHtml(value: any): string {
+    return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+}
+
+/**
+ * Open a print-ready shipping waybill for the current order in a new window.
+ */
+function printWaybill() {
+    const o = order.value;
+    if (!o) {
+        return;
+    }
+
+    const itemsRows = (o.items || []).map((it: any) => `
+        <tr>
+            <td>${escapeHtml(it.product_name)}</td>
+            <td class="c">${escapeHtml(it.quantity)}</td>
+            <td class="c">${escapeHtml(it.product_price)}</td>
+            <td class="e">${escapeHtml(it.line_total)}</td>
+        </tr>`).join('');
+
+    const discountRow = Number(o.discount) > 0
+        ? `<tr><td>الخصم${o.coupon_code ? ' (' + escapeHtml(o.coupon_code) + ')' : ''}</td><td class="e">- ${escapeHtml(o.discount)} ج.م</td></tr>`
+        : '';
+
+    const html = `<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>بوليصة شحن - ${escapeHtml(o.order_number)}</title>
+<style>
+    * { box-sizing: border-box; }
+    body { font-family: "Segoe UI", Tahoma, Arial, sans-serif; color: #111; margin: 0; padding: 16px; }
+    .sheet { max-width: 800px; margin: 0 auto; border: 2px solid #111; border-radius: 8px; padding: 16px; }
+    .top { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #111; padding-bottom: 10px; margin-bottom: 12px; }
+    .brand { font-size: 26px; font-weight: 800; }
+    .logo { height: 56px; width: auto; max-width: 200px; object-fit: contain; margin-bottom: 4px; }
+    .muted { color: #555; font-size: 13px; }
+    .ordno { font-size: 20px; font-weight: 800; letter-spacing: 1px; }
+    h3 { margin: 14px 0 6px; font-size: 15px; border-inline-start: 4px solid #111; padding-inline-start: 8px; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .info td { padding: 6px 4px; vertical-align: top; }
+    .info td.k { width: 130px; font-weight: 700; color: #333; }
+    .items th, .items td { border: 1px solid #999; padding: 8px; }
+    .items th { background: #f0f0f0; text-align: right; }
+    .c { text-align: center; }
+    .e { text-align: left; }
+    .totals { margin-top: 10px; width: 320px; margin-inline-start: auto; }
+    .totals td { padding: 5px 4px; }
+    .totals .grand td { border-top: 2px solid #111; font-weight: 800; font-size: 17px; }
+    .cod { margin-top: 14px; border: 2px dashed #111; padding: 10px; text-align: center; font-size: 18px; font-weight: 800; }
+    .foot { margin-top: 22px; display: flex; justify-content: space-between; font-size: 13px; color: #333; }
+    .foot div { border-top: 1px solid #999; padding-top: 6px; width: 45%; text-align: center; }
+    @media print { body { padding: 0; } .sheet { border: none; } }
+</style>
+</head>
+<body onload="window.print()">
+    <div class="sheet">
+        <div class="top">
+            <div>
+                <img src="${window.location.origin}/website/img/logo.png" alt="Pulse" class="logo" onerror="this.style.display='none'">
+                <div class="muted">بوليصة شحن / Shipping Waybill</div>
+            </div>
+            <div style="text-align:left">
+                <div class="ordno">${escapeHtml(o.order_number)}</div>
+                <div class="muted">${escapeHtml(o.created_at)}</div>
+            </div>
+        </div>
+
+        <h3>بيانات المستلم</h3>
+        <table class="info">
+            <tr><td class="k">الاسم</td><td>${escapeHtml(o.customer_name)}</td></tr>
+            <tr><td class="k">رقم الهاتف</td><td>${escapeHtml(o.customer_phone)}</td></tr>
+            <tr><td class="k">المحافظة</td><td>${escapeHtml(o.governorate_name)}</td></tr>
+            <tr><td class="k">العنوان</td><td>${escapeHtml(o.address)}</td></tr>
+        </table>
+
+        <h3>المنتجات</h3>
+        <table class="items">
+            <thead>
+                <tr><th>المنتج</th><th class="c">الكمية</th><th class="c">السعر</th><th class="e">الإجمالي</th></tr>
+            </thead>
+            <tbody>${itemsRows}</tbody>
+        </table>
+
+        <table class="totals">
+            <tr><td>الإجمالي الفرعي</td><td class="e">${escapeHtml(o.subtotal)} ج.م</td></tr>
+            ${discountRow}
+            <tr><td>الشحن</td><td class="e">${escapeHtml(o.shipping_price)} ج.م</td></tr>
+            <tr class="grand"><td>الإجمالي</td><td class="e">${escapeHtml(o.total)} ج.م</td></tr>
+        </table>
+
+        <div class="cod">
+            طريقة الدفع: ${escapeHtml(o.payment_method_name || '—')} — المطلوب تحصيله: ${escapeHtml(o.total)} ج.م
+        </div>
+
+        <div class="foot">
+            <div>توقيع المندوب</div>
+        </div>
+    </div>
+</body>
+</html>`;
+
+    // Render into a hidden iframe so no blank popup window appears
+    const existing = document.getElementById('waybill-print-frame');
+    if (existing) {
+        existing.remove();
+    }
+
+    const iframe = document.createElement('iframe');
+    iframe.id = 'waybill-print-frame';
+    iframe.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0;';
+    document.body.appendChild(iframe);
+
+    const doc = iframe.contentWindow?.document;
+    if (!doc) {
+        iframe.remove();
+        return;
+    }
+
+    iframe.contentWindow?.addEventListener('afterprint', () => {
+        setTimeout(() => iframe.remove(), 300);
+    });
+
+    doc.open();
+    doc.write(html);
+    doc.close();
 }
 
 async function saveStatus() {

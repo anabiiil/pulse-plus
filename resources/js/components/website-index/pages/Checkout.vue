@@ -73,7 +73,7 @@
               </div>
               <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-2">{{ t.checkout.phone }}</label>
-                <input v-model="form.customer_phone" type="tel" class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-teal-500" :class="{ 'border-red-400': errors.customer_phone }">
+                <input v-model="form.customer_phone" type="tel" inputmode="numeric" maxlength="14" dir="ltr" @input="sanitizePhone" @keypress="blockNonNumeric" class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-teal-500" :class="{ 'border-red-400': errors.customer_phone }">
                 <span v-if="errors.customer_phone" class="text-red-500 text-sm">{{ errors.customer_phone[0] }}</span>
               </div>
             </div>
@@ -366,8 +366,38 @@ function prefillFromUser() {
   } catch (e) { /* ignore */ }
 }
 
+const EGYPTIAN_MOBILE_RE = /^(?:\+?20|0)1[0125]\d{8}$/;
+
+/**
+ * Block letters/symbols at keypress time (a leading + is allowed for country code).
+ */
+function blockNonNumeric(event: KeyboardEvent) {
+  if (event.key.length === 1 && !/[\d+]/.test(event.key)) {
+    event.preventDefault();
+  }
+}
+
+/**
+ * Keep only digits and a single leading + (covers typing and pasting).
+ */
+function sanitizePhone(event: Event) {
+  const el = event.target as HTMLInputElement;
+  let value = el.value.replace(/[^\d+]/g, '').replace(/(?!^)\+/g, '');
+  form.customer_phone = value;
+  el.value = value;
+}
+
 async function submit() {
   Object.keys(errors).forEach((k) => delete errors[k]);
+
+  // Client-side guard for a valid Egyptian mobile number
+  const phone = form.customer_phone.replace(/[\s-]+/g, '');
+  if (!EGYPTIAN_MOBILE_RE.test(phone)) {
+    errors.customer_phone = [t.value.checkout.invalidPhone];
+    toast.error(t.value.checkout.invalidPhone);
+    return;
+  }
+
   submitting.value = true;
   try {
     const data = new FormData();

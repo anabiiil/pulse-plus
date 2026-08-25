@@ -747,7 +747,7 @@
 
                                 <!-- File upload (multiple) -->
                                 <div class="mb-4">
-                                    <label class="font-bold mb-2 block">{{ isRTL ? 'صور / ملفات المستند (تقدر ترفع أكتر من ملف)' : 'Document Files (you can upload multiple)' }}</label>
+                                    <label class="font-bold mb-2 block">{{ isRTL ? 'صور / ملفات المستند (يمكنك رفع أكثر من ملف)' : 'Document Files (you can upload multiple)' }}</label>
                                     <label class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-[20px] p-4 flex items-center justify-center gap-3 shadow-md cursor-pointer hover:border-teal-400 transition">
                                         <i class="pi pi-camera text-gray-400 text-xl"></i>
                                         <span class="text-gray-400 font-semibold text-sm">

@@ -25,6 +25,11 @@ class MedicalFileResource extends JsonResource
                 : $this->category->labelEn(),
             'category_icon' => $this->category->icon(),
             'file_url' => $this->file_url,
+            'attachments' => $this->whenLoaded('attachments', fn () => $this->attachments->map(fn ($attachment) => [
+                'id' => $attachment->id,
+                'file_url' => $attachment->file_url,
+                'original_name' => $attachment->original_name,
+            ])->values()),
             'doctor' => $this->doctor,
             'notes' => $this->notes,
             'created_at' => $this->created_at?->toDateString(),

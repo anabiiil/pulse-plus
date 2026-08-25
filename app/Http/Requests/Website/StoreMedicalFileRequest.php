@@ -28,7 +28,13 @@ class StoreMedicalFileRequest extends FormRequest
         return [
             'title' => $isUpdate ? 'sometimes|required|string|max:255' : 'required|string|max:255',
             'category' => ['sometimes', 'required', Rule::enum(MedicalFileCategoryEnum::class)],
+            // A record can hold a group of files. `file` (single) is still accepted
+            // for backward compatibility.
+            'files' => 'nullable|array',
+            'files.*' => 'file|mimes:jpeg,png,jpg,gif,pdf|max:5120',
             'file' => 'nullable|file|mimes:jpeg,png,jpg,gif,pdf|max:5120',
+            'remove_attachment_ids' => 'nullable|array',
+            'remove_attachment_ids.*' => 'integer',
             'doctor' => 'nullable|string|max:255',
             'notes' => 'nullable|string',
         ];
@@ -39,6 +45,8 @@ class StoreMedicalFileRequest extends FormRequest
         return [
             'title.required' => 'The document title is required.',
             'category.required' => 'The category is required.',
+            'files.*.mimes' => 'Each file must be a jpeg, png, jpg, gif, or pdf.',
+            'files.*.max' => 'Each file may not be larger than 5MB.',
             'file.mimes' => 'The file must be a jpeg, png, jpg, gif, or pdf.',
             'file.max' => 'The file may not be larger than 5MB.',
         ];

@@ -107,25 +107,6 @@
                                 </div>
                             </div>
 
-                            <!-- Orders Tab -->
-                            <div
-                                @click="activeTab = 'orders'"
-                                :class="activeTab === 'orders' ? 'bg-teal-500 text-white shadow-xl' : 'bg-gray-100 text-[#123057]'"
-                                class="cursor-pointer hover:scale-102 transition-transform duration-300 ease-in-out rounded-3xl px-7 py-6 flex items-center justify-between shadow-md"
-                            >
-                                <div class="flex items-center gap-3">
-                                    <div :class="activeTab === 'orders' ? 'bg-white' : 'bg-white shadow-2xl'" class="p-5 rounded-xl flex items-center justify-center">
-                                        <i class="text-teal-500 pi pi-shopping-cart text-[22px]"></i>
-                                    </div>
-                                    <div>
-                                        <p class="font-semibold">{{ isRTL ? 'طلباتي' : 'My Orders' }}</p>
-                                        <p class="text-sm opacity-90">{{ isRTL ? 'متابعة ومراجعة طلباتك' : 'Track your orders' }}</p>
-                                    </div>
-                                </div>
-                                <div class="text-xl" :class="activeTab === 'orders' ? 'text-white' : 'text-gray-400'">
-                                    <i :class="isRTL ? 'pi-angle-left' : 'pi-angle-right'" class="pi"></i>
-                                </div>
-                            </div>
                         </div>
                     </div>
 
@@ -181,26 +162,12 @@
                                 <i class="pi pi-folder text-[18px]"></i>
                                 <span class="text-sm">{{ t.profile.medicalArchive?.title || 'الأرشيف الطبي' }}</span>
                             </button>
-                            <button
-                                @click="activeTab = 'orders'"
-                                :class="activeTab === 'orders' ? 'bg-teal-500 text-white shadow-xl' : 'bg-gray-100 text-[#123057]'"
-                                class="flex-1 flex items-center justify-center gap-2 rounded-2xl px-4 py-3 font-semibold transition-all duration-300"
-                            >
-                                <i class="pi pi-shopping-cart text-[18px]"></i>
-                                <span class="text-sm">{{ isRTL ? 'طلباتي' : 'My Orders' }}</span>
-                            </button>
                         </div>
                     </div>
                 </div>
 
                 <!-- Main Content -->
                 <div class="col-span-2">
-                    <!-- Orders Tab -->
-                    <div v-show="activeTab === 'orders'" class="bg-white p-6 lg:p-10 rounded-[48px] shadow-xl">
-                        <h3 class="text-2xl font-bold mb-6">{{ isRTL ? 'طلباتي' : 'My Orders' }}</h3>
-                        <OrdersList />
-                    </div>
-
                     <!-- Personal Information Tab -->
                     <div v-show="activeTab === 'personal'"
                          class="bg-white p-10 rounded-[48px] shadow-xl transform transition duration-500 hover:shadow-2xl">
@@ -651,6 +618,27 @@
                                         <span :class="file.is_active ? 'bg-teal-500' : 'bg-gray-400'" class="w-1.5 h-1.5 rounded-full inline-block"></span>
                                         {{ file.category_label }}
                                     </span>
+
+                                    <!-- Attachments (group of files) -->
+                                    <div v-if="fileAttachments(file).length" class="mt-3 flex flex-wrap gap-2">
+                                        <div
+                                            v-for="(att, i) in fileAttachments(file)"
+                                            :key="att.id || i"
+                                            class="inline-flex items-center gap-1.5 bg-white border border-gray-200 rounded-full ps-3 pe-1.5 py-1 text-xs"
+                                        >
+                                            <a :href="att.file_url" target="_blank" class="text-[#123057] hover:text-teal-500 font-semibold max-w-[120px] truncate">
+                                                {{ att.original_name || (isRTL ? `ملف ${i + 1}` : `File ${i + 1}`) }}
+                                            </a>
+                                            <button
+                                                type="button"
+                                                @click="printFile(att.file_url)"
+                                                class="w-6 h-6 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center hover:bg-teal-200 transition"
+                                                :title="isRTL ? 'طباعة' : 'Print'"
+                                            >
+                                                <i class="pi pi-print text-[11px]"></i>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                                 <!-- Actions -->
                                 <div class="flex flex-col gap-2 shrink-0">
@@ -737,17 +725,51 @@
                                     </div>
                                 </div>
 
-                                <!-- File upload -->
+                                <!-- Existing attachments (edit mode) -->
+                                <div v-if="editingFile && existingAttachments.length" class="mb-4">
+                                    <label class="font-bold mb-2 block">{{ isRTL ? 'الملفات الحالية' : 'Current Files' }}</label>
+                                    <div class="flex flex-wrap gap-2">
+                                        <div
+                                            v-for="(att, i) in existingAttachments"
+                                            :key="att.id"
+                                            class="inline-flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-full ps-3 pe-1.5 py-1 text-xs"
+                                        >
+                                            <a :href="att.file_url" target="_blank" class="text-[#123057] font-semibold max-w-[120px] truncate">
+                                                {{ att.original_name || (isRTL ? `ملف ${i + 1}` : `File ${i + 1}`) }}
+                                            </a>
+                                            <button type="button" @click="removeExistingAttachment(att.id)"
+                                                class="w-5 h-5 rounded-full bg-red-100 text-red-500 flex items-center justify-center hover:bg-red-200 transition">
+                                                <i class="pi pi-times text-[10px]"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- File upload (multiple) -->
                                 <div class="mb-4">
-                                    <label class="font-bold mb-2 block">{{ isRTL ? 'صورة / ملف المستند' : 'Document File' }}</label>
+                                    <label class="font-bold mb-2 block">{{ isRTL ? 'صور / ملفات المستند (تقدر ترفع أكتر من ملف)' : 'Document Files (you can upload multiple)' }}</label>
                                     <label class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-[20px] p-4 flex items-center justify-center gap-3 shadow-md cursor-pointer hover:border-teal-400 transition">
                                         <i class="pi pi-camera text-gray-400 text-xl"></i>
                                         <span class="text-gray-400 font-semibold text-sm">
-                                            {{ selectedFileName || (isRTL ? 'رفع صورة التقرير (jpg, png, pdf)' : 'Upload report file (jpg, png, pdf)') }}
+                                            {{ isRTL ? 'رفع الملفات (jpg, png, pdf)' : 'Upload files (jpg, png, pdf)' }}
                                         </span>
-                                        <input type="file" class="hidden" accept=".jpg,.jpeg,.png,.gif,.pdf" @change="handleFileSelect">
+                                        <input type="file" class="hidden" accept=".jpg,.jpeg,.png,.gif,.pdf" multiple @change="handleFileSelect">
                                     </label>
-                                    <p v-if="fileErrors.file" class="text-red-500 text-xs mt-1">{{ fileErrors.file }}</p>
+                                    <!-- Selected (not yet uploaded) files -->
+                                    <div v-if="selectedFiles.length" class="flex flex-wrap gap-2 mt-2">
+                                        <div
+                                            v-for="(f, i) in selectedFiles"
+                                            :key="i"
+                                            class="inline-flex items-center gap-2 bg-teal-50 border border-teal-200 rounded-full ps-3 pe-1.5 py-1 text-xs"
+                                        >
+                                            <span class="text-teal-700 font-semibold max-w-[120px] truncate">{{ f.name }}</span>
+                                            <button type="button" @click="removeSelectedFile(i)"
+                                                class="w-5 h-5 rounded-full bg-red-100 text-red-500 flex items-center justify-center hover:bg-red-200 transition">
+                                                <i class="pi pi-times text-[10px]"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <p v-if="fileErrors.files || fileErrors['files.0']" class="text-red-500 text-xs mt-1">{{ fileErrors.files || fileErrors['files.0'] }}</p>
                                 </div>
 
                                 <!-- Notes -->
@@ -816,7 +838,6 @@ import userVectorImg from '../../../images/website/user-vector.png';
 // Import layout components
 import Navigation from '../Navigation.vue';
 import Footer from '../Footer.vue';
-import OrdersList from '../../website-index/OrdersList.vue';
 import MultiSelect, { type SelectOption } from '../forms/MultiSelect.vue';
 
 // window.location.origin غير متاح مباشرة في الـ template في Vue 3
@@ -863,8 +884,9 @@ const showDeleteFileModal = ref(false);
 const editingFile = ref<any>(null);
 const deletingFile = ref<any>(null);
 const fileSaving = ref(false);
-const selectedFileName = ref('');
-const selectedFileObject = ref<File | null>(null);
+const selectedFiles = ref<File[]>([]);
+const existingAttachments = ref<Array<{ id: number; file_url: string; original_name?: string }>>([]);
+const removeAttachmentIds = ref<number[]>([]);
 const fileErrors = ref<Record<string, string>>({});
 
 const fileForm = reactive({
@@ -915,8 +937,9 @@ const openAddFileModal = (): void => {
     fileForm.category = activeFileCategory.value;
     fileForm.doctor = '';
     fileForm.notes = '';
-    selectedFileName.value = '';
-    selectedFileObject.value = null;
+    selectedFiles.value = [];
+    existingAttachments.value = [];
+    removeAttachmentIds.value = [];
     fileErrors.value = {};
     showFileModal.value = true;
 };
@@ -927,8 +950,9 @@ const openEditFileModal = (file: any): void => {
     fileForm.category = file.category;
     fileForm.doctor = file.doctor || '';
     fileForm.notes = file.notes || '';
-    selectedFileName.value = '';
-    selectedFileObject.value = null;
+    selectedFiles.value = [];
+    existingAttachments.value = [...fileAttachments(file)].filter((a: any) => a.id);
+    removeAttachmentIds.value = [];
     fileErrors.value = {};
     showFileModal.value = true;
 };
@@ -939,14 +963,73 @@ const closeFileModal = (): void => {
 
 const handleFileSelect = (e: Event): void => {
     const target = e.target as HTMLInputElement;
-    const file = target.files?.[0];
-    if (file) {
-        selectedFileObject.value = file;
-        selectedFileName.value = file.name;
+    if (target.files?.length) {
+        selectedFiles.value.push(...Array.from(target.files));
     }
+    target.value = '';
+};
+
+const removeSelectedFile = (index: number): void => {
+    selectedFiles.value.splice(index, 1);
+};
+
+const removeExistingAttachment = (id: number): void => {
+    existingAttachments.value = existingAttachments.value.filter((a) => a.id !== id);
+    removeAttachmentIds.value.push(id);
 };
 
 const isImage = (url: string): boolean => /\.(jpg|jpeg|png|gif)(\?|$)/i.test(url);
+
+/**
+ * Return a record's attachments, falling back to the legacy single file.
+ */
+const fileAttachments = (file: any): Array<{ id?: number; file_url: string; original_name?: string }> => {
+    if (Array.isArray(file.attachments) && file.attachments.length) {
+        return file.attachments;
+    }
+    return file.file_url ? [{ file_url: file.file_url }] : [];
+};
+
+/**
+ * Open a file (image or PDF) in a hidden iframe and print it directly.
+ */
+const printFile = (url: string): void => {
+    if (!url) { return; }
+
+    const existing = document.getElementById('medical-print-frame');
+    if (existing) { existing.remove(); }
+
+    const iframe = document.createElement('iframe');
+    iframe.id = 'medical-print-frame';
+    iframe.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0;';
+    document.body.appendChild(iframe);
+
+    const cleanup = (): void => { setTimeout(() => iframe.remove(), 500); };
+
+    if (isImage(url)) {
+        // Print once the image itself has loaded (not just the document)
+        const doc = iframe.contentWindow?.document;
+        if (!doc) { return; }
+        doc.open();
+        doc.write(`<!DOCTYPE html><html><head><meta charset="utf-8"><style>@page{margin:10mm}html,body{margin:0;height:100%}body{display:flex;align-items:center;justify-content:center}img{max-width:100%;max-height:100vh}</style></head><body><img src="${url}" onload="window.focus();window.print();"></body></html>`);
+        doc.close();
+        iframe.contentWindow?.addEventListener('afterprint', cleanup);
+    } else {
+        iframe.onload = () => {
+            try {
+                iframe.contentWindow?.focus();
+                iframe.contentWindow?.print();
+                iframe.contentWindow?.addEventListener('afterprint', cleanup);
+            } catch (e) {
+                console.error('Print failed', e);
+            }
+        };
+        iframe.src = url;
+    }
+
+    // Fallback removal in case afterprint never fires
+    setTimeout(() => iframe.remove(), 60000);
+};
 
 const submitFileForm = async (): Promise<void> => {
     fileErrors.value = {};
@@ -957,7 +1040,8 @@ const submitFileForm = async (): Promise<void> => {
     formData.append('category', fileForm.category);
     if (fileForm.doctor) { formData.append('doctor', fileForm.doctor); }
     if (fileForm.notes) { formData.append('notes', fileForm.notes); }
-    if (selectedFileObject.value) { formData.append('file', selectedFileObject.value); }
+    selectedFiles.value.forEach((f) => formData.append('files[]', f));
+    removeAttachmentIds.value.forEach((id) => formData.append('remove_attachment_ids[]', String(id)));
 
     try {
         if (editingFile.value) {
@@ -1354,7 +1438,7 @@ const resetMedicalForm = () => {
 onMounted(async () => {
     websiteStore.setRouter(router);
     const queryTab = route.query.tab;
-    if (typeof queryTab === 'string' && ['personal', 'medical', 'archive', 'orders'].includes(queryTab)) {
+    if (typeof queryTab === 'string' && ['personal', 'medical', 'archive'].includes(queryTab)) {
         activeTab.value = queryTab;
     }
     await loadUser();

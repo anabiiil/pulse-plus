@@ -1,41 +1,33 @@
 {
-  "_AddToCartControl.vue_vue_type_script_setup_true_lang-vokh85Q0.js": {
-    "file": "assets/AddToCartControl.vue_vue_type_script_setup_true_lang-vokh85Q0.js",
+  "_AddToCartControl.vue_vue_type_script_setup_true_lang-DZJV7L5B.js": {
+    "file": "assets/AddToCartControl.vue_vue_type_script_setup_true_lang-DZJV7L5B.js",
     "name": "AddToCartControl.vue_vue_type_script_setup_true_lang",
     "imports": [
       "_pinia-BJ3DTyJE.js",
       "resources/js/website-index.js",
-      "_footer-logo-B3qhtMpc.js"
+      "_footer-logo-B95nrNXn.js"
     ]
   },
   "_CouponTypeEnum-DBglrfGG.js": {
     "file": "assets/CouponTypeEnum-DBglrfGG.js",
     "name": "CouponTypeEnum"
   },
-  "_Footer.vue_vue_type_script_setup_true_lang-Bg9TBLro.js": {
-    "file": "assets/Footer.vue_vue_type_script_setup_true_lang-Bg9TBLro.js",
+  "_Footer.vue_vue_type_script_setup_true_lang-DFiolOfr.js": {
+    "file": "assets/Footer.vue_vue_type_script_setup_true_lang-DFiolOfr.js",
     "name": "Footer.vue_vue_type_script_setup_true_lang",
     "imports": [
       "_pinia-BJ3DTyJE.js",
       "resources/js/website-index.js",
-      "_footer-logo-B3qhtMpc.js"
+      "_footer-logo-B95nrNXn.js"
     ]
   },
-  "_Footer.vue_vue_type_script_setup_true_lang-CycgWow6.js": {
-    "file": "assets/Footer.vue_vue_type_script_setup_true_lang-CycgWow6.js",
+  "_Footer.vue_vue_type_script_setup_true_lang-DQr9I3zK.js": {
+    "file": "assets/Footer.vue_vue_type_script_setup_true_lang-DQr9I3zK.js",
     "name": "Footer.vue_vue_type_script_setup_true_lang",
     "imports": [
       "_pinia-BJ3DTyJE.js",
       "resources/js/website-index.js",
-      "_footer-logo-B3qhtMpc.js"
-    ]
-  },
-  "_OrdersList.vue_vue_type_script_setup_true_lang-Bb93Xvra.js": {
-    "file": "assets/OrdersList.vue_vue_type_script_setup_true_lang-Bb93Xvra.js",
-    "name": "OrdersList.vue_vue_type_script_setup_true_lang",
-    "imports": [
-      "_pinia-BJ3DTyJE.js",
-      "resources/js/website-index.js"
+      "_footer-logo-B95nrNXn.js"
     ]
   },
   "_RenewSubscriptionModal.vue_vue_type_script_setup_true_lang-DY1qXuag.js": {
@@ -63,8 +55,8 @@
       "assets/TiptapMenuBar-BKPKH4vJ.css"
     ]
   },
-  "_footer-logo-B3qhtMpc.js": {
-    "file": "assets/footer-logo-B3qhtMpc.js",
+  "_footer-logo-B95nrNXn.js": {
+    "file": "assets/footer-logo-B95nrNXn.js",
     "name": "footer-logo",
     "imports": [
       "_pinia-BJ3DTyJE.js",
@@ -181,7 +173,7 @@
     "src": "node_modules/primeicons/fonts/primeicons.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-JUN52OJ2.css",
+    "file": "assets/app-Bpts0phq.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "name": "app",
@@ -190,7 +182,7 @@
     ]
   },
   "resources/css/website.css": {
-    "file": "assets/website-BReQ_elf.css",
+    "file": "assets/website-D0f7hHD9.css",
     "src": "resources/css/website.css",
     "isEntry": true,
     "name": "website",
@@ -832,52 +824,52 @@
     ]
   },
   "resources/js/components/website-index/pages/Cart.vue": {
-    "file": "assets/Cart-D5CdweQV.js",
+    "file": "assets/Cart-sLyOLayA.js",
     "name": "Cart",
     "src": "resources/js/components/website-index/pages/Cart.vue",
     "isDynamicEntry": true,
     "imports": [
       "_pinia-BJ3DTyJE.js",
       "resources/js/website-index.js",
-      "_footer-logo-B3qhtMpc.js",
-      "_Footer.vue_vue_type_script_setup_true_lang-CycgWow6.js"
+      "_footer-logo-B95nrNXn.js",
+      "_Footer.vue_vue_type_script_setup_true_lang-DFiolOfr.js"
     ],
     "css": [
       "assets/Cart-EXJYBTuT.css",
-      "assets/website-BReQ_elf.css"
+      "assets/website-D0f7hHD9.css"
     ]
   },
   "resources/js/components/website-index/pages/Checkout.vue": {
-    "file": "assets/Checkout-C2qNtLZh.js",
+    "file": "assets/Checkout-CnbhNl3a.js",
     "name": "Checkout",
     "src": "resources/js/components/website-index/pages/Checkout.vue",
     "isDynamicEntry": true,
     "imports": [
       "_pinia-BJ3DTyJE.js",
       "resources/js/website-index.js",
-      "_footer-logo-B3qhtMpc.js",
-      "_Footer.vue_vue_type_script_setup_true_lang-CycgWow6.js"
+      "_footer-logo-B95nrNXn.js",
+      "_Footer.vue_vue_type_script_setup_true_lang-DFiolOfr.js"
     ],
     "css": [
-      "assets/Checkout-ONsPs6Ut.css",
-      "assets/website-BReQ_elf.css"
+      "assets/Checkout-B8gkiQt9.css",
+      "assets/website-D0f7hHD9.css"
     ]
   },
   "resources/js/components/website-index/pages/Index.vue": {
-    "file": "assets/Index-DujQm2oR.js",
+    "file": "assets/Index-BjDaOUau.js",
     "name": "Index",
     "src": "resources/js/components/website-index/pages/Index.vue",
     "isDynamicEntry": true,
     "imports": [
       "_pinia-BJ3DTyJE.js",
       "resources/js/website-index.js",
-      "_footer-logo-B3qhtMpc.js",
-      "_AddToCartControl.vue_vue_type_script_setup_true_lang-vokh85Q0.js",
-      "_Footer.vue_vue_type_script_setup_true_lang-CycgWow6.js"
+      "_footer-logo-B95nrNXn.js",
+      "_AddToCartControl.vue_vue_type_script_setup_true_lang-DZJV7L5B.js",
+      "_Footer.vue_vue_type_script_setup_true_lang-DFiolOfr.js"
     ],
     "css": [
       "assets/Index-D8f91Mzp.css",
-      "assets/website-BReQ_elf.css"
+      "assets/website-D0f7hHD9.css"
     ],
     "assets": [
       "assets/slide-kl6v87yz.png",
@@ -889,111 +881,109 @@
     ]
   },
   "resources/js/components/website-index/pages/Orders.vue": {
-    "file": "assets/Orders-Oz3CQsKB.js",
+    "file": "assets/Orders-DPJgJAnt.js",
     "name": "Orders",
     "src": "resources/js/components/website-index/pages/Orders.vue",
     "isDynamicEntry": true,
     "imports": [
       "_pinia-BJ3DTyJE.js",
       "resources/js/website-index.js",
-      "_footer-logo-B3qhtMpc.js",
-      "_Footer.vue_vue_type_script_setup_true_lang-CycgWow6.js",
-      "_OrdersList.vue_vue_type_script_setup_true_lang-Bb93Xvra.js"
+      "_footer-logo-B95nrNXn.js",
+      "_Footer.vue_vue_type_script_setup_true_lang-DFiolOfr.js"
     ],
     "css": [
       "assets/Orders-Cb26u5jN.css",
-      "assets/website-BReQ_elf.css"
+      "assets/website-D0f7hHD9.css"
     ]
   },
   "resources/js/components/website-index/pages/ProductDetail.vue": {
-    "file": "assets/ProductDetail-DvyaxnIJ.js",
+    "file": "assets/ProductDetail-DqNogAp9.js",
     "name": "ProductDetail",
     "src": "resources/js/components/website-index/pages/ProductDetail.vue",
     "isDynamicEntry": true,
     "imports": [
       "_pinia-BJ3DTyJE.js",
       "resources/js/website-index.js",
-      "_footer-logo-B3qhtMpc.js",
-      "_Footer.vue_vue_type_script_setup_true_lang-CycgWow6.js"
+      "_footer-logo-B95nrNXn.js",
+      "_Footer.vue_vue_type_script_setup_true_lang-DFiolOfr.js"
     ],
     "css": [
       "assets/ProductDetail-BAUnU4cb.css",
-      "assets/website-BReQ_elf.css"
+      "assets/website-D0f7hHD9.css"
     ]
   },
   "resources/js/components/website-index/pages/Products.vue": {
-    "file": "assets/Products-BNYl3OlN.js",
+    "file": "assets/Products-DzM2Quhn.js",
     "name": "Products",
     "src": "resources/js/components/website-index/pages/Products.vue",
     "isDynamicEntry": true,
     "imports": [
       "_pinia-BJ3DTyJE.js",
       "resources/js/website-index.js",
-      "_footer-logo-B3qhtMpc.js",
-      "_Footer.vue_vue_type_script_setup_true_lang-CycgWow6.js",
-      "_AddToCartControl.vue_vue_type_script_setup_true_lang-vokh85Q0.js"
+      "_footer-logo-B95nrNXn.js",
+      "_Footer.vue_vue_type_script_setup_true_lang-DFiolOfr.js",
+      "_AddToCartControl.vue_vue_type_script_setup_true_lang-DZJV7L5B.js"
     ],
     "css": [
       "assets/Products-CwFhMhkJ.css",
-      "assets/website-BReQ_elf.css"
+      "assets/website-D0f7hHD9.css"
     ]
   },
   "resources/js/components/website/pages/Contact.vue": {
-    "file": "assets/Contact-CoJd1M-D.js",
+    "file": "assets/Contact-CnSxbuSf.js",
     "name": "Contact",
     "src": "resources/js/components/website/pages/Contact.vue",
     "isDynamicEntry": true,
     "imports": [
       "_pinia-BJ3DTyJE.js",
       "resources/js/website-index.js",
-      "_footer-logo-B3qhtMpc.js",
-      "_Footer.vue_vue_type_script_setup_true_lang-Bg9TBLro.js"
+      "_footer-logo-B95nrNXn.js",
+      "_Footer.vue_vue_type_script_setup_true_lang-DQr9I3zK.js"
     ],
     "css": [
       "assets/Contact-D3aZFG5r.css",
-      "assets/website-BReQ_elf.css"
+      "assets/website-D0f7hHD9.css"
     ]
   },
   "resources/js/components/website/pages/Login.vue": {
-    "file": "assets/Login-DWUpBJd3.js",
+    "file": "assets/Login-CZ2zwGNJ.js",
     "name": "Login",
     "src": "resources/js/components/website/pages/Login.vue",
     "isDynamicEntry": true,
     "imports": [
       "_pinia-BJ3DTyJE.js",
       "resources/js/website-index.js",
-      "_footer-logo-B3qhtMpc.js",
-      "_Footer.vue_vue_type_script_setup_true_lang-Bg9TBLro.js"
+      "_footer-logo-B95nrNXn.js",
+      "_Footer.vue_vue_type_script_setup_true_lang-DQr9I3zK.js"
     ],
     "css": [
       "assets/Login-DsTQI5V6.css",
-      "assets/website-BReQ_elf.css"
+      "assets/website-D0f7hHD9.css"
     ],
     "assets": [
       "assets/shield-Bh8JUfs7.png"
     ]
   },
   "resources/js/components/website/pages/Profile.vue": {
-    "file": "assets/Profile-BvkYAHon.js",
+    "file": "assets/Profile-B3alLxnB.js",
     "name": "Profile",
     "src": "resources/js/components/website/pages/Profile.vue",
     "isDynamicEntry": true,
     "imports": [
       "_pinia-BJ3DTyJE.js",
-      "_footer-logo-B3qhtMpc.js",
+      "_footer-logo-B95nrNXn.js",
       "resources/js/website-index.js",
-      "_Footer.vue_vue_type_script_setup_true_lang-Bg9TBLro.js",
-      "_OrdersList.vue_vue_type_script_setup_true_lang-Bb93Xvra.js"
+      "_Footer.vue_vue_type_script_setup_true_lang-DQr9I3zK.js"
     ],
     "css": [
-      "assets/website-BReQ_elf.css"
+      "assets/website-D0f7hHD9.css"
     ],
     "assets": [
       "assets/user-vector-DYJ3cU25.png"
     ]
   },
   "resources/js/components/website/pages/UserInfo.vue": {
-    "file": "assets/UserInfo-BQlSms4A.js",
+    "file": "assets/UserInfo-B8TzC5gh.js",
     "name": "UserInfo",
     "src": "resources/js/components/website/pages/UserInfo.vue",
     "isDynamicEntry": true,
@@ -1003,7 +993,7 @@
     ],
     "css": [
       "assets/UserInfo-G1f79wql.css",
-      "assets/website-BReQ_elf.css"
+      "assets/website-D0f7hHD9.css"
     ]
   },
   "resources/js/images/website/footer-logo.png": {
@@ -1047,7 +1037,7 @@
     "src": "resources/js/images/website/vector-3.png"
   },
   "resources/js/website-index.js": {
-    "file": "assets/website-index-BkER7FPn.js",
+    "file": "assets/website-index-s_ejY0Kr.js",
     "name": "website-index",
     "src": "resources/js/website-index.js",
     "isEntry": true,
@@ -1068,7 +1058,7 @@
     ],
     "css": [
       "assets/website-index-B-j-5dyI.css",
-      "assets/website-BReQ_elf.css"
+      "assets/website-D0f7hHD9.css"
     ],
     "assets": [
       "assets/primeicons-DMOk5skT.eot",

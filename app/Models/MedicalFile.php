@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Support\Enums\MedicalFile\MedicalFileCategoryEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
 
 class MedicalFile extends Model
@@ -36,6 +37,11 @@ class MedicalFile extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function attachments(): HasMany
+    {
+        return $this->hasMany(MedicalFileAttachment::class);
     }
 
     public function getFileUrlAttribute(): ?string

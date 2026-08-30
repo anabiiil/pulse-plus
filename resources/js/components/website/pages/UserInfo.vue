@@ -268,16 +268,24 @@
 
                                     <!-- Attachments (group of files) -->
                                     <div v-if="fileAttachments(file).length" class="mt-3 flex flex-wrap gap-2">
-                                        <a
+                                        <div
                                             v-for="(att, i) in fileAttachments(file)"
                                             :key="att.id || i"
-                                            :href="att.file_url"
-                                            target="_blank"
-                                            class="inline-flex items-center gap-1.5 bg-white border border-gray-200 rounded-full px-3 py-1 text-xs text-[#123057] hover:text-teal-600 hover:border-teal-300 transition"
+                                            class="inline-flex items-center gap-1.5 bg-white border border-gray-200 rounded-full ps-3 pe-1.5 py-1 text-xs"
                                         >
-                                            <i class="pi pi-paperclip text-[11px]"></i>
-                                            <span class="max-w-[120px] truncate">{{ att.original_name || (currentLocale === 'ar' ? `ملف ${i + 1}` : `File ${i + 1}`) }}</span>
-                                        </a>
+                                            <a :href="att.file_url" target="_blank" class="inline-flex items-center gap-1.5 text-[#123057] hover:text-teal-600 transition">
+                                                <i class="pi pi-paperclip text-[11px]"></i>
+                                                <span class="max-w-[110px] truncate">{{ att.original_name || (currentLocale === 'ar' ? `ملف ${i + 1}` : `File ${i + 1}`) }}</span>
+                                            </a>
+                                            <button
+                                                type="button"
+                                                @click="printFile(att.file_url)"
+                                                class="w-6 h-6 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center hover:bg-teal-200 transition"
+                                                :title="currentLocale === 'ar' ? 'طباعة' : 'Print'"
+                                            >
+                                                <i class="pi pi-print text-[11px]"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -369,6 +377,45 @@ const fileAttachments = (file: any): Array<{ id?: number; file_url: string; orig
         return file.attachments;
     }
     return file.file_url ? [{ file_url: file.file_url }] : [];
+};
+
+/**
+ * Open a file (image or PDF) in a hidden iframe and print it directly.
+ */
+const printFile = (url: string): void => {
+    if (!url) { return; }
+
+    const existing = document.getElementById('userinfo-print-frame');
+    if (existing) { existing.remove(); }
+
+    const iframe = document.createElement('iframe');
+    iframe.id = 'userinfo-print-frame';
+    iframe.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0;';
+    document.body.appendChild(iframe);
+
+    const cleanup = (): void => { setTimeout(() => iframe.remove(), 500); };
+
+    if (isImageUrl(url)) {
+        const doc = iframe.contentWindow?.document;
+        if (!doc) { return; }
+        doc.open();
+        doc.write(`<!DOCTYPE html><html><head><meta charset="utf-8"><style>@page{margin:10mm}html,body{margin:0;height:100%}body{display:flex;align-items:center;justify-content:center}img{max-width:100%;max-height:100vh}</style></head><body><img src="${url}" onload="window.focus();window.print();"></body></html>`);
+        doc.close();
+        iframe.contentWindow?.addEventListener('afterprint', cleanup);
+    } else {
+        iframe.onload = () => {
+            try {
+                iframe.contentWindow?.focus();
+                iframe.contentWindow?.print();
+                iframe.contentWindow?.addEventListener('afterprint', cleanup);
+            } catch (e) {
+                console.error('Print failed', e);
+            }
+        };
+        iframe.src = url;
+    }
+
+    setTimeout(() => iframe.remove(), 60000);
 };
 
 // Fetch user information

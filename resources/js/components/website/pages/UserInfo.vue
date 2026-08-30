@@ -265,11 +265,21 @@
                                     <span class="inline-block mt-2 text-xs font-semibold px-3 py-1 rounded-full bg-teal-100 text-teal-700">
                                         {{ file.category }}
                                     </span>
+
+                                    <!-- Attachments (group of files) -->
+                                    <div v-if="fileAttachments(file).length" class="mt-3 flex flex-wrap gap-2">
+                                        <a
+                                            v-for="(att, i) in fileAttachments(file)"
+                                            :key="att.id || i"
+                                            :href="att.file_url"
+                                            target="_blank"
+                                            class="inline-flex items-center gap-1.5 bg-white border border-gray-200 rounded-full px-3 py-1 text-xs text-[#123057] hover:text-teal-600 hover:border-teal-300 transition"
+                                        >
+                                            <i class="pi pi-paperclip text-[11px]"></i>
+                                            <span class="max-w-[120px] truncate">{{ att.original_name || (currentLocale === 'ar' ? `ملف ${i + 1}` : `File ${i + 1}`) }}</span>
+                                        </a>
+                                    </div>
                                 </div>
-                                <a v-if="file.file_url" :href="file.file_url" target="_blank"
-                                    class="shrink-0 w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-teal-100 hover:text-teal-600 transition">
-                                    <i class="pi pi-external-link text-sm"></i>
-                                </a>
                             </div>
                         </div>
                     </div>
@@ -350,6 +360,16 @@ const getMaritalStatusLabel = (status: string) => {
 };
 
 const isImageUrl = (url: string): boolean => /\.(jpg|jpeg|png|gif|webp)(\?|$)/i.test(url);
+
+/**
+ * Return a record's attachments, falling back to the legacy single file.
+ */
+const fileAttachments = (file: any): Array<{ id?: number; file_url: string; original_name?: string }> => {
+    if (Array.isArray(file.attachments) && file.attachments.length) {
+        return file.attachments;
+    }
+    return file.file_url ? [{ file_url: file.file_url }] : [];
+};
 
 // Fetch user information
 const fetchUserInfo = async (uuid: string) => {

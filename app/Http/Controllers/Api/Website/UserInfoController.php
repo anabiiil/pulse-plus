@@ -25,7 +25,7 @@ class UserInfoController extends Controller
 
         // Find user by the assigned item's UUID
         $user = User::whereHas('item', fn ($q) => $q->where('uuid', $uuid))
-            ->with(['country', 'diseases', 'medicalInfo', 'medicalFiles', 'latestSubscription'])
+            ->with(['country', 'diseases', 'medicalInfo', 'medicalFiles.attachments', 'latestSubscription'])
             ->first();
 
         if (! $user) {
@@ -73,6 +73,11 @@ class UserInfoController extends Controller
                     'doctor' => $file->doctor,
                     'notes' => $file->notes,
                     'file_url' => $file->file_url,
+                    'attachments' => $file->attachments->map(fn ($attachment) => [
+                        'id' => $attachment->id,
+                        'file_url' => $attachment->file_url,
+                        'original_name' => $attachment->original_name,
+                    ])->values(),
                 ])->values()
                 : [],
         ];

@@ -280,7 +280,7 @@
                                             <button
                                                 type="button"
                                                 @click="printFile(att.file_url)"
-                                                class="w-6 h-6 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center hover:bg-teal-200 transition"
+                                                class="w-6 h-6 rounded-full bg-teal-100 text-teal-600 hidden sm:flex items-center justify-center hover:bg-teal-200 transition"
                                                 :title="currentLocale === 'ar' ? 'طباعة' : 'Print'"
                                             >
                                                 <i class="pi pi-print text-[11px]"></i>

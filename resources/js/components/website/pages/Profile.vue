@@ -587,21 +587,10 @@
                                 :key="file.id"
                                 class="bg-gray-50 rounded-3xl p-5 shadow-md flex items-start gap-4 relative"
                             >
-                                <!-- File image or icon -->
+                                <!-- Category icon -->
                                 <div class="shrink-0">
-                                    <a v-if="file.file_url" :href="file.file_url" target="_blank">
-                                        <img
-                                            v-if="isImage(file.file_url)"
-                                            :src="file.file_url"
-                                            :alt="file.title"
-                                            class="w-16 h-16 rounded-2xl object-cover border border-gray-200"
-                                        >
-                                        <div v-else class="w-16 h-16 rounded-2xl bg-teal-50 flex items-center justify-center border border-teal-200">
-                                            <i class="pi pi-file-pdf text-teal-500 text-2xl"></i>
-                                        </div>
-                                    </a>
-                                    <div v-else class="w-16 h-16 rounded-2xl bg-gray-200 flex items-center justify-center">
-                                        <i :class="`pi ${file.category_icon} text-gray-400 text-2xl`"></i>
+                                    <div class="w-16 h-16 rounded-2xl bg-teal-50 flex items-center justify-center border border-teal-100">
+                                        <i :class="`pi ${file.category_icon} text-teal-500 text-2xl`"></i>
                                     </div>
                                 </div>
                                 <!-- Info -->
@@ -619,26 +608,12 @@
                                         {{ file.category_label }}
                                     </span>
 
-                                    <!-- Attachments (group of files) -->
-                                    <div v-if="fileAttachments(file).length" class="mt-3 flex flex-wrap gap-2">
-                                        <div
-                                            v-for="(att, i) in fileAttachments(file)"
-                                            :key="att.id || i"
-                                            class="inline-flex items-center gap-1.5 bg-white border border-gray-200 rounded-full ps-3 pe-1.5 py-1 text-xs"
-                                        >
-                                            <a :href="att.file_url" target="_blank" class="text-[#123057] hover:text-teal-500 font-semibold max-w-[120px] truncate">
-                                                {{ att.original_name || (isRTL ? `ملف ${i + 1}` : `File ${i + 1}`) }}
-                                            </a>
-                                            <button
-                                                type="button"
-                                                @click="printFile(att.file_url)"
-                                                class="w-6 h-6 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center hover:bg-teal-200 transition"
-                                                :title="isRTL ? 'طباعة' : 'Print'"
-                                            >
-                                                <i class="pi pi-print text-[11px]"></i>
-                                            </button>
-                                        </div>
-                                    </div>
+                                    <!-- Attachments: images as a slider, files listed below -->
+                                    <MedicalFileGallery
+                                        v-if="fileAttachments(file).length"
+                                        :attachments="fileAttachments(file)"
+                                        :rtl="isRTL"
+                                    />
                                 </div>
                                 <!-- Actions -->
                                 <div class="flex flex-col gap-2 shrink-0">
@@ -838,6 +813,7 @@ import userVectorImg from '../../../images/website/user-vector.png';
 // Import layout components
 import Navigation from '../Navigation.vue';
 import Footer from '../Footer.vue';
+import MedicalFileGallery from '../MedicalFileGallery.vue';
 import MultiSelect, { type SelectOption } from '../forms/MultiSelect.vue';
 
 // window.location.origin غير متاح مباشرة في الـ template في Vue 3
@@ -978,8 +954,6 @@ const removeExistingAttachment = (id: number): void => {
     removeAttachmentIds.value.push(id);
 };
 
-const isImage = (url: string): boolean => /\.(jpg|jpeg|png|gif)(\?|$)/i.test(url);
-
 /**
  * Return a record's attachments, falling back to the legacy single file.
  */
@@ -988,47 +962,6 @@ const fileAttachments = (file: any): Array<{ id?: number; file_url: string; orig
         return file.attachments;
     }
     return file.file_url ? [{ file_url: file.file_url }] : [];
-};
-
-/**
- * Open a file (image or PDF) in a hidden iframe and print it directly.
- */
-const printFile = (url: string): void => {
-    if (!url) { return; }
-
-    const existing = document.getElementById('medical-print-frame');
-    if (existing) { existing.remove(); }
-
-    const iframe = document.createElement('iframe');
-    iframe.id = 'medical-print-frame';
-    iframe.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0;';
-    document.body.appendChild(iframe);
-
-    const cleanup = (): void => { setTimeout(() => iframe.remove(), 500); };
-
-    if (isImage(url)) {
-        // Print once the image itself has loaded (not just the document)
-        const doc = iframe.contentWindow?.document;
-        if (!doc) { return; }
-        doc.open();
-        doc.write(`<!DOCTYPE html><html><head><meta charset="utf-8"><style>@page{margin:10mm}html,body{margin:0;height:100%}body{display:flex;align-items:center;justify-content:center}img{max-width:100%;max-height:100vh}</style></head><body><img src="${url}" onload="window.focus();window.print();"></body></html>`);
-        doc.close();
-        iframe.contentWindow?.addEventListener('afterprint', cleanup);
-    } else {
-        iframe.onload = () => {
-            try {
-                iframe.contentWindow?.focus();
-                iframe.contentWindow?.print();
-                iframe.contentWindow?.addEventListener('afterprint', cleanup);
-            } catch (e) {
-                console.error('Print failed', e);
-            }
-        };
-        iframe.src = url;
-    }
-
-    // Fallback removal in case afterprint never fires
-    setTimeout(() => iframe.remove(), 60000);
 };
 
 const submitFileForm = async (): Promise<void> => {
